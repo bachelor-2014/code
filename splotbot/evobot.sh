@@ -8,7 +8,7 @@
 # Description:       evolutionary robot
 ### END INIT INFO
 
-FOLDER=/root/evobot/code/splotbot
+FOLDER=/home/root/evobot/code/splotbot
 SCRIPT=$FOLDER/start.sh
 STOP=$FOLDER/stop.sh
 RUNAS=root
@@ -22,7 +22,7 @@ start() {
     return 1
   fi
   echo 'Starting service…' >&2
-  chdir $FOLDER
+  cd $FOLDER
   local CMD="$SCRIPT &> \"$LOGFILE\" & echo \$!"
   su -c "$CMD" $RUNAS > "$PIDFILE"
   echo 'Service started' >&2
