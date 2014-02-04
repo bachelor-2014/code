@@ -32,10 +32,7 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    namedWindow( "Display Image", CV_WINDOW_AUTOSIZE );
-    imshow( "Display Image", image );
-
-    waitKey(0);
+    imwrite("result.jpg", image);
 
     return 0;
 }
