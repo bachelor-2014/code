@@ -4,7 +4,7 @@ command = g++ -std=c++0x
 
 all: BlobDetection.out
 
-BlobDetection.out: BlobDetection.cpp BlobDetection.hpp
+BlobDetection.out: BlobDetection.cpp
 	$(command) -o BlobDetection.out BlobDetection.cpp $(libs)
 
 clean:

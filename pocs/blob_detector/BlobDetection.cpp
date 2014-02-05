@@ -1,9 +1,47 @@
-#include "BlobDetection.hpp"
+#include <stdio.h>
+#include <opencv2/opencv.hpp>
 
-using namespace cv;
+cv::Mat detectBlobs(cv::Mat image) {
+    cv::Mat greyImage;
+    cv::cvtColor(image, greyImage, CV_BGR2GRAY);
 
-cv::Mat threshold(cv::Mat image) {
-    return image;
+    cv::Mat binaryImage;
+    cv::threshold(greyImage, binaryImage, 100.0, 255.0, cv::THRESH_BINARY);
+
+    cv::SimpleBlobDetector::Params params; 
+
+    params.thresholdStep = 5;
+    params.minThreshold = 40;
+    params.maxThreshold = 60;
+    params.minDistBetweenBlobs = 10.0; 
+
+    params.filterByColor = true;
+    params.blobColor = 255;
+
+    params.filterByArea = false;        
+    params.minArea = 100.0;              
+    params.maxArea = 8000.0;             
+
+    params.filterByCircularity = false;
+    //params.minCircularity = 0;
+    //params.maxCircularity = 99999;
+
+    params.filterByInertia = false;
+    //params.minInertiaRatio = 0;
+    //params.maxInertiaRatio = 99999;
+
+    params.filterByConvexity = false;
+    //params.minConvexity = 0;
+    //params.maxConvexity = 99999;
+
+    cv::SimpleBlobDetector blobDetector(params);
+    std::vector<cv::KeyPoint> blobs;
+    blobDetector.detect(binaryImage, blobs);
+
+    cv::Mat blobImage;    
+    cv::drawKeypoints(binaryImage, blobs, blobImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
+    return blobImage;
 }
 
 int main( int argc, char** argv )
@@ -13,7 +51,7 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    VideoCapture cap(std::stoi(argv[1]));
+    cv::VideoCapture cap(std::stoi(argv[1]));
 
     if (!cap.isOpened())
     {
@@ -21,17 +59,18 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    Mat image;
+    cv::Mat image;
 
-    namedWindow("john",1);
+    cv::namedWindow("Result",1);
 
     cap >> image;
 
     while(true) {
-        imshow("john",image);
+        image = detectBlobs(image);
+        cv::imshow("Result",image);
 
         cap >> image;
-        waitKey(1);
+        cv::waitKey(1);
     }
 
     return 0;
