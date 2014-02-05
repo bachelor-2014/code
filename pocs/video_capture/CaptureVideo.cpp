@@ -28,6 +28,7 @@ int main( int argc, char** argv )
         imshow("john",image);
 
         cap >> image;
+        waitKey(1);
     }
 
     return 0;
