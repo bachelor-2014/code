@@ -1,6 +1,7 @@
-command = g++ `pkg-config --cflags --libs opencv`
+command = g++ 
+flags = `pkg-config --cflags --libs opencv`
 
 all: CaptureVideo.out
 
 CaptureVideo.out: CaptureVideo.cpp
-	$(command) CaptureVideo.cpp -o CaptureVideo.out
+	$(command) CaptureVideo.cpp -o CaptureVideo.out $(flags)
