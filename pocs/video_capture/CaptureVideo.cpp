@@ -10,7 +10,7 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    VideoCapture cap(0);
+    VideoCapture cap(std::stoi(argv[1]));
 
     if (!cap.isOpened())
     {

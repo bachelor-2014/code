@@ -1,6 +1,6 @@
 libs = `pkg-config --libs --cflags opencv`
 
-command = g++ 
+command = g++ -std=c++0x
 
 all: CaptureVideo.out
 
