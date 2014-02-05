@@ -27,7 +27,7 @@ int main( int argc, char** argv )
 
     Size frameSize(static_cast<int>(dWidth), static_cast<int>(dHeight));
 
-    VideoWriter videoWriter ("/home/csp/projects/itu/6.semester/bachelor/code/pocs/image_stitcher/result.avi", 
+    VideoWriter videoWriter ("result.avi", 
             CV_FOURCC('P','I','M','1'), 20, frameSize, true);
 
     if (!cap.isOpened())
