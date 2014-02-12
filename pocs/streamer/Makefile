@@ -1,4 +1,4 @@
-libs = `pkg-config --libs --cflags opencv gstreamer-0.10`
+libs = `pkg-config --libs --cflags opencv gstreamer-1.0`
 
 command = g++ -std=c++0x -ggdb
 
