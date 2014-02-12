@@ -109,29 +109,20 @@ void setSliderValues() {
     cv::setTrackbarPos("Scale", "Controls", scale);
 }
 
-void CallBackFunc(int event, int x, int y, int flags, void* userdata)
+void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
 {
-
     if  ( event == cv::EVENT_LBUTTONDOWN )
     {
         cv::Mat image = *((cv::Mat *) userdata);
-
         cv::Vec3b pixel = image.at<cv::Vec3b>(x,y);
-        int h = pixel[0];
-        int s = pixel[1];
-        int v = pixel[2];
 
-        h1 = h - 15;
-        s1 = s - 10;
-        v1 = 0;
+        int b = pixel[0];
+        int g = pixel[1];
+        int r = pixel[2];
 
-        h2 = h + 15;
-        s2 = 255;
-        v2 = 255;
+        printf("Mouse event: (%d, %d) -> (%d, %d, %d)\n", x, y, r, g, b);
 
-        setSliderValues();
-
-        printf("Mouse event: (%d, %d) -> (%d, %d, %d)\n", x, y, h, s, v);
+        //setSliderValues();
     }
     //else if  ( event == cv::EVENT_RBUTTONDOWN ) { }
     //else if  ( event == cv::EVENT_MBUTTONDOWN ) { }
@@ -160,7 +151,7 @@ int main( int argc, char** argv )
     cv::Mat resultImage;
 
     //set the callback function for any mouse event
-    cv::setMouseCallback("Original image", CallBackFunc, (void *) &image);
+    cv::setMouseCallback("Original image", mouseEventCallBack, (void *) &image);
 
     cap >> image;
 
