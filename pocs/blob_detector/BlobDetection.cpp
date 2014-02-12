@@ -23,25 +23,26 @@ cv::Mat detectBlobs(cv::Mat image) {
     params.maxArea = 8000.0;             
 
     params.filterByCircularity = false;
-    //params.minCircularity = 0;
-    //params.maxCircularity = 99999;
+    params.minCircularity = 0;
+    params.maxCircularity = 99999;
 
     params.filterByInertia = false;
-    //params.minInertiaRatio = 0;
-    //params.maxInertiaRatio = 99999;
+    params.minInertiaRatio = 0;
+    params.maxInertiaRatio = 99999;
 
     params.filterByConvexity = false;
-    //params.minConvexity = 0;
-    //params.maxConvexity = 99999;
+    params.minConvexity = 0;
+    params.maxConvexity = 99999;
 
     cv::SimpleBlobDetector blobDetector(params);
     std::vector<cv::KeyPoint> blobs;
     blobDetector.detect(binaryImage, blobs);
 
-    cv::Mat blobImage;    
+    cv::Mat blobImage;
     cv::drawKeypoints(binaryImage, blobs, blobImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
     return blobImage;
+    //return image;
 }
 
 int main( int argc, char** argv )
@@ -51,7 +52,7 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    cv::VideoCapture cap(std::stoi(argv[1]));
+    cv::VideoCapture cap(std::stoi(argv[1]));//"../captures/1.avi");//
 
     if (!cap.isOpened())
     {

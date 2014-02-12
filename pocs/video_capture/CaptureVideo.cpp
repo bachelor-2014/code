@@ -5,6 +5,10 @@
 using namespace cv;
 using namespace std;
 
+bool react_to_key (int i);
+
+bool capturing; // Global value, indicating if were writing
+
 int main( int argc, char** argv )
 {
     if (argc != 2) {
@@ -21,14 +25,14 @@ int main( int argc, char** argv )
     double dWidth = cap.get(CV_CAP_PROP_FRAME_WIDTH);
     double dHeight = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
 
-    cap >> image;
-
-    cout << "Frame Size = " << dWidth << "x" << dHeight << endl;
-
     Size frameSize(static_cast<int>(dWidth), static_cast<int>(dHeight));
 
     VideoWriter videoWriter ("result.avi", 
             CV_FOURCC('P','I','M','1'), 20, frameSize, true);
+
+    cout << "Frame Size = " << dWidth << "x" << dHeight << endl;
+    cout << "Supported commands:" << endl;
+    cout << "c \t : \t capture to result.avi" << endl;
 
     if (!cap.isOpened())
     {
@@ -38,7 +42,7 @@ int main( int argc, char** argv )
 
     if (!videoWriter.isOpened())
     {
-        printf("couldn't write video!\n");
+        printf("can't write video!\n");
         return -1;
     }
 
@@ -52,18 +56,32 @@ int main( int argc, char** argv )
         }
 
         // Write frame
-        videoWriter.write(image);
+        if(capturing){
+            videoWriter.write(image);
+        }
 
         imshow("john",image);
 
-        if (waitKey(10) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
-        {
-            cout << "esc key is pressed by user" << endl;
-            break; 
-        }
-        //cap >> image;
-        //waitKey(1);
+        bool stop = react_to_key(waitKey(10));
+        if(stop)
+            break;
     }
 
     return 0;
+}
+
+bool react_to_key(int keyPress){
+        if (keyPress == 27) //esc
+        {
+            cout << "esc key is pressed by user" << endl;
+            return true;
+        }
+
+        if (keyPress == 99) //c
+        {
+            cout << "Capturing" << endl;
+            capturing = !capturing;
+        }
+
+        return false;
 }

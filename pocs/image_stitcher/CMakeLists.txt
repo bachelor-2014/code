@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project( StichImage )
+project( StitchImage )
 find_package( OpenCV REQUIRED )
-add_executable( StichImage StichImage.cpp )
-target_link_libraries( StichImage ${OpenCV_LIBS} )
+add_executable( StitchImage StitchImage.cpp )
+target_link_libraries( StitchImage ${OpenCV_LIBS} )
