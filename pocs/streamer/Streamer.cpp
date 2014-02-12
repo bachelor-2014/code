@@ -1,6 +1,8 @@
 #include <gst/gst.h>
+#include <opencv2/opencv.hpp>
 
 static GMainLoop *loop;
+cv::Mat image;
 
 static void
 cb_need_data (GstElement *appsrc,
@@ -12,8 +14,12 @@ cb_need_data (GstElement *appsrc,
   GstBuffer *buffer;
   guint size;
   GstFlowReturn ret;
+    
+  //cap >> image;
+  image = cv::imread("~/Pictures/image.jpg");
 
-  size = 385 * 288 * 2;
+  //size = image.size().width * image.size().height * image.channels();
+  size = 385*288*2;
 
   buffer = gst_buffer_new_allocate (NULL, size, NULL);
 
