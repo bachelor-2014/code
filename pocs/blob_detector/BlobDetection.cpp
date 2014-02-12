@@ -79,7 +79,63 @@ cv::Mat detectBlobs(cv::Mat image) {
     cv::drawKeypoints(binaryImage, blobs, blobImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
     return blobImage;
-    //return image;
+}
+
+void createUserInterface() {
+    cvNamedWindow("Original image", CV_WINDOW_AUTOSIZE);
+    cvNamedWindow("Result image", CV_WINDOW_AUTOSIZE);
+    cvNamedWindow("Controls", CV_WINDOW_AUTOSIZE);
+
+    cvCreateTrackbar("H1","Controls",&h1,255,0);
+    cvCreateTrackbar("H2","Controls",&h2,255,0);
+    cvCreateTrackbar("S1","Controls",&s1,255,0);
+    cvCreateTrackbar("S2","Controls",&s2,255,0);
+    cvCreateTrackbar("V1","Controls",&v1,255,0);
+    cvCreateTrackbar("V2","Controls",&v2,255,0);
+    cvCreateTrackbar("Structuring element size","Controls",&structuringElementSize,30,0);
+    cvCreateTrackbar("Structuring element type","Controls",&structuringElementType,2,0);
+    cvCreateTrackbar("Scale","Controls",&scale,19,0);
+}
+
+void setSliderValues() {
+    cv::setTrackbarPos("H1", "Controls", h1);
+    cv::setTrackbarPos("H2", "Controls", h2);
+    cv::setTrackbarPos("S1", "Controls", s1);
+    cv::setTrackbarPos("S2", "Controls", s2);
+    cv::setTrackbarPos("V1", "Controls", v1);
+    cv::setTrackbarPos("V2", "Controls", v2);
+    cv::setTrackbarPos("Structuring element size", "Controls", structuringElementSize);
+    cv::setTrackbarPos("Structuring element type", "Controls", structuringElementType);
+    cv::setTrackbarPos("Scale", "Controls", scale);
+}
+
+void CallBackFunc(int event, int x, int y, int flags, void* userdata)
+{
+
+    if  ( event == cv::EVENT_LBUTTONDOWN )
+    {
+        cv::Mat image = *((cv::Mat *) userdata);
+
+        cv::Vec3b pixel = image.at<cv::Vec3b>(x,y);
+        int h = pixel[0];
+        int s = pixel[1];
+        int v = pixel[2];
+
+        h1 = h - 15;
+        s1 = s - 10;
+        v1 = 0;
+
+        h2 = h + 15;
+        s2 = 255;
+        v2 = 255;
+
+        setSliderValues();
+
+        printf("Mouse event: (%d, %d) -> (%d, %d, %d)\n", x, y, h, s, v);
+    }
+    //else if  ( event == cv::EVENT_RBUTTONDOWN ) { }
+    //else if  ( event == cv::EVENT_MBUTTONDOWN ) { }
+    //else if ( event == cv::EVENT_MOUSEMOVE ) { }
 }
 
 int main( int argc, char** argv )
@@ -97,34 +153,14 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    //Windows
-    cvNamedWindow("Original image", CV_WINDOW_AUTOSIZE);
-    cvNamedWindow("Result image", CV_WINDOW_AUTOSIZE);
-    cvNamedWindow("Controls", CV_WINDOW_AUTOSIZE);
-
-    //Creating the trackbars
-    cvCreateTrackbar("H1","Controls",&h1,255,0);
-    cvCreateTrackbar("H2","Controls",&h2,255,0);
-    cvCreateTrackbar("S1","Controls",&s1,255,0);
-    cvCreateTrackbar("S2","Controls",&s2,255,0);
-    cvCreateTrackbar("V1","Controls",&v1,255,0);
-    cvCreateTrackbar("V2","Controls",&v2,255,0);
-    cvCreateTrackbar("Structuring element size","Controls",&structuringElementSize,30,0);
-    cvCreateTrackbar("Structuring element type","Controls",&structuringElementType,2,0);
-    cvCreateTrackbar("Scale","Controls",&scale,19,0);
-
-    cv::setTrackbarPos("H1", "Controls", h1);
-    cv::setTrackbarPos("H2", "Controls", h2);
-    cv::setTrackbarPos("S1", "Controls", s1);
-    cv::setTrackbarPos("S2", "Controls", s2);
-    cv::setTrackbarPos("V1", "Controls", v1);
-    cv::setTrackbarPos("V2", "Controls", v2);
-    cv::setTrackbarPos("Structuring element size", "Controls", structuringElementSize);
-    cv::setTrackbarPos("Structuring element type", "Controls", structuringElementType);
-    cv::setTrackbarPos("Scale", "Controls", scale);
+    createUserInterface();
+    setSliderValues();
 
     cv::Mat image;
     cv::Mat resultImage;
+
+    //set the callback function for any mouse event
+    cv::setMouseCallback("Original image", CallBackFunc, (void *) &image);
 
     cap >> image;
 
