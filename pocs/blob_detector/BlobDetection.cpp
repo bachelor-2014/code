@@ -18,7 +18,7 @@ cv::Mat detectBlobs(cv::Mat image) {
     params.filterByColor = true;
     params.blobColor = 255;
 
-    params.filterByArea = false;        
+    //params.filterByArea = false;        
     params.minArea = 100.0;              
     params.maxArea = 8000.0;             
 
