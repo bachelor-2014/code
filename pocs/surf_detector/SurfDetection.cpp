@@ -1,5 +1,12 @@
 #include <stdio.h>
-#include <opencv2/opencv.hpp>
+#include <iostream>
+ 
+#include "opencv2/core/core.hpp"
+#include "opencv2/features2d/features2d.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/nonfree/nonfree.hpp"
+#include "opencv2/calib3d/calib3d.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 cv::Mat detectBlobs(cv::Mat image) {
     cv::Mat greyImage;
@@ -18,31 +25,31 @@ cv::Mat detectBlobs(cv::Mat image) {
     params.filterByColor = true;
     params.blobColor = 255;
 
-    //params.filterByArea = false;        
+    params.filterByArea = false;        
     params.minArea = 100.0;              
     params.maxArea = 8000.0;             
 
     params.filterByCircularity = false;
-    params.minCircularity = 0;
-    params.maxCircularity = 99999;
+    //params.minCircularity = 0;
+    //params.maxCircularity = 99999;
 
     params.filterByInertia = false;
-    params.minInertiaRatio = 0;
-    params.maxInertiaRatio = 99999;
+    //params.minInertiaRatio = 0;
+    //params.maxInertiaRatio = 99999;
 
     params.filterByConvexity = false;
-    params.minConvexity = 0;
-    params.maxConvexity = 99999;
+    //params.minConvexity = 0;
+    //params.maxConvexity = 99999;
 
-    cv::SimpleBlobDetector blobDetector(params);
+    //cv::SimpleBlobDetector detector(params);
+    cv::SurfFeatureDetector detector( 400 );
     std::vector<cv::KeyPoint> blobs;
-    blobDetector.detect(binaryImage, blobs);
+    detector.detect(binaryImage, blobs);
 
-    cv::Mat blobImage;
+    cv::Mat blobImage;    
     cv::drawKeypoints(binaryImage, blobs, blobImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
     return blobImage;
-    //return image;
 }
 
 int main( int argc, char** argv )
@@ -52,7 +59,7 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    cv::VideoCapture cap(std::stoi(argv[1]));//"../captures/1.avi");//
+    cv::VideoCapture cap("../captures/1.avi");//std::stoi(argv[1]));
 
     if (!cap.isOpened())
     {
@@ -62,16 +69,16 @@ int main( int argc, char** argv )
 
     cv::Mat image;
 
-    cv::namedWindow("Result",1);
+    //cv::namedWindow("Result",1);
 
     cap >> image;
 
     while(true) {
         image = detectBlobs(image);
-        cv::imshow("Result",image);
+        //cv::imwrite("Result",image);
 
         cap >> image;
-        cv::waitKey(1);
+        //cv::waitKey(1);
     }
 
     return 0;
