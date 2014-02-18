@@ -1,6 +1,6 @@
 libs = `pkg-config --libs --cflags opencv` -lcurl
 
-command = g++
+command = g++ -std=c++0x
 
 VideoSender.out: VideoSender.cpp
 	$(command) -o $@ $^ $(libs)

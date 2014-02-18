@@ -2,6 +2,8 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <curl/curl.h>
+#include <fstream>
+#include <iterator>
 
 using namespace cv;
 using namespace std;
@@ -75,6 +77,14 @@ void send_image(Mat image){
     param[1]=95;//default(95) 0-100
 
     imencode(".jpg", image, buff, param);
+
+    //Output to file:
+    //ofstream myfile;
+    //myfile.open ("example.jpg");
+    //for (auto e : buff){
+    //    myfile << e;
+    //}
+    //myfile.close();
 
     CURL *curl;
     curl_global_init(CURL_GLOBAL_ALL);
