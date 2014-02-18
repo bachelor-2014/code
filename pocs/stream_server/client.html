@@ -1,21 +1,19 @@
 <html>
   <head>
-    <script src="http://localhost:8000/socket.io/socket.io.js"></script>
+    <script src="http://mrbech.net:8000/socket.io/socket.io.js"></script>
     <script src="assets/socket.io-stream.js"></script>
   </head>
   <body>
     <h1>Socket.io</h1>
-      <canvas id="canvas" width="200" height="200"></canvas>
+      <canvas id="canvas" width="800" height="640"></canvas>
       <!--img id="img"></img-->
     <script>
-      var socket = io.connect('http://localhost:8000');
+      var socket = io.connect('http://mrbech.net:8000');//mrbech.net:8000');
 
       socket.on('image_data',render_image);
 
       function render_image(data) {
-        img_data = 'data:image/jpeg;base64,'+data.image_data
-        //var img = document.getElementById("img")
-        //img.src = img_data
+        var img_data = 'data:image/png;base64,'+data.image_data
 
         var c = document.getElementById("canvas");
         var ctx = c.getContext("2d");
@@ -23,8 +21,7 @@
         img2.onload = function(){
           ctx.drawImage(this,0,0,c.width, c.height);
         }
-        img2.src = img_data;
-
+        img2.src = img_data;//'data:image/png;base64,'+data.image_data;
       }
 
     </script>

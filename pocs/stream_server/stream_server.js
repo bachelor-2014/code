@@ -5,33 +5,22 @@ var server = require('http').Server(
   function(req,res){
 
     if(req.url == "/image" && req.method == "POST"){
-      //var buffer_image = 'john.png'
-      //stream = fs.createWriteStream(buffer_image)
 
-      //req.pipe(stream, { end: false });
-
-      //var bytes = ''
-      //req.on('data', function(data){
-      //  bytes += data.toString()
-      //});
-      var base64Data = '';
+      base64Data = '';
+      bytes = ''
       req.on('data',function(data){
         base64Data += new Buffer(data).toString('base64')
+        bytes += data
       });
 
       req.on('end',function(){
+
+        sendResponse({image_data:base64Data},function(){
+          base64Data = '';
+          bytes = '';
           res.writeHead(200,"ok");
-
-          io.sockets.emit('image_data', { image_data: base64Data } );
-
           res.end();
-          //sendBase64Image(
-          //  new Buffer(bytes).toString('base64'),
-          //  function(){ res.end(); });
-
-          //fs.readFile(buffer_image,function(err,data){
-          //  handleFile(err,data,function(){ res.end(); });
-          //});
+        });
 
       });
 
@@ -41,11 +30,9 @@ var server = require('http').Server(
 
 var io = require('socket.io').listen(server, { log: false });
 
-function handleFile(err,data,cb){
-  sendBase64Image(new Buffer(data).toString('base64'),cb);
+function sendResponse(data,cb){
+  io.sockets.emit('image_data', { image_data: base64Data } );
+  //io.sockets.on('image_success', cb);
+  cb();
 }
-
-function sendBase64Image(base64Data,cb){
-}
-
 server.listen(8000);

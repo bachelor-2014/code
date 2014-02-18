@@ -1,6 +1,5 @@
 #include <node.h>
 #include <v8.h>
-#include <cv.h>
 #include <opencv2/opencv.hpp>
 
 using namespace v8;

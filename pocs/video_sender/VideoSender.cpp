@@ -72,24 +72,24 @@ bool react_to_key(int keyPress){
 
 void send_image(Mat image){
     vector<uchar> buff;//buffer for coding
-    vector<int> param = vector<int>(2);
-    param[0]=CV_IMWRITE_JPEG_QUALITY;
-    param[1]=95;//default(95) 0-100
+    vector<int> param = vector<int>(0);
+    //param[0]=CV_IMWRITE_JPEG_QUALITY;
+    //param[1]=95;//default(95) 0-100
 
-    imencode(".jpg", image, buff, param);
+    imencode(".png", image, buff, param);
 
     //Output to file:
-    //ofstream myfile;
-    //myfile.open ("example.jpg");
-    //for (auto e : buff){
-    //    myfile << e;
-    //}
-    //myfile.close();
+    ofstream myfile;
+    myfile.open ("example.png");
+    for (auto e : buff){
+        myfile << e;
+    }
+    myfile.close();
 
     CURL *curl;
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
-    curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:1337/");
+    curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:8000/image" );
     curl_easy_setopt(curl, CURLOPT_POST, 1);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &buff[0]);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, buff.size());
