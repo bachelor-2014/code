@@ -16,7 +16,7 @@ var server = require('http').Server(
       //});
       var base64Data = '';
       req.on('data',function(data){
-        base64Data += new Buffer(data).toString('base64')
+        base64Data += data // new Buffer(data).toString('base64')
       });
 
       req.on('end',function(){
