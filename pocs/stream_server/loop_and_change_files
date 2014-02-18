@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+while true; do
+    for i in $(ls {1,2}.png); do
+        cp $i active.png
+        sleep 2
+    done
+done
