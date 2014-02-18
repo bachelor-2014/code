@@ -7,3 +7,6 @@
 *.mov
 *.avi
 *.un~
+*.swp
+.swp
+build/
