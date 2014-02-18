@@ -1,0 +1,16 @@
+{
+  "name": "stream_server",
+  "version": "0.0.0",
+  "description": "This shows a simple example of streaming a changing image to a web browser It works by reading a single image on the machine and sending it over  socket.io to a client.",
+  "main": "stream_server.js",
+  "dependencies": {
+    "socket.io": "~0.9.16",
+    "socket.io-client": "~0.9.16"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
