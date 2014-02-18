@@ -5,19 +5,28 @@
   </head>
   <body>
     <h1>Socket.io</h1>
-      <img id="img"></img>
-      <p id="text"></p>
+      <canvas id="canvas" width="200" height="200"></canvas>
+      <!--img id="img"></img-->
     <script>
       var socket = io.connect('http://localhost:8000');
 
-      socket.on('new_image', image);
+      socket.on('image_data',render_image);
 
-      function image (data) {
-          console.log(data.image_data);
-          document.getElementById("img").src = "data:image/png;base64,"+data.image_data
-          //$('#img').append($('<p>').append($('<b>').text(from),
-          //'<img src="' + base64Image + '"/>'));
+      function render_image(data) {
+        img_data = 'data:image/jpeg;base64,'+data.image_data
+        //var img = document.getElementById("img")
+        //img.src = img_data
+
+        var c = document.getElementById("canvas");
+        var ctx = c.getContext("2d");
+        var img2 = new Image();
+        img2.onload = function(){
+          ctx.drawImage(this,0,0,c.width, c.height);
+        }
+        img2.src = img_data;
+
       }
+
     </script>
   </body>
 </html>
