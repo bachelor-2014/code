@@ -89,7 +89,6 @@ void send_image(Mat image){
     CURL *curl;
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
-    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
     curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:1337/");
     curl_easy_setopt(curl, CURLOPT_POST, 1);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &buff[0]);
