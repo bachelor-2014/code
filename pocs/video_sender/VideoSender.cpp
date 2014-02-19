@@ -4,6 +4,7 @@
 #include <curl/curl.h>
 #include <fstream>
 #include <iterator>
+#include "base64.h"
 
 using namespace cv;
 using namespace std;
@@ -78,21 +79,20 @@ void send_image(Mat image){
 
     imencode(".png", image, buff, param);
 
-    //Output to file:
-    ofstream myfile;
-    myfile.open ("example.png");
-    for (auto e : buff){
-        myfile << e;
-    }
-    myfile.close();
+    string base64 = base64_encode(&buff[0],buff.size());
+    int b64len = base64.length() + 1;
+    char *b64 = new char[base64.length() + 1];
+    strcpy(b64, base64.c_str());
 
     CURL *curl;
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
-    curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:8000/image" );
+    curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:8000/image");
     curl_easy_setopt(curl, CURLOPT_POST, 1);
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &buff[0]);
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, buff.size());
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, b64);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, b64len);
     curl_easy_perform(curl);
     curl_easy_cleanup(curl);
+
+    delete [] b64;
 }
