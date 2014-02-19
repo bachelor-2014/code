@@ -15,6 +15,8 @@ int structuringElementType= 2;
 
 int scale=1;
 
+int margin = 10;
+
 cv::Mat detectBlobs(cv::Mat image) {
     cv::Mat hsvImage;
     cv::Mat binaryImage;
@@ -95,6 +97,7 @@ void createUserInterface() {
     cvCreateTrackbar("Structuring element size","Controls",&structuringElementSize,30,0);
     cvCreateTrackbar("Structuring element type","Controls",&structuringElementType,2,0);
     cvCreateTrackbar("Scale","Controls",&scale,19,0);
+    cvCreateTrackbar("Margin","Controls",&margin,255,0);
 }
 
 void setSliderValues() {
@@ -107,6 +110,7 @@ void setSliderValues() {
     cv::setTrackbarPos("Structuring element size", "Controls", structuringElementSize);
     cv::setTrackbarPos("Structuring element type", "Controls", structuringElementType);
     cv::setTrackbarPos("Scale", "Controls", scale);
+    cv::setTrackbarPos("Margin", "Controls", margin);
 }
 
 void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
@@ -115,10 +119,10 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
     {
         cv::Mat image = *((cv::Mat *) userdata);
 
-        cv::Mat hsvImage;
+        cv::Mat hsvImage = image;
 
         // Convert to HSV color space
-        cv::cvtColor(image, hsvImage, CV_BGR2HSV);
+        //cv::cvtColor(image, hsvImage, CV_BGR2HSV);
 
         cv::Vec3b pixel = hsvImage.at<cv::Vec3b>(x,y);
 
@@ -128,11 +132,16 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
 
         printf("Mouse event: (%d, %d) -> (%d, %d, %d)\n", x, y, h, s, v);
 
-        int margin = 5;
+        //h1 = h;
+        //h2 = h;
+        //s1 = s;
+        //s2 = s;
         h1 = (h-margin);
         h2 = (h+margin);
         s1 = (s-margin);
         s2 = (s+margin);
+        //v1 = (v-margin);
+        //v2 = (v+margin);
 
         setSliderValues();
     }
