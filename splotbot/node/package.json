@@ -1,0 +1,15 @@
+{
+  "name": "splotbot",
+  "version": "0.0.0",
+  "description": "A nodejs wrapper for the C++ splotbot class",
+  "main": "index.js",
+  "dependencies": {
+    "node-gyp": "~0.12.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
