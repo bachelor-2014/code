@@ -8,7 +8,6 @@ console.log(addon.mCallbacks("ok",function(msg) {
 console.log(addon.mReturns());
 
 var objectaddon = require('./build/Release/addon');
-var obj = new objectaddon.Splotbot(10);
-console.log( obj.runCode() );
-console.log( obj.runCode() );
-console.log( obj.runCode() );
+var obj = new objectaddon.SplotbotWrapper();
+
+console.log( obj.runCode([1,2,3]) );

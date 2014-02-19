@@ -4,8 +4,13 @@
       "target_name": "hello",
       "sources": [ "hello.cc" ],
       "libraries": [
-        "<!@(pkg-config --libs --cflags opencv)"
+        "<!@(pkg-config --libs --cflags opencv)",
       ],
+      "cflags!": [
+        "-std=c++11",
+        "-ggdb"
+        ],
+      "cflags_cc!": ["-std=c++11"],
       "conditions": [
         ['OS=="mac"', {
             # cflags on OS X are stupid and have to be defined like this
@@ -25,7 +30,7 @@
 
     {
       "target_name": "addon",
-      "sources": [ "addon.cc", "splotbot.cc" ]
+      "sources": [ "addon.cc", "splotbot_wrapper.cc" ]
     }
 
   ]

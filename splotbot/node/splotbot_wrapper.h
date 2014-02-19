@@ -1,15 +1,15 @@
-#ifndef SPLOTBOT_H
-#define SPLOTBOT_H
+#ifndef SPLOTBOT_WRAPPER_H
+#define SPLOTBOT_WRAPPER_H
 
 #include <node.h>
 
-class Splotbot : public node::ObjectWrap {
+class SplotbotWrapper : public node::ObjectWrap {
  public:
   static void Init(v8::Handle<v8::Object> exports);
 
  private:
-  explicit Splotbot(double value = 0);
-  ~Splotbot();
+  explicit SplotbotWrapper();
+  ~SplotbotWrapper();
 
   static v8::Handle<v8::Value> New(const v8::Arguments& args);
   static v8::Handle<v8::Value> runCode(const v8::Arguments& args);
