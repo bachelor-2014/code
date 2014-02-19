@@ -47,9 +47,9 @@ cv::Mat detectBlobs(cv::Mat image) {
     // Do blob detection
     cv::SimpleBlobDetector::Params params; 
 
-    params.thresholdStep = 5;
-    params.minThreshold = 40;
-    params.maxThreshold = 60;
+    //params.thresholdStep = 5;
+    //params.minThreshold = 40;
+    //params.maxThreshold = 60;
     params.minDistBetweenBlobs = 10.0; 
 
     params.filterByColor = true;
@@ -114,15 +114,27 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
     if  ( event == cv::EVENT_LBUTTONDOWN )
     {
         cv::Mat image = *((cv::Mat *) userdata);
-        cv::Vec3b pixel = image.at<cv::Vec3b>(x,y);
 
-        int b = pixel[0];
-        int g = pixel[1];
-        int r = pixel[2];
+        cv::Mat hsvImage;
 
-        printf("Mouse event: (%d, %d) -> (%d, %d, %d)\n", x, y, r, g, b);
+        // Convert to HSV color space
+        cv::cvtColor(image, hsvImage, CV_BGR2HSV);
 
-        //setSliderValues();
+        cv::Vec3b pixel = hsvImage.at<cv::Vec3b>(x,y);
+
+        int h = pixel[0];
+        int s = pixel[1];
+        int v = pixel[2];
+
+        printf("Mouse event: (%d, %d) -> (%d, %d, %d)\n", x, y, h, s, v);
+
+        int margin = 5;
+        h1 = (h-margin);
+        h2 = (h+margin);
+        s1 = (s-margin);
+        s2 = (s+margin);
+
+        setSliderValues();
     }
     //else if  ( event == cv::EVENT_RBUTTONDOWN ) { }
     //else if  ( event == cv::EVENT_MBUTTONDOWN ) { }
