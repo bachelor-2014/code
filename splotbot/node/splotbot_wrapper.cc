@@ -9,6 +9,8 @@ using namespace std;
 
 Persistent<Function> SplotbotWrapper::constructor;
 
+Splotbot splotbot;
+
 SplotbotWrapper::SplotbotWrapper(){
 }
 
@@ -63,7 +65,7 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
     }
     int *arr = &v[0];
 
-    //Splotbot->runCode(length,arr);
+    splotbot.executeInstructions(length,arr);
 
-  return scope.Close(Number::New(0));
+    return scope.Close(Number::New(0));
 }

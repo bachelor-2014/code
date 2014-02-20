@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "addon",
-      "sources": [ "addon.cc", "splotbot_wrapper.cc" ],
+      "sources": [ "addon.cc", "splotbot_wrapper.cc","../cpp/splotbot.cpp" ],
       "libraries": [
         "<!@(pkg-config --libs --cflags opencv)",
       ],
