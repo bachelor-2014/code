@@ -1,0 +1,147 @@
+[
+    {
+        "type": "XYAxes",
+        "name": "Top carriage"
+        "parameters": { },
+        "subcomponents": [
+            {
+                "type": "SingleStepperMotor",
+                "name": "Top carriage y axis",
+                "parameters": {
+                    "gpio_main1": "P8-8",
+                    "gpio_main2": "P8-9",
+                    "gpio_step": "P8-10",
+                    "gpio_sleep": "P8-11"
+                }
+            },
+            {
+                "type": "DualStepperMotors",
+                "name": "Top carriage x axis",
+                "parameters": { },
+                "subcomponents": [
+                    {
+                        "type": "SingleStepperMotor",
+                        "name": "Top carriage x axis motor 1",
+                        "parameters": {
+                            "gpio_main1": "P8-12",
+                            "gpio_main2": "P8-13",
+                            "gpio_step": "P8-14",
+                            "gpio_sleep": "P8-15"
+                        }
+                    },
+                    {
+                        "type": "SingleStepperMotor",
+                        "name": "Top carriage x axis motor 2",
+                        "parameters": {
+                            "gpio_main1": "P8-16",
+                            "gpio_main2": "P8-17",
+                            "gpio_step": "P8-18",
+                            "gpio_sleep": "P8-19"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "XYAxes",
+        "name": "Bottom carriage"
+        "parameters": { },
+        "subcomponents": [
+            {
+                "type": "SingleStepperMotor",
+                "name": "Bottom carriage y axis",
+                "parameters": {
+                    "gpio_main1": "P9-8",
+                    "gpio_main2": "P9-9",
+                    "gpio_step": "P9-10",
+                    "gpio_sleep": "P9-11"
+                }
+            },
+            {
+                "type": "DualStepperMotors",
+                "name": "Bottom carriage x axis",
+                "parameters": { },
+                "subcomponents": [
+                    {
+                        "type": "SingleStepperMotor",
+                        "name": "Bottom carriage x axis motor 1",
+                        "parameters": {
+                            "gpio_main1": "P9-12",
+                            "gpio_main2": "P9-13",
+                            "gpio_step": "P9-14",
+                            "gpio_sleep": "P9-15"
+                        }
+                    },
+                    {
+                        "type": "SingleStepperMotor",
+                        "name": "Bottom carriage x axis motor 2",
+                        "parameters": {
+                            "gpio_main1": "P9-16",
+                            "gpio_main2": "P9-17",
+                            "gpio_step": "P9-18",
+                            "gpio_sleep": "P9-19"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "Syringe",
+        "name": "Water syringe",
+        "parameters": { },
+        "subcomponents": [
+            {
+                "type": "SingleRCServoMotor",
+                "name": "Water syringe move motor",
+                "parameters": {
+                    "gpio_step": "P8-1"
+                }
+            },
+            {
+                "type": "SingleRCServoMotor",
+                "name": "Water syringe plunge motor",
+                "parameters": {
+                    "gpio_step": "P8-2"
+                }
+            },
+        ]
+    },
+    {
+        "type": "Syringe",
+        "name": "Oil syringe",
+        "parameters": { },
+        "subcomponents": [
+            {
+                "type": "SingleRCServoMotor",
+                "name": "Oil syringe move motor",
+                "parameters": {
+                    "gpio_step": "P8-3"
+                }
+            },
+            {
+                "type": "SingleRCServoMotor",
+                "name": "Oil syringe plunge motor",
+                "parameters": {
+                    "gpio_step": "P8-4"
+                }
+            }
+        ]
+    },
+    {
+        "type": "Gripper",
+        "name": "Gripper",
+        "parameters": { },
+        "subcomponents": [
+            {
+                "type": "SingleRCServoMotor",
+                "name": "Gripper motor",
+                "parameters": {
+                    "gpio_step": "P8-5"
+                }
+            }
+        ]
+
+    }
+]
