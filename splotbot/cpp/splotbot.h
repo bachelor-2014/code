@@ -17,6 +17,7 @@ class Splotbot {
         stack<int> buffer;
         sem_t bufferCount;
         mutex lock;
+	int getInstruction();
 };
 
 #endif

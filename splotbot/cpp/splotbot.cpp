@@ -38,3 +38,7 @@ void Splotbot::run() {
         }
     }).detach();
 }
+
+int Splotbot::getInstruction() {
+
+}
