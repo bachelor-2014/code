@@ -1,0 +1,12 @@
+[
+    {
+        "type": "SingleStepperMotor",
+        "name": "Stepper motor",
+        "parameters": {
+            "gpio_main1": "P8-8",
+            "gpio_main2": "P8-9",
+            "gpio_step": "P8-10",
+            "gpio_sleep": "P8-11"
+        }
+    }
+]
