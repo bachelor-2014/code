@@ -7,7 +7,6 @@ var server = require('http').Server(
     if(req.url == "/image" && req.method == "POST"){
 
       base64Data = '';
-      bytes = ''
       req.on('data',function(data){
         base64Data += data // new Buffer(data).toString('base64')
       });
