@@ -119,10 +119,10 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
     {
         cv::Mat image = *((cv::Mat *) userdata);
 
-        cv::Mat hsvImage = image;
+        cv::Mat hsvImage;
 
         // Convert to HSV color space
-        //cv::cvtColor(image, hsvImage, CV_BGR2HSV);
+        cv::cvtColor(image, hsvImage, CV_BGR2HSV);
 
         cv::Vec3b pixel = hsvImage.at<cv::Vec3b>(x,y);
 
@@ -140,8 +140,8 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
         h2 = (h+margin);
         s1 = (s-margin);
         s2 = (s+margin);
-        //v1 = (v-margin);
-        //v2 = (v+margin);
+        v1 = (v-margin);
+        v2 = (v+margin);
 
         setSliderValues();
     }
@@ -175,6 +175,7 @@ int main( int argc, char** argv )
     cv::setMouseCallback("Original image", mouseEventCallBack, (void *) &image);
 
     cap >> image;
+
 
     while(true) {
         double scaleFactor = (double)(scale+1) / 10;
