@@ -1,6 +1,8 @@
 #include <node.h>
-#include "splotbot_wrapper.h"
 #include <vector>
+
+#include "splotbot_wrapper.h"
+#include "../cpp/splotbot.h"
 
 using namespace v8;
 using namespace std;

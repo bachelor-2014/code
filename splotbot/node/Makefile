@@ -1,6 +1,6 @@
-modules: hello.cc splotbot_wrapper.cc binding.gyp
-	node-gyp -std=c++0x configure
-	node-gyp -std=c++0x build
+modules: splotbot_wrapper.cc binding.gyp
+	CXXFLAGS='-std=c++0x' node-gyp configure
+	CXXFLAGS='-std=c++0x' node-gyp build
 
 clean:
 	rm -r build
