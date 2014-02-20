@@ -8,5 +8,13 @@
             "gpio_step": "P8-10",
             "gpio_sleep": "P8-11"
         }
+    },
+    {
+        "type": "Camera",
+        "name": "Camera",
+        "parameters": {
+            "video_device": 0,
+            "event_name": "camera_1"
+        }
     }
 ]
