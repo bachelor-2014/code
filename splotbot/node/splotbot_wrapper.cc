@@ -27,6 +27,9 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("runCode"),
       FunctionTemplate::New(runCode)->GetFunction());
 
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("sendImage"),
+      FunctionTemplate::New(sendImage)->GetFunction());
+
   constructor = Persistent<Function>::New(tpl->GetFunction());
 
   exports->Set(String::NewSymbol("SplotbotWrapper"), constructor);
