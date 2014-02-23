@@ -67,3 +67,9 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
 
   return scope.Close(Number::New(0));
 }
+
+Handle<Value> SplotbotWrapper::sendImage(const Arguments& args){
+    HandleScope scope;
+
+    return scope.Close(Number::New(0));
+}
