@@ -59,11 +59,11 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
 
     Handle<Array> jArr = Handle<Array>::Cast(args[0]); //Array::New(length);
 
-    int num = jArr->Get(1)->NumberValue();
+    //int num = jArr->Get(1)->NumberValue();
     uint length = jArr->Length();
 
     vector<int> v;
-    for(int i=0; i<length; i++) {
+    for(uint i=0; i<length; i++) {
         v.push_back(jArr->Get(i)->NumberValue());
     }
     int *arr = &v[0];
@@ -76,7 +76,7 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
 Handle<Value> SplotbotWrapper::sendImage(const Arguments& args){
     HandleScope scope;
 
-    auto func = [&](string camera, string image) -> void {
+    function<void(string,string)> func = [&](string camera, string image) -> void {
         Local<Function> callback = Local<Function>::Cast(args[0]);
         Local<Value> argv[2] = {
             Local<Value>::New(String::New(camera.c_str())),
