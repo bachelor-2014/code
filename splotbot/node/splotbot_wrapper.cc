@@ -76,13 +76,17 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
 Handle<Value> SplotbotWrapper::sendImage(const Arguments& args){
     HandleScope scope;
 
-    Local<Function> callback = Local<Function>::Cast(args[0]);
-    Local<Value> argv[2] = {
-        Local<Value>::New(String::New("cam1")),
-        Local<Value>::New(String::New("image_data"))
+    auto func = [&](string camera, string image) -> void {
+        Local<Function> callback = Local<Function>::Cast(args[0]);
+        Local<Value> argv[2] = {
+            Local<Value>::New(String::New(camera.c_str())),
+            Local<Value>::New(String::New(image.c_str()))
+        };
+
+        callback->Call(Context::GetCurrent()->Global(), 2, argv);
     };
 
-    callback->Call(Context::GetCurrent()->Global(), 2, argv);
+    func("test", "test");
 
     return scope.Close(Number::New(0));
 }
