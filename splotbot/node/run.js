@@ -35,6 +35,7 @@ app.post('/runcode', function(req, res){
  * image: The image data (base64 string)
  */
 splotbot.sendImage(function(camera, image){
+    console.log(camera + ":" + image);
     io.sockets.emit(camera, { image_data: image });
 });
 

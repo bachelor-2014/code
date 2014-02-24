@@ -76,5 +76,13 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
 Handle<Value> SplotbotWrapper::sendImage(const Arguments& args){
     HandleScope scope;
 
+    Local<Function> callback = Local<Function>::Cast(args[0]);
+    Local<Value> argv[2] = {
+        Local<Value>::New(String::New("cam1")),
+        Local<Value>::New(String::New("image_data"))
+    };
+
+    callback->Call(Context::GetCurrent()->Global(), 2, argv);
+
     return scope.Close(Number::New(0));
 }
