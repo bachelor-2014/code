@@ -21,7 +21,6 @@ int main() {
     }
 
     splotbot.executeInstructions(numberOfInstructions, instructions);
-    printf("Finished exec");
 
     this_thread::sleep_for(chrono::milliseconds(2000));
 

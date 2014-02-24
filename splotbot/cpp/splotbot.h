@@ -5,6 +5,8 @@
 #include <semaphore.h>
 #include <mutex>
 
+#include "instructionbuffer.h"
+
 using namespace std;
 
 class Splotbot {
@@ -14,10 +16,7 @@ class Splotbot {
         void run();
 
     private:
-        stack<int> buffer;
-        sem_t bufferCount;
-        mutex lock;
-	int getInstruction();
+        InstructionBuffer buffer;
 };
 
 #endif
