@@ -12,12 +12,12 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
     cout << "Camera (" << name << ") registering actions" << endl;
 
     // 'Set camera mode' <mode>
-    function<void(InstructionBuffer *)> move = [&](InstructionBuffer *buffer) -> void {
+    function<void(InstructionBuffer *)> setMode = [&](InstructionBuffer *buffer) -> void {
         int instr[1];
         (*buffer).popInstructions(1, instr);
         int mode = instr[0];
         cout << "Camera (" << name << ") mode set to " << mode << endl;
     };
 
-    (*actions).push_back(move);
+    (*actions).push_back(setMode);
 }

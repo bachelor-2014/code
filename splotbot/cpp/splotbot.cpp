@@ -27,7 +27,9 @@ void Splotbot::run() {
         while (true) {
             int popped[1];
             buffer.popInstructions(1, popped);
-            cout << "Instr: " << popped[0] << endl;
+            int action = popped[0];
+
+            actions[action](&buffer);
         }
     }).detach();
 }
