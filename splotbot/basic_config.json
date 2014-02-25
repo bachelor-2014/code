@@ -10,11 +10,30 @@
         }
     },
     {
+        "type": "SingleStepperMotor",
+        "name": "Stepper motor2",
+        "parameters": {
+            "gpio_mode1": "P8-8",
+            "gpio_mode2": "P8-9",
+            "gpio_step": "P8-10",
+            "gpio_sleep": "P8-11"
+        }
+    },
+    {
         "type": "Camera",
-        "name": "Camera",
+        "name": "Camera1",
         "parameters": {
             "video_device": 0,
-            "event_name": "camera_1"
+            "event_name": "image_data"
+        }
+    },
+    {
+        "type": "Camera",
+        "name": "Camera2",
+        "parameters": {
+            "video_device": 0,
+            "event_name": "image2_data"
         }
     }
+
 ]
