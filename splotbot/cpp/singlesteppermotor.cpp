@@ -1,20 +1,23 @@
+#include <iostream>
+
 #include "singlesteppermotor.h"
 
 using namespace std;
 
-SingleStepperMotor::SingleStepperMotor() {
-    //strcopy(name, icJSON_GetObjectItem(document, "name").valuestring);
-    //printf("Name: %s", name);
-    printf("Test");
+SingleStepperMotor::SingleStepperMotor(string name, string gpioMode1, string gpioMode2, string gpioStep, string gpioSleep): name(name), gpioMode1(gpioMode1), gpioMode2(gpioMode2), gpioStep(gpioStep), gpioSleep(gpioSleep) {
+    //Empty constructor
 }
-/*
-    public:
-        Motor(cJSON *document);
 
-    private:
-        char name;
-        char gpioMode1;
-        char gpioMode2;
-        char gpioStep;
-        char gpioSleep;
-        */
+void SingleStepperMotor::registerActions(vector<function<void(InstructionBuffer *)>> *actions) {
+    cout << "SingleStepperMotor (" << name << ") registering actions" << endl;
+
+    // 'Move' <number of steps>
+    function<void(InstructionBuffer *)> move = [&](InstructionBuffer *buffer) -> void {
+        int instr[1];
+        (*buffer).popInstructions(1, instr);
+        int steps = instr[0];
+        cout << "SingleStepperMotor (" << name << ") moving " << steps << " steps" << endl;
+    };
+
+    (*actions).push_back(move);
+}

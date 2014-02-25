@@ -1,18 +1,23 @@
 #ifndef SINGLESTEPPERMOTOR_H
 #define SINGLESTEPPERMOTOR_H 
 
+#include <string>
 #include "instructionbuffer.h"
+#include "component.h"
 
-class SingleStepperMotor {
+using namespace std;
+
+class SingleStepperMotor: public Component {
     public:
-        SingleStepperMotor();
+        SingleStepperMotor(string name, string gpioMode1, string gpioMode2, string gpioStep, string gpioSleep);
+        void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
 
     private:
-        //char name[64];
-        //char gpioMode1[8];
-        //char gpioMode2[8];
-        //char gpioStep[8];
-        //char gpioSleep[8];
+        string name;
+        string gpioMode1;
+        string gpioMode2;
+        string gpioStep;
+        string gpioSleep;
 };
 
 #endif
