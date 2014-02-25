@@ -4,7 +4,10 @@
   "description": "A nodejs wrapper for the C++ splotbot class",
   "main": "index.js",
   "dependencies": {
-    "node-gyp": "~0.12.2"
+    "node-gyp": "~0.12.2",
+    "socket.io" : "~0.9.16",
+    "socket.io-client": "~0.9.16",
+    "express": "3.x"
   },
   "devDependencies": {},
   "scripts": {

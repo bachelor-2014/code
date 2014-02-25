@@ -29,6 +29,9 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("runCode"),
       FunctionTemplate::New(runCode)->GetFunction());
 
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("sendImage"),
+      FunctionTemplate::New(sendImage)->GetFunction());
+
   constructor = Persistent<Function>::New(tpl->GetFunction());
 
   exports->Set(String::NewSymbol("SplotbotWrapper"), constructor);
@@ -56,16 +59,34 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
 
     Handle<Array> jArr = Handle<Array>::Cast(args[0]); //Array::New(length);
 
-    int num = jArr->Get(1)->NumberValue();
+    //int num = jArr->Get(1)->NumberValue();
     uint length = jArr->Length();
 
     vector<int> v;
-    for(int i=0; i<length; i++) {
+    for(uint i=0; i<length; i++) {
         v.push_back(jArr->Get(i)->NumberValue());
     }
     int *arr = &v[0];
 
     splotbot.executeInstructions(length,arr);
+
+    return scope.Close(Number::New(0));
+}
+
+Handle<Value> SplotbotWrapper::sendImage(const Arguments& args){
+    HandleScope scope;
+
+    function<void(string,string)> func = [&](string camera, string image) -> void {
+        Local<Function> callback = Local<Function>::Cast(args[0]);
+        Local<Value> argv[2] = {
+            Local<Value>::New(String::New(camera.c_str())),
+            Local<Value>::New(String::New(image.c_str()))
+        };
+
+        callback->Call(Context::GetCurrent()->Global(), 2, argv);
+    };
+
+    func("test", "test");
 
     return scope.Close(Number::New(0));
 }

@@ -4,6 +4,11 @@
 #include <stack>
 #include <semaphore.h>
 #include <mutex>
+#include <vector>
+
+#include "instructionbuffer.h"
+#include "component.h"
+#include "componentinitializer.h"
 
 using namespace std;
 
@@ -14,10 +19,9 @@ class Splotbot {
         void run();
 
     private:
-        stack<int> buffer;
-        sem_t bufferCount;
-        mutex lock;
-	int getInstruction();
+        InstructionBuffer buffer;
+        vector<Component *> components;
+        vector<function<void(InstructionBuffer *)>> actions;
 };
 
 #endif

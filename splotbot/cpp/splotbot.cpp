@@ -1,44 +1,35 @@
+#include <iostream>
 #include <thread>
 #include "splotbot.h"
 
 using namespace std;
 
 Splotbot::Splotbot(void) {
-    sem_init(&bufferCount, 0, 0);
+    components = initializeComponents();
+
+    cout << "Number of components in Splotbot: " << components.size() << endl;
+
+    for (vector<Component *>::iterator it = components.begin(); it != components.end(); ++it) {
+        Component *c = *it;
+        (*c).registerActions(&actions);
+    }
+
+    cout << "Number of actions registered: " << actions.size() << endl;
 }
 
 void Splotbot::executeInstructions(int numberOfInstructions, int instructions[]) {
-    // Add the instructions to the buffer
-    printf("Exec: Waiting for lock ...\n");
-    lock.lock();
-    printf("Exec: Got lock ...\n");
-    for (int i = 0; i < numberOfInstructions; i++) {
-        buffer.push(instructions[i]);
-        sem_post(&bufferCount);
-    }
-    lock.unlock();
-    printf("Exec: Released lock ...\n");
+    buffer.pushInstructions(numberOfInstructions, instructions);
 }
 
 void Splotbot::run() {
     this_thread::sleep_for(chrono::milliseconds(1000));
     thread( [&] () {
         while (true) {
-            printf("Waiting for buffer ...\n");
-            sem_wait(&bufferCount);
-            printf("Got buffer ...\n");
-            printf("Waiting for lock ...\n");
-            lock.lock();
-            printf("Got lock ...\n");
-            int instr = buffer.top();
-            buffer.pop();
-            lock.unlock();
-            printf("Released lock ...\n");
-            printf("Instr: %d\n", instr);
+            int popped[1];
+            buffer.popInstructions(1, popped);
+            int action = popped[0];
+
+            actions[action](&buffer);
         }
     }).detach();
-}
-
-int Splotbot::getInstruction() {
-
 }

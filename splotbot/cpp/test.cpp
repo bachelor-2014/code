@@ -1,7 +1,8 @@
-#include <iostream>
 #include <chrono>
 #include <thread>
+
 #include "splotbot.h"
+#include "singlesteppermotor.h"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ int main() {
     Splotbot splotbot;
     splotbot.run();
 
+    // Execute some instructions
     int numberOfInstructions;
     int instruction;
 
@@ -21,7 +23,6 @@ int main() {
     }
 
     splotbot.executeInstructions(numberOfInstructions, instructions);
-    printf("Finished exec");
 
     this_thread::sleep_for(chrono::milliseconds(2000));
 
