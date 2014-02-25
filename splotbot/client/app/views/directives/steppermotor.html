@@ -1,0 +1,23 @@
+<div class="control-box col-md-4" ng-controller="MotorCtrl" ng-init="init(elementInfo)">
+  <h1>{{elementInfo.name}}</h1>
+  <p>STAPPARMOTAR</p>
+
+  <div class="glyphicon glyphicon-arrow-left nav-arrow"
+    ng-click="move('left')"></div>
+
+  <span class="glyphicon glyphicon-arrow-up nav-arrow"
+    ng-click="move('up')"></span>
+
+  <span class="glyphicon glyphicon-arrow-down nav-arrow"
+    ng-click="move('down')"></span>
+
+  <span class="glyphicon glyphicon-arrow-right nav-arrow"
+    ng-click="move('right')"></span>
+
+  <!--span class="glyphicon glyphicon-circle-arrow-left nav-arrow"
+    ng-when="currentOperation=='moveLeft'"
+    ></span>
+  <span class="glyphicon glyphicon-circle-arrow-up"></span>
+  <span class="glyphicon glyphicon-circle-arrow-down"></span>
+  <span class="glyphicon glyphicon-circle-arrow-right"></span-->
+</div>
