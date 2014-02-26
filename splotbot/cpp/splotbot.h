@@ -5,6 +5,7 @@
 #include <semaphore.h>
 #include <mutex>
 #include <vector>
+#include <string>
 
 #include "instructionbuffer.h"
 #include "component.h"
@@ -16,12 +17,14 @@ class Splotbot {
     public:
         Splotbot();
         void executeInstructions(int numberOfInstructions, int instructions[]);
+        void registerCallback(function<void(string,string)> callback);
         void run();
 
     private:
         InstructionBuffer buffer;
         vector<Component *> components;
         vector<function<void(InstructionBuffer *)>> actions;
+        function<void(string,string)> eventCallback;
 };
 
 #endif

@@ -38,7 +38,7 @@ cJSON* getConfigDocument() {
     return cJSON_Parse(contents.c_str());
 }
 
-vector<Component *> initializeComponents() {
+vector<Component *> initializeComponents(function<void(string,string)> *callback) {
     vector<Component *> components;
 
     cJSON *document = getConfigDocument();
@@ -48,9 +48,13 @@ vector<Component *> initializeComponents() {
         cout << i << ": " << type << endl;
 
         if (type.compare("SingleStepperMotor") == 0) {
-            components.push_back(createSingleStepperMotor(componentDocument));
+            Component *c = createSingleStepperMotor(componentDocument);
+            (*c).registerCallback(callback);
+            components.push_back(c);
         } else if (type.compare("Camera") == 0) {
-            components.push_back(createCamera(componentDocument));
+            Component *c = createCamera(componentDocument);
+            (*c).registerCallback(callback);
+            components.push_back(c);
         } else {
             cout << "Unknown component found" << endl;
         }

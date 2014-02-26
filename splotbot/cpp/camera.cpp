@@ -17,6 +17,7 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         (*buffer).popInstructions(1, instr);
         int mode = instr[0];
         cout << "Camera (" << name << ") mode set to " << mode << endl;
+        (*eventCallback)("Test name", "Test data");
     };
 
     (*actions).push_back(setMode);
