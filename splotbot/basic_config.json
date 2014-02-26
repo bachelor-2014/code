@@ -26,14 +26,5 @@
             "video_device": 0,
             "event_name": "image_data"
         }
-    },
-    {
-        "type": "Camera",
-        "name": "Camera2",
-        "parameters": {
-            "video_device": 0,
-            "event_name": "image2_data"
-        }
     }
-
 ]
