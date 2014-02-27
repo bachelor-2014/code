@@ -7,6 +7,7 @@ angular.module('clientApp')
 
     $scope.init = function(elementInfo){
       $scope.elementInfo = elementInfo;
+      console.log($scope.elementInfo.start_action);
     };
 
     $scope.move = function(direction){

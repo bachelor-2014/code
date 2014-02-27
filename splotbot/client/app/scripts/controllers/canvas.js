@@ -46,6 +46,7 @@ angular.module('clientApp')
     }
 
     function addCanvas(element){
+      console.log($scope.elementInfo);
       element.append($compile(""+
         "<canvas id='"+$scope.elementInfo.name+"_canvas' width='800'"+
         " height='640'></canvas>")($scope))

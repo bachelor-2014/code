@@ -11,7 +11,8 @@ function extractInfo(config_entry){
     "js_name": config_entry.name.split(" ").map(capitalize).join(""),
     "type": config_entry.type,
     "name":config_entry.name,
-    "parameters":config_entry.parameters
+    "parameters":config_entry.parameters,
+    "start_action": config_entry.start_action
   }
 }
 
@@ -27,7 +28,8 @@ function addDirectiveElements(elements,$scope,$compile,$rootScope){
       $rootScope["element"+e] = {
         name: elements[e].name,
         type: elements[e].type,
-        parameters: elements[e].parameters
+        parameters: elements[e].parameters,
+        start_action: elements[e].start_action
       };
 
     }
@@ -35,7 +37,7 @@ function addDirectiveElements(elements,$scope,$compile,$rootScope){
 
 angular.module('clientApp')
   .controller('MainCtrl', function ($scope, $compile, $rootScope,socket, configService) {
-    configService.getConfig("basic_config.json").then( function(conf){
+    .onfigService.getConfig("basic_config.json").then( function(conf){
       var confElements = conf.map(extractInfo)
       addDirectiveElements(confElements, $scope,$compile,$rootScope);
     })
