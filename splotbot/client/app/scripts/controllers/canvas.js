@@ -56,7 +56,7 @@ angular.module('clientApp')
 
     function addSocket(canvasId,eventName){
       socket.on(eventName,function(data){
-        renderImage(data.image_data,canvas,context,$scope);
+        renderImage(data.data,canvas,context,$scope);
       })
     }
 

@@ -2,26 +2,17 @@
   "targets": [
     {
       "target_name": "addon",
-      "sources": [ "addon.cc", "splotbot_wrapper.cc","../cpp/splotbot.cpp" ],
+      "sources":
+      ["addon.cc","splotbot_wrapper.cc","../cpp/libraries/cJSON/cJSON.c","../cpp/utils/base64.cpp","../cpp/component.cpp","../cpp/instructionbuffer.cpp",
+      "../cpp/camera.cpp", "../cpp/singlesteppermotor.cpp",
+      "../cpp/componentinitializer.cpp", "../cpp/splotbot.cpp"],
       "libraries": [
         "<!@(pkg-config --libs --cflags opencv)",
       ],
-      "conditions": [
-        ['OS=="mac"', {
-            # cflags on OS X are stupid and have to be defined like this
-            'xcode_settings': {
-                'OTHER_CFLAGS': [
-                    "-mmacosx-version-min=10.7",
-                    "-std=c++11",
-                    "-stdlib=libc++",
-                    '<!@(pkg-config --cflags opencv)'
-                ],
-                "GCC_ENABLE_CPP_RTTI": "YES",
-                "GCC_ENABLE_CPP_EXCEPTIONS": "YES"
-            }
-        }] 
-      ]
+      "ldflags":[
+        "-lm", "-pthread", "-ggdb", "-lcurl"
+      ],
+      "defines": [ "DEBUG", "_DEBUG" ]
     }
-
   ]
 }

@@ -1,5 +1,7 @@
+#include <iostream>
 #include <chrono>
 #include <thread>
+#include <string>
 
 #include "splotbot.h"
 #include "singlesteppermotor.h"
@@ -9,6 +11,10 @@ using namespace std;
 int main() {
     Splotbot splotbot;
     splotbot.run();
+
+    splotbot.registerCallback([] (string name, string data) -> void {
+        cout << "Callback '" << name << "': " << data << endl;
+    });
 
     // Execute some instructions
     int numberOfInstructions;

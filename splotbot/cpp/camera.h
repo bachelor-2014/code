@@ -10,12 +10,13 @@ using namespace std;
 class Camera: public Component {
     public:
         Camera(string name, int videoDevice, string eventName);
-        virtual void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
+        void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
 
     private:
         string name;
         int videoDevice;
         string eventName;
+        void run();
 };
 
 #endif

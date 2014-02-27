@@ -5,11 +5,16 @@
 using namespace std;
 
 Splotbot::Splotbot(void) {
-    components = initializeComponents();
+    // Register empty callback
+    registerCallback([] (string name, string data) -> void {
+        cout << "Default callback. You need to provide a better one." << endl;
+    });
+
+    components = initializeComponents(&eventCallback);
 
     cout << "Number of components in Splotbot: " << components.size() << endl;
 
-    for (vector<Component *>::iterator it = components.begin(); it != components.end(); ++it) {
+    for (auto it = components.begin(); it != components.end(); ++it) {
         Component *c = *it;
         (*c).registerActions(&actions);
     }
@@ -19,6 +24,10 @@ Splotbot::Splotbot(void) {
 
 void Splotbot::executeInstructions(int numberOfInstructions, int instructions[]) {
     buffer.pushInstructions(numberOfInstructions, instructions);
+}
+
+void Splotbot::registerCallback(function<void(string,string)> callback) {
+    eventCallback = callback;
 }
 
 void Splotbot::run() {

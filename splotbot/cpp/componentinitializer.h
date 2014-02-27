@@ -6,6 +6,6 @@
 
 using namespace std;
 
-vector<Component *> initializeComponents();
+vector<Component *> initializeComponents(function<void(string,string)> *callback);
 
 #endif
