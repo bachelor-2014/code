@@ -1,5 +1,7 @@
 #include <node.h>
 #include <vector>
+#include <iostream>
+#include <string>
 
 #include "splotbot_wrapper.h"
 #include "../cpp/splotbot.h"
@@ -8,10 +10,12 @@ using namespace v8;
 using namespace std;
 
 Persistent<Function> SplotbotWrapper::constructor;
+Persistent<String> SplotbotWrapper::callback;
+Persistent<Object> SplotbotWrapper::module;
 
 Splotbot splotbot;
 
-SplotbotWrapper::SplotbotWrapper(){
+SplotbotWrapper::SplotbotWrapper() {
 }
 
 SplotbotWrapper::~SplotbotWrapper() {
@@ -29,12 +33,20 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("runCode"),
       FunctionTemplate::New(runCode)->GetFunction());
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("eventCallback"),
-      FunctionTemplate::New(eventCallback)->GetFunction());
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("registerCallback"),
+      FunctionTemplate::New(registerCallback)->GetFunction());
 
   constructor = Persistent<Function>::New(tpl->GetFunction());
 
   exports->Set(String::NewSymbol("SplotbotWrapper"), constructor);
+  
+  callback = NODE_PSYMBOL("eventCallback");
+
+  module = Persistent<Object>::New(exports);
+
+  splotbot.registerCallback([&](string name, string data) {
+          HandleScope scope;
+  });
 }
 
 Handle<Value> SplotbotWrapper::New(const Arguments& args) {
@@ -43,6 +55,8 @@ Handle<Value> SplotbotWrapper::New(const Arguments& args) {
   if (args.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
     // double value = args[0]->IsUndefined() ? 0 : args[0]->NumberValue();
+    Local<Value> funcval = Local<Value>::New(args[0]);
+    Local<Function> func = Local<Function>::Cast(funcval);
     SplotbotWrapper* obj = new SplotbotWrapper();
     obj->Wrap(args.This());
     return args.This();
@@ -73,18 +87,26 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
     return scope.Close(Number::New(0));
 }
 
-Handle<Value> SplotbotWrapper::eventCallback(const Arguments& args){
+Handle<Value> SplotbotWrapper::registerCallback(const Arguments& args){
     HandleScope scope;
+    //Local<Function> callback = Local<Function>::Cast(args[0]);
+    //eventCallback = Persistent<Function>::New(callback);
 
-    function<void(string,string)> func = [&](string name, string data) -> void {
-        Local<Function> callback = Local<Function>::Cast(args[0]);
-        Local<Value> argv[2] = {
-            Local<Value>::New(String::New(name.c_str())),
-            Local<Value>::New(String::New(data.c_str()))
-        };
+    //function<void(string,string)> func = [](string name, string data) -> void {
+    //    HandleScope funcscope;
+    //    Local<Value> argv[2] = {
+    //        Local<Value>::New(String::New(name.c_str())),
+    //        Local<Value>::New(String::New(data.c_str()))
+    //    };
 
-        callback->Call(Context::GetCurrent()->Global(), 2, argv);
-    };
+    //    //callback->Call(Context::GetCurrent()->Global(), 0, NULL);
+    //};
 
+
+    cout << "YES";
     return scope.Close(Number::New(0));
+}
+
+void SplotbotWrapper::eventCallback(string name, string data) {
+    HandleScope scope;
 }

@@ -16,6 +16,7 @@ class Camera: public Component {
         string name;
         int videoDevice;
         string eventName;
+        void run();
 };
 
 #endif

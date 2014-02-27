@@ -1,11 +1,16 @@
 #!/usr/bin/env node
 
-var addon = require('./build/Release/addon');
+var addon = require('./build/Debug/addon');
 var express = require('express'),
     app = express(), 
     http = require('http'), 
     server = http.createServer(app), 
     io = require('socket.io').listen(server);
+
+addon.eventCallback = function (name,data){
+    console.log(name + ":" + data);
+    io.sockets.emit(name, { image_data: data });
+}
 
 var splotbot = new addon.SplotbotWrapper();
 
@@ -26,16 +31,6 @@ app.post('/runcode', function(req, res){
     var code = req.body;
     splotbot.runCode(code);
     res.send();
-});
-
-/**
- * Bind the even of images being send from the splotbot
- * Splotbot gets a callback function where:
- * camera: The identifier for the camera (string)
- * image: The image data (base64 string)
- */
-splotbot.eventCallback(function(name, data){
-    io.sockets.emit(name, { image_data: data });
 });
 
 server.listen(8080);
