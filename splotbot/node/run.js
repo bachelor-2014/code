@@ -5,7 +5,7 @@ var express = require('express'),
     app = express(), 
     http = require('http'), 
     server = http.createServer(app), 
-    io = require('socket.io').listen(server);
+    io = require('socket.io').listen(server, { log: false });
 
 function getdata(req, res, next) {
     var data='';
@@ -20,9 +20,6 @@ function getdata(req, res, next) {
     });
 }
 
-/**
- * Unused
- */
 function eventCallback(name, data){
     io.sockets.emit(name, { data: data });
 }
@@ -56,4 +53,4 @@ app.post('/event/:name', getdata, function(req, res){
     res.send();
 });
 
-server.listen(8080);
+server.listen(8000);

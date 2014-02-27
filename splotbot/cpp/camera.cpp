@@ -50,7 +50,7 @@ void Camera::run() {
 
             string base64 = base64_encode(&buff[0],buff.size());
 
-            (*eventCallback)("callback_" + name, base64);
+            (*eventCallback)(eventName, base64);
         }
     }).detach();
 }

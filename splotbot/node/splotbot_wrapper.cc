@@ -111,7 +111,7 @@ void SplotbotWrapper::eventCallback(string name, string data) {
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL,
-            ("http://localhost:8080/event/"+name).c_str());
+            ("http://localhost:8000/event/"+name).c_str());
     curl_easy_setopt(curl, CURLOPT_POST, 1);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (data.length()+1));
