@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 #include "camera.h"
 #include "utils/base64.h"
@@ -51,6 +52,7 @@ void Camera::run() {
             string base64 = base64_encode(&buff[0],buff.size());
 
             (*eventCallback)(eventName, base64);
+            sleep(1);
         }
     }).detach();
 }

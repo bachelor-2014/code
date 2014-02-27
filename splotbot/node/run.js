@@ -20,6 +20,17 @@ function getdata(req, res, next) {
     });
 }
 
+function allowCrossDomain(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    next();
+}
+
+app.use(allowCrossDomain);
+
+
 function eventCallback(name, data){
     io.sockets.emit(name, { data: data });
 }
@@ -39,8 +50,8 @@ io.sockets.on('connection', function (socket) {
 /**
  * Post request for running code on splotbot
  */
-app.post('/runcode', function(req, res){
-    var code = req.body;
+app.post('/runcode', getdata, function(req, res){
+    var code = JSON.parse(req.data);
     splotbot.runCode(code);
     res.send();
 });
@@ -52,5 +63,6 @@ app.post('/event/:name', getdata, function(req, res){
     eventCallback(req.params.name, req.data);
     res.send();
 });
+
 
 server.listen(8000);
