@@ -37,7 +37,7 @@ function addDirectiveElements(elements,$scope,$compile,$rootScope){
 
 angular.module('clientApp')
   .controller('MainCtrl', function ($scope, $compile, $rootScope,socket, configService) {
-    .onfigService.getConfig("basic_config.json").then( function(conf){
+    configService.getConfig("basic_config.json").then( function(conf){
       var confElements = conf.map(extractInfo)
       addDirectiveElements(confElements, $scope,$compile,$rootScope);
     })

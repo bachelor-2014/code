@@ -12,8 +12,9 @@ angular.module('clientApp')
 
     $scope.move = function(direction){
       console.log("moving "+direction);
-      $scope.currentOperation = "move_"+direction
-      splotService.postInput({type:"move",element:"camera1",direction:direction});
+      console.log($scope.elementInfo.start_action);
+
+      splotService.postInput([$scope.elementInfo.start_action,direction]);
     };
 
   });
