@@ -7,9 +7,24 @@ var express = require('express'),
     server = http.createServer(app), 
     io = require('socket.io').listen(server);
 
-addon.eventCallback = function (name,data){
-    console.log(name + ":" + data);
-    io.sockets.emit(name, { image_data: data });
+function getdata(req, res, next) {
+    var data='';
+    req.setEncoding('utf8');
+    req.on('data', function(chunk) { 
+       data += chunk;
+    });
+
+    req.on('end', function() {
+        req.data = data;
+        next();
+    });
+}
+
+/**
+ * Unused
+ */
+function eventCallback(name, data){
+    io.sockets.emit(name, { data: data });
 }
 
 var splotbot = new addon.SplotbotWrapper();
@@ -30,6 +45,14 @@ io.sockets.on('connection', function (socket) {
 app.post('/runcode', function(req, res){
     var code = req.body;
     splotbot.runCode(code);
+    res.send();
+});
+
+/**
+ * Event callback endpoint
+ */
+app.post('/event/:name', getdata, function(req, res){
+    eventCallback(req.params.name, req.data);
     res.send();
 });
 

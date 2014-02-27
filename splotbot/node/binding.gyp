@@ -10,7 +10,7 @@
         "<!@(pkg-config --libs --cflags opencv)",
       ],
       "ldflags":[
-        "-lm", "-pthread", "-ggdb"
+        "-lm", "-pthread", "-ggdb", "-lcurl"
       ],
       "defines": [ "DEBUG", "_DEBUG" ]
     }

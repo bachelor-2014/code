@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <curl/curl.h>
 
 #include "splotbot_wrapper.h"
 #include "../cpp/splotbot.h"
@@ -44,9 +45,7 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
 
   module = Persistent<Object>::New(exports);
 
-  splotbot.registerCallback([&](string name, string data) {
-          HandleScope scope;
-  });
+  splotbot.registerCallback(eventCallback);
 }
 
 Handle<Value> SplotbotWrapper::New(const Arguments& args) {
@@ -108,5 +107,14 @@ Handle<Value> SplotbotWrapper::registerCallback(const Arguments& args){
 }
 
 void SplotbotWrapper::eventCallback(string name, string data) {
-    HandleScope scope;
+    CURL *curl;
+    curl_global_init(CURL_GLOBAL_ALL);
+    curl = curl_easy_init();
+    curl_easy_setopt(curl, CURLOPT_URL,
+            ("http://localhost:8080/event/"+name).c_str());
+    curl_easy_setopt(curl, CURLOPT_POST, 1);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (data.length()+1));
+    curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
 }
