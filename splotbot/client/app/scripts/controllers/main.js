@@ -5,6 +5,7 @@ function capitalize(word){
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
+// Create a JS object from an entry in the configuration file
 function extractInfo(config_entry){
   return {
     "html_name": config_entry.name.replace(" ","-").toLowerCase(),
@@ -16,6 +17,7 @@ function extractInfo(config_entry){
   }
 }
 
+// Add the GUI controls to the user interface based on the loaded elements
 function addDirectiveElements(elements,$scope,$compile,$rootScope){
 
     $rootScope["elements"] = {}
@@ -35,6 +37,7 @@ function addDirectiveElements(elements,$scope,$compile,$rootScope){
     }
 }
 
+// Add the main controller to the app and initialize it from the config file
 angular.module('clientApp')
   .controller('MainCtrl', function ($scope, $compile, $rootScope,socket, configService) {
     configService.getConfig("basic_config.json").then( function(conf){
