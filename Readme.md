@@ -14,30 +14,38 @@ Ubuntu/Debian scripts for OpenCV can be found
 
 NodeJS can be installed and updated doing:
 > sudo apt-get install nodejs
+
 > sudo npm install n -g
+
 > sudo n 0.10.26
 
 ##Building the C++ code and test program (splotbot/cpp)
 Enter the cpp directory and run the make file:
 > make
+
 Now you can run the test program with:
 > ./test.out
 
 ##Building and running the NodeJS server (splotbot/node)
 First install the needed NodeJS packages with npm:
 > sudo npm install node-gyp -g
+
 > npm install
+
 Then you need to get libcurl:
 > sudo apt-get install libcurl4-gnutls-dev
 
 ##Building and running the web client (splotbot/client)
 First install the NodeJS packages with npm:
 > sudo npm install grunt-cli -g
+
 > sudo npm install bower -g
+
 > npm install
 
 Then we need to install ruby and compass:
 > sudo apt-get install ruby-full rubygems1.8
+
 > sudo gem install compass
 
 Now we install the dependencies using bower:
