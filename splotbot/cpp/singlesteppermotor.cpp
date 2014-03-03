@@ -4,10 +4,16 @@
 
 using namespace std;
 
+/**
+ * SingleStepperMotor constructor
+ */
 SingleStepperMotor::SingleStepperMotor(string name, string gpioMode1, string gpioMode2, string gpioStep, string gpioSleep): name(name), gpioMode1(gpioMode1), gpioMode2(gpioMode2), gpioStep(gpioStep), gpioSleep(gpioSleep) {
     //Empty constructor
 }
 
+/**
+ * registerActions register the actions of the single stepper motor
+ */
 void SingleStepperMotor::registerActions(vector<function<void(InstructionBuffer *)>> *actions) {
     cout << "SingleStepperMotor (" << name << ") registering actions" << endl;
 

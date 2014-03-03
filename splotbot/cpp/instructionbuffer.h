@@ -7,6 +7,15 @@
 
 using namespace std;
 
+/**
+ * InstructionBuffer, threadsafe buffer used to hold instructions
+ * pushInsturctions: push a set of instructions onto the buffer
+ *      numberOfInstructions: number of instructions to push onto the buffer
+ *      instructions: array containing instructions
+ * popInstructions: pop a set of instructions from the buffer
+ *      numberOfInstructions: number of instructions to pop from the buffer
+ *      instructions: array to pop the instructions into
+ */
 class InstructionBuffer {
     public:
         InstructionBuffer();

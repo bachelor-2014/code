@@ -8,10 +8,16 @@
 
 using namespace std;
 
+/**
+ * Test Program
+ * Used to test the splotbot implementation
+ */
 int main() {
+    //Start splotbot
     Splotbot splotbot;
     splotbot.run();
 
+    //Register a test callback to print
     splotbot.registerCallback([] (string name, string data) -> void {
         cout << "Callback '" << name << "': " << data << endl;
     });
