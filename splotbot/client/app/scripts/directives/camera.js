@@ -1,4 +1,6 @@
 'use strict';
+
+// Directive definition for the 'Camera' type GUI control
 angular.module('clientApp')
   .directive( "camera", function() {
     return {
