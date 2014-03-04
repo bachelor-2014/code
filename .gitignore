@@ -8,6 +8,7 @@
 *.mov
 *.avi
 *.un~
+*~
 *.swp
 .swp
 *.dSYM
