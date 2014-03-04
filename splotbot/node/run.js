@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 
+// Our cc module
 var addon = require('./build/Debug/addon');
+
 var express = require('express'),
     app = express(), 
     http = require('http'), 
     server = http.createServer(app), 
     io = require('socket.io').listen(server, { log: false });
 
+/**
+ * Read incoming request data
+ */
 function getdata(req, res, next) {
     var data='';
     req.setEncoding('utf8');
@@ -20,34 +25,30 @@ function getdata(req, res, next) {
     });
 }
 
+
 function eventCallback(name, data){
     io.sockets.emit(name, { data: data });
 }
 
 var splotbot = new addon.SplotbotWrapper();
 
-
+// Listen for socket connections
 io.sockets.on('connection', function (socket) {
-    /**
-     * Socket request for running code on splotbot
-     */
+
+    // Socket request for running code on splotbot
     socket.on('runcode', function(code){
         splotbot.runCode(code);
     }); 
 });
 
-/**
- * Post request for running code on splotbot
- */
+// Post request for running code on splotbot
 app.post('/runcode', function(req, res){
     var code = req.body;
     splotbot.runCode(code);
     res.send();
 });
 
-/**
- * Event callback endpoint
- */
+// Event callback endpoint
 app.post('/event/:name', getdata, function(req, res){
     eventCallback(req.params.name, req.data);
     res.send();
