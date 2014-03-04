@@ -46,6 +46,7 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
   module = Persistent<Object>::New(exports);
 
   splotbot.registerCallback(eventCallback);
+  splotbot.run();
 }
 
 Handle<Value> SplotbotWrapper::New(const Arguments& args) {
@@ -68,15 +69,15 @@ Handle<Value> SplotbotWrapper::New(const Arguments& args) {
 }
 
 Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
-  HandleScope scope;
+    HandleScope scope;
 
     Handle<Array> jArr = Handle<Array>::Cast(args[0]); //Array::New(length);
 
-    //int num = jArr->Get(1)->NumberValue();
+    int num = jArr->Get(1)->NumberValue();
     uint length = jArr->Length();
 
     vector<int> v;
-    for(uint i=0; i<length; i++) {
+    for(int i=0; i<length; i++) {
         v.push_back(jArr->Get(i)->NumberValue());
     }
     int *arr = &v[0];

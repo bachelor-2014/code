@@ -4,6 +4,9 @@
 
 using namespace std;
 
+/**
+ * Splotbot constructor
+ */
 Splotbot::Splotbot(void) {
     // Register empty callback
     registerCallback([] (string name, string data) -> void {
@@ -22,14 +25,23 @@ Splotbot::Splotbot(void) {
     cout << "Number of actions registered: " << actions.size() << endl;
 }
 
+/**
+ * executeInstructions exectures a list of instructions
+ */
 void Splotbot::executeInstructions(int numberOfInstructions, int instructions[]) {
     buffer.pushInstructions(numberOfInstructions, instructions);
 }
 
+/**
+ * registerCallback registeres an event callback
+ */
 void Splotbot::registerCallback(function<void(string,string)> callback) {
     eventCallback = callback;
 }
 
+/**
+ * run starts the Splotbot
+ */
 void Splotbot::run() {
     this_thread::sleep_for(chrono::milliseconds(1000));
     thread( [&] () {

@@ -13,6 +13,21 @@
 
 using namespace std;
 
+/**
+ * Splotbot class the main class for the splotbot robot
+ *
+ * executeInstructions used to execute a list of instructions
+ *      numberOfInstructions: amount of instructions to execute
+ *      instructions: array of instructions to execute
+ *
+ * registerCallback registers an event callback
+ *      callback: is used for callback event
+ *      Can be used with Lambda or function:
+ *           registerCallback([](string eventName, string data){...});
+ *
+ * run run the splotbot
+ *
+ */
 class Splotbot {
     public:
         Splotbot();
