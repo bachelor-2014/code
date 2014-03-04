@@ -1,4 +1,4 @@
-libs = `pkg-config --libs --cflags opencv`
+libs = `pkg-config --libs --cflags opencv` -lpthread
 
 command = g++ -std=c++0x -ggdb
 
