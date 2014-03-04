@@ -10,5 +10,6 @@
 *.un~
 *.swp
 .swp
+*.dSYM
 build/
 node_modules
