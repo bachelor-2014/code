@@ -3,10 +3,12 @@
 // Our cc module
 var addon = require('./build/Debug/addon');
 
-var express = require('express'),
-    app = express(), 
-    http = require('http'), 
-    server = http.createServer(app), 
+// Requirements
+var express = require('express'), // Web server
+    app = express(), // App object to hold the server
+    http = require('http'),
+    server = http.createServer(app), // Start the server
+    // Bind socket.io. Logging is disabled because it's very verbose
     io = require('socket.io').listen(server, { log: false });
 
 /**
@@ -25,16 +27,24 @@ function getdata(req, res, next) {
     });
 }
 
+/**
+ * Enable access for all clients from everywhere
+ */
 function allowCrossDomain(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
+    // Propagate the call
     next();
 }
 
+// Bind the crossdomain function to all request
 app.use(allowCrossDomain);
 
+/**
+ * Expose something to the socket stream (out)
+ */
 function eventCallback(name, data){
     io.sockets.emit(name, { data: data });
 }
@@ -63,5 +73,5 @@ app.post('/event/:name', getdata, function(req, res){
     res.send();
 });
 
-
+// Bind server to port
 server.listen(8000);

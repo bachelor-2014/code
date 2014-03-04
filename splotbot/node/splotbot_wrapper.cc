@@ -7,6 +7,7 @@
 #include "splotbot_wrapper.h"
 #include "../cpp/splotbot.h"
 
+// Javascript interopbility
 using namespace v8;
 using namespace std;
 
@@ -22,6 +23,9 @@ SplotbotWrapper::SplotbotWrapper() {
 SplotbotWrapper::~SplotbotWrapper() {
 }
 
+/**
+ * Initialize the component
+ */
 void SplotbotWrapper::Init(Handle<Object> exports) {
 
   // Prepare constructor template
@@ -40,12 +44,15 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
   constructor = Persistent<Function>::New(tpl->GetFunction());
 
   exports->Set(String::NewSymbol("SplotbotWrapper"), constructor);
-  
+
+  // Reach the function in the .js file (it emits the data over the socket)
   callback = NODE_PSYMBOL("eventCallback");
 
   module = Persistent<Object>::New(exports);
 
   splotbot.registerCallback(eventCallback);
+
+  // Start the splotbot. 
   splotbot.run();
 }
 
@@ -61,52 +68,55 @@ Handle<Value> SplotbotWrapper::New(const Arguments& args) {
     obj->Wrap(args.This());
     return args.This();
   } else {
-// Invoked as plain function `MyObject(...)`, turn into construct call.
+    // Invoked as plain function `MyObject(...)`, turn into construct call.
     const int argc = 0;
     Local<Value> argv[argc] = {};
     return scope.Close(constructor->NewInstance(0, argv));
   }
 }
 
+/**
+ * Run instructions
+ */
 Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
     HandleScope scope;
 
-    Handle<Array> jArr = Handle<Array>::Cast(args[0]); //Array::New(length);
+    // Accept array of instructions
+    Handle<Array> jArr = Handle<Array>::Cast(args[0]);
 
+    // Accept length of instruction array
     int num = jArr->Get(1)->NumberValue();
     uint length = jArr->Length();
 
+    // "cast" the array to a vector
     vector<int> v;
     for(int i=0; i<length; i++) {
         v.push_back(jArr->Get(i)->NumberValue());
     }
     int *arr = &v[0];
 
+    // Perform the instructions
     splotbot.executeInstructions(length,arr);
 
+    // Return 0
     return scope.Close(Number::New(0));
 }
 
+/**
+ * Handle callbacks in c
+ * TODO: Make this work
+ */
 Handle<Value> SplotbotWrapper::registerCallback(const Arguments& args){
     HandleScope scope;
-    //Local<Function> callback = Local<Function>::Cast(args[0]);
-    //eventCallback = Persistent<Function>::New(callback);
-
-    //function<void(string,string)> func = [](string name, string data) -> void {
-    //    HandleScope funcscope;
-    //    Local<Value> argv[2] = {
-    //        Local<Value>::New(String::New(name.c_str())),
-    //        Local<Value>::New(String::New(data.c_str()))
-    //    };
-
-    //    //callback->Call(Context::GetCurrent()->Global(), 0, NULL);
-    //};
-
 
     cout << "YES";
     return scope.Close(Number::New(0));
 }
 
+/**
+ * This is a fallback for the callback method
+ * Send http requests to the server
+ */
 void SplotbotWrapper::eventCallback(string name, string data) {
     CURL *curl;
     curl_global_init(CURL_GLOBAL_ALL);

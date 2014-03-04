@@ -4,8 +4,12 @@
 
 using namespace v8;
 
+/**
+ * Initialize
+ */
 void InitAll(Handle<Object> exports) {
       SplotbotWrapper::Init(exports);
 }
 
+// Expose the addon
 NODE_MODULE(addon, InitAll)
