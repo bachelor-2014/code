@@ -3,6 +3,8 @@
 
 #include <iostream>
 
-void runAsThread(std::function<void()> func);
+using namespace std;
+
+void runAsThread(function<void()> func);
 
 #endif

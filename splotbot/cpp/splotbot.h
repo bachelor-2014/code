@@ -1,7 +1,6 @@
 #ifndef SPLOTBOT_H
 #define SPLOTBOT_H
 
-#include <stack>
 #include <semaphore.h>
 #include <mutex>
 #include <vector>

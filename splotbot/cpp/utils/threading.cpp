@@ -1,8 +1,6 @@
 #include "threading.h"
 #include <pthread.h>
 
-using namespace std;
-
 void *runner(void *param) {
     function<void()> func = *((function<void()> *) param);
     func();
