@@ -2,6 +2,7 @@
 #include <chrono>
 #include <thread>
 #include <string>
+#include <unistd.h>
 
 #include "splotbot.h"
 #include "singlesteppermotor.h"
@@ -37,7 +38,7 @@ int main() {
 
     splotbot.executeInstructions(numberOfInstructions, instructions);
 
-    this_thread::sleep_for(chrono::milliseconds(2000));
+    sleep(2);
 
     return 0;
 }
