@@ -5,6 +5,7 @@
 
 #include "splotbot.h"
 #include "singlesteppermotor.h"
+#include "utils/threading.h"
 
 using namespace std;
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include "splotbot.h"
+#include "utils/threading.h"
 
 using namespace std;
 
@@ -43,8 +44,7 @@ void Splotbot::registerCallback(function<void(string,string)> callback) {
  * run starts the Splotbot
  */
 void Splotbot::run() {
-    this_thread::sleep_for(chrono::milliseconds(1000));
-    thread( [&] () {
+    runAsThread( [&] () {
         while (true) {
             int popped[1];
             buffer.popInstructions(1, popped);
@@ -52,5 +52,5 @@ void Splotbot::run() {
 
             actions[action](&buffer);
         }
-    }).detach();
+    });
 }

@@ -5,6 +5,7 @@
 #include "utils/base64.h"
 #include <opencv2/opencv.hpp>
 #include <thread>
+#include "utils/threading.h"
 
 using namespace std;
 using namespace cv;
@@ -43,8 +44,7 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
  * Starts the video capture device and pulls images
  */
 void Camera::run() {
-    this_thread::sleep_for(chrono::milliseconds(1000));
-    thread( [&] () {
+    runAsThread( [&] () {
         //VideoCapture
         VideoCapture cap(videoDevice);
         Mat image;
@@ -73,5 +73,5 @@ void Camera::run() {
             (*eventCallback)(eventName, base64);
             sleep(1);
         }
-    }).detach();
+    });
 }
