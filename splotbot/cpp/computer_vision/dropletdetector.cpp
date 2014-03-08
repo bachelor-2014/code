@@ -7,7 +7,7 @@
 using namespace std;
 
 // Constructor. Initializes the state of the DropletDetector
-DropletDetector::DropletDetector(int minArea, int maxArea, cv::Scalar minColor, cv::Scalar maxColor, int structuringElementSize): minArea(minArea), maxArea(maxArea), minColor(minColor), maxColor(maxColor), structuringElementSize(structuringElementSize) {
+DropletDetector::DropletDetector(int minArea, int maxArea, ColorInterval colorInterval, int structuringElementSize): minArea(minArea), maxArea(maxArea), colorInterval(colorInterval), structuringElementSize(structuringElementSize) {
     // Empty constructor
 }
 
@@ -27,7 +27,7 @@ Droplet DropletDetector::detectDroplet(cv::Mat image) {
     cv::cvtColor(blurredImage, hsvImage, CV_BGR2HSV);
 
     // Threshold the image based on the min and max colors
-    cv::inRange(hsvImage, minColor, maxColor, thresholdedImage);
+    cv::inRange(hsvImage, colorInterval.minColor, colorInterval.maxColor, thresholdedImage);
 
     // Apply morphology
     morphologyImage = thresholdedImage.clone();

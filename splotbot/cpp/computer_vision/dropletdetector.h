@@ -1,24 +1,12 @@
-#ifndef BLOBDETECTOR_H 
-#define BLOBDETECTOR_H 
+#ifndef DROPLETDETECTOR_H 
+#define DROPLETDETECTOR_H 
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <cvblob.h>
+#include "datastructs.h"
 
 using namespace std;
-
-/**
- *  Represents a detected droplet
- */
-typedef struct {
-    int minX;
-    int minY;
-    int maxX;
-    int maxY;
-    double centroidX;
-    double centroidY;
-    int area;
-} Droplet;
 
 /**
  * DropletDetector is capable of detecting droplets through use
@@ -36,15 +24,14 @@ typedef struct {
  */
 class DropletDetector {
     public:
-        DropletDetector(int minArea, int maxArea, cv::Scalar minColor, cv::Scalar maxColor, int structuringElementSize);
+        DropletDetector(int minArea, int maxArea, ColorInterval colorInterval, int structuringElementSize);
         Droplet detectDroplet(cv::Mat image);
 
     private:
         int minArea;
         int maxArea;
-        cv::Scalar minColor;
-        cv::Scalar maxColor;
         int structuringElementSize;
+        ColorInterval colorInterval;
 };
 
 #endif
