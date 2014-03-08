@@ -19,40 +19,52 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
 }
 
 int main() {
-    cv::Mat image = cv::imread("droplet.jpg");
+    cv::Mat image;
+
+    cv::VideoCapture cap(0);
+    if (!cap.isOpened()) {
+        cout << "No video data" << endl;
+        return -1;
+    }
+
+    cap.read(image);
 
     cv::namedWindow("Input", cv::WINDOW_AUTOSIZE);
     cv::setMouseCallback("Input", mouseEventCallBack, NULL);
     cv::imshow("Input", image);
     int key = cv::waitKey(0);
+    cv::destroyWindow("Input");
 
     int minArea = 0;
     int maxArea = 999999;
+    int structuringElementSize = 3;
+
     ColorInterval colorInterval;
-    
     ColorPicker colorPicker(image, 20);
     colorInterval = colorPicker.computeColorIntervalFromSelection(selectedX, selectedY);
 
-    int structuringElementSize = 3;
-
-    DropletDetector detector(minArea, maxArea, colorInterval, structuringElementSize);
-    Droplet droplet = detector.detectDroplet(image);
-
-    cout << "area: " << droplet.area << endl;
-    cout << "minX: " << droplet.minX << endl;
-    cout << "minY: " << droplet.minY << endl;
-    cout << "maxX: " << droplet.maxX << endl;
-    cout << "maxY: " << droplet.maxY << endl;
-    cout << "centroidX: " << droplet.centroidX << endl;
-    cout << "centroidY: " << droplet.centroidY << endl;
-
-    cv::rectangle(image, cv::Point(droplet.minX, droplet.minY), cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0, 255, 0));
-    
     cv::namedWindow("Result", cv::WINDOW_AUTOSIZE);
     cv::setMouseCallback("Result", mouseEventCallBack, NULL);
-    cv::imshow("Result", image);
 
-    cv::waitKey(0);
+    DropletDetector detector(minArea, maxArea, colorInterval, structuringElementSize);
+
+    while (true) {
+        Droplet droplet = detector.detectDroplet(image);
+        cv::rectangle(image, cv::Point(droplet.minX, droplet.minY), cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0, 255, 0));
+        cv::imshow("Result", image);
+
+        cv::waitKey(1);
+        
+        cap.read(image);
+    }
+
+    //cout << "area: " << droplet.area << endl;
+    //cout << "minX: " << droplet.minX << endl;
+    //cout << "minY: " << droplet.minY << endl;
+    //cout << "maxX: " << droplet.maxX << endl;
+    //cout << "maxY: " << droplet.maxY << endl;
+    //cout << "centroidX: " << droplet.centroidX << endl;
+    //cout << "centroidY: " << droplet.centroidY << endl;
 
     return 0;
 }
