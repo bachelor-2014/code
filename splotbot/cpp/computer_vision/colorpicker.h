@@ -16,8 +16,6 @@ class ColorPicker {
     private:
         cv::Mat image;
         int tolerance;
-        void getColors(cv::Mat image, int x, int y, bool up, bool down, bool left, bool right, vector<int> *hVector, vector<int> *sVector, vector<int> *vVector);
-        bool withinTolerance(cv::Vec3b pixel, cv::Vec3b otherPixel);
 };
 
 #endif

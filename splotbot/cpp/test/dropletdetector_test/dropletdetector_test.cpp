@@ -19,7 +19,7 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
 }
 
 int main() {
-    cv::Mat image = cv::imread("droplet.png");
+    cv::Mat image = cv::imread("droplet.jpg");
 
     cv::namedWindow("Input", cv::WINDOW_AUTOSIZE);
     cv::setMouseCallback("Input", mouseEventCallBack, NULL);
@@ -32,11 +32,6 @@ int main() {
     
     ColorPicker colorPicker(image, 20);
     colorInterval = colorPicker.computeColorIntervalFromSelection(selectedX, selectedY);
-
-    //cv::Scalar minColor(0, 200, 110);
-    //cv::Scalar maxColor(180, 255, 155);
-    //colorInterval.minColor = minColor;
-    //colorInterval.maxColor = maxColor;
 
     int structuringElementSize = 3;
 

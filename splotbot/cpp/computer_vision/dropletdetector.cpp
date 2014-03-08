@@ -13,6 +13,13 @@ DropletDetector::DropletDetector(int minArea, int maxArea, ColorInterval colorIn
 
 // Detect the largest matching droplet on the given image
 Droplet DropletDetector::detectDroplet(cv::Mat image) {
+    //// DEBUG: Print color interval
+    //cout << endl << "Color interval:" << endl;
+    //cout << "B: " << colorInterval.minColor[0] << " - " << colorInterval.maxColor[0] << endl;
+    //cout << "G: " << colorInterval.minColor[1] << " - " << colorInterval.maxColor[1] << endl;
+    //cout << "R: " << colorInterval.minColor[2] << " - " << colorInterval.maxColor[2] << endl;
+    //cout << endl;
+
     Droplet droplet;
 
     cv::Mat blurredImage;
@@ -21,7 +28,8 @@ Droplet DropletDetector::detectDroplet(cv::Mat image) {
     cv::Mat morphologyImage;
 
     // Apply a slight gaussian blur to the image
-    cv::GaussianBlur(image, blurredImage, cv::Size(3,3), 1.0);
+    //cv::GaussianBlur(image, blurredImage, cv::Size(3,3), 1.0);
+    cv::bilateralFilter(image, blurredImage, 30, 100, 100);
 
     // Convert the image to HSV
     cv::cvtColor(blurredImage, hsvImage, CV_BGR2HSV);
