@@ -1,5 +1,5 @@
-#ifndef COLORPICKER_H 
-#define COLORPICKER_H
+#ifndef COMPUTERVISIONUTILS_H 
+#define COMPUTERVISIONUTILS_H
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
@@ -8,14 +8,9 @@
 
 using namespace std;
 
-class ColorPicker {
-    public:
-        ColorPicker(cv::Mat image, int tolerance);
-        ColorInterval computeColorIntervalFromSelection(int x, int y);
-
-    private:
-        cv::Mat image;
-        int tolerance;
-};
+/**
+ * Compute a suitable color interval from the given image, tolerance and pixel selectedn
+ */
+ColorInterval computeColorIntervalFromSelection(cv::Mat image, int tolerance, int x, int y);
 
 #endif

@@ -27,4 +27,13 @@ typedef struct {
     cv::Scalar maxColor;
 } ColorInterval;
 
+/**
+ * Represents af droplet log, containing the detected droplet information
+ * and a timestamp
+ */
+typedef struct {
+    Droplet droplet;
+    int timestamp;
+} DropletLog;
+
 #endif

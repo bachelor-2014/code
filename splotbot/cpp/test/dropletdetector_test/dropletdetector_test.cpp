@@ -41,8 +41,7 @@ int main() {
     int structuringElementSize = 3;
 
     ColorInterval colorInterval;
-    ColorPicker colorPicker(image, 20);
-    colorInterval = colorPicker.computeColorIntervalFromSelection(selectedX, selectedY);
+    colorInterval = computeColorIntervalFromSelection(image, 20, selectedX, selectedY);
 
     cv::namedWindow("Result", cv::WINDOW_AUTOSIZE);
     cv::setMouseCallback("Result", mouseEventCallBack, NULL);

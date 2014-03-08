@@ -8,13 +8,8 @@
 
 using namespace std;
 
-// Constructor. Initializes the ColorPicker
-ColorPicker::ColorPicker(cv::Mat image, int tolerance): image(image), tolerance(tolerance) {
-    // Empty constructor
-}
-
 // Computes the color interval from the pixel chosen on the image using the tolerance
-ColorInterval ColorPicker::computeColorIntervalFromSelection(int x, int y) {
+ColorInterval computeColorIntervalFromSelection(cv::Mat image, int tolerance, int x, int y) {
     ColorInterval colorInterval;
 
     cv::Mat blurredImage;
