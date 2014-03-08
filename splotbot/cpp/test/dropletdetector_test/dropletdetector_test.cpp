@@ -4,6 +4,14 @@
 
 using namespace std;
 
+void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
+{
+    if  ( event == cv::EVENT_LBUTTONDOWN )
+    {
+        cout << "Mouse event: (" << x << ", " << y << ")" << endl;
+    }
+}
+
 int main() {
     cv::Mat image = cv::imread("droplet.png");
 
@@ -14,7 +22,21 @@ int main() {
     int structuringElementSize = 3;
 
     DropletDetector detector(minArea, maxArea, minColor, maxColor, structuringElementSize);
-    detector.detectDroplet(image);
+    Droplet droplet = detector.detectDroplet(image);
+
+    cout << "area: " << droplet.area << endl;
+    cout << "minX: " << droplet.minX << endl;
+    cout << "minY: " << droplet.minY << endl;
+    cout << "maxX: " << droplet.maxX << endl;
+    cout << "maxY: " << droplet.maxY << endl;
+    cout << "centroidX: " << droplet.centroidX << endl;
+    cout << "centroidY: " << droplet.centroidY << endl;
+
+    cv::rectangle(image, cv::Point(droplet.minX, droplet.minY), cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0, 255, 0));
+    
+    cv::namedWindow("Result", cv::WINDOW_AUTOSIZE);
+    cv::setMouseCallback("Result", mouseEventCallBack, NULL);
+    cv::imshow("Result", image);
 
     cv::waitKey(0);
 

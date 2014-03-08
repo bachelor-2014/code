@@ -11,10 +11,12 @@ using namespace std;
  *  Represents a detected droplet
  */
 typedef struct {
-    int x;
-    int y;
-    int width;
-    int height;
+    int minX;
+    int minY;
+    int maxX;
+    int maxY;
+    double centroidX;
+    double centroidY;
     int area;
 } Droplet;
 
