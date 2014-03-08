@@ -22,7 +22,8 @@ ColorInterval ColorPicker::computeColorIntervalFromSelection(int x, int y) {
 
     // Apply a blur to the image
     //cv::GaussianBlur(image, blurredImage, cv::Size(3,3), 1.0);
-    cv::bilateralFilter(image, blurredImage, 30, 100, 100);
+    //cv::bilateralFilter(image, blurredImage, 30, 100, 100);
+    cv::medianBlur(image, blurredImage, 31);
 
     // Convert the image to HSV
     cv::cvtColor(blurredImage, hsvImage, CV_BGR2HSV);

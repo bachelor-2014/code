@@ -21,13 +21,14 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
 int main() {
     cv::Mat image;
 
-    cv::VideoCapture cap(0);
+    cv::VideoCapture cap("droplet_video.mp4");
+
     if (!cap.isOpened()) {
         cout << "No video data" << endl;
         return -1;
     }
 
-    cap.read(image);
+    bool success = cap.read(image);
 
     cv::namedWindow("Input", cv::WINDOW_AUTOSIZE);
     cv::setMouseCallback("Input", mouseEventCallBack, NULL);
@@ -36,7 +37,7 @@ int main() {
     cv::destroyWindow("Input");
 
     int minArea = 0;
-    int maxArea = 999999;
+    int maxArea = 99999;
     int structuringElementSize = 3;
 
     ColorInterval colorInterval;
@@ -48,23 +49,23 @@ int main() {
 
     DropletDetector detector(minArea, maxArea, colorInterval, structuringElementSize);
 
-    while (true) {
+    while (success) {
         Droplet droplet = detector.detectDroplet(image);
         cv::rectangle(image, cv::Point(droplet.minX, droplet.minY), cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0, 255, 0));
         cv::imshow("Result", image);
 
         cv::waitKey(1);
         
-        cap.read(image);
-    }
+        success = cap.read(image);
 
-    //cout << "area: " << droplet.area << endl;
-    //cout << "minX: " << droplet.minX << endl;
-    //cout << "minY: " << droplet.minY << endl;
-    //cout << "maxX: " << droplet.maxX << endl;
-    //cout << "maxY: " << droplet.maxY << endl;
-    //cout << "centroidX: " << droplet.centroidX << endl;
-    //cout << "centroidY: " << droplet.centroidY << endl;
+        //cout << "area: " << droplet.area << endl;
+        //cout << "minX: " << droplet.minX << endl;
+        //cout << "minY: " << droplet.minY << endl;
+        //cout << "maxX: " << droplet.maxX << endl;
+        //cout << "maxY: " << droplet.maxY << endl;
+        //cout << "centroidX: " << droplet.centroidX << endl;
+        //cout << "centroidY: " << droplet.centroidY << endl;
+    }
 
     return 0;
 }
