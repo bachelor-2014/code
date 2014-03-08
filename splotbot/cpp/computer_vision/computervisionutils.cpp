@@ -3,8 +3,9 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <math.h>
 
-#include "colorpicker.h"
+#include "computervisionutils.h"
 
 using namespace std;
 
@@ -44,4 +45,22 @@ ColorInterval computeColorIntervalFromSelection(cv::Mat image, int tolerance, in
     colorInterval.maxColor = cv::Scalar(maxH, maxS, maxV);
     
     return colorInterval;
+}
+
+/**
+ * Computer movement speed from droplet logs based on the timestamps and centroids
+ *
+ * The movement speed is in pixels per second
+ */
+double computeMovementSpeed(DropletLog first, DropletLog second) {
+    double x1 = (double)first.droplet.centroidX;
+    double y1 = (double)first.droplet.centroidY;
+
+    double x2 = (double)second.droplet.centroidX;
+    double y2 = (double)second.droplet.centroidY;
+
+    double distance = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+    double timeDifference = (double) (second.timestamp - first.timestamp);
+
+    return distance / ((double) timeDifference);
 }

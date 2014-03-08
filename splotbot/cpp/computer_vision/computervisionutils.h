@@ -13,4 +13,11 @@ using namespace std;
  */
 ColorInterval computeColorIntervalFromSelection(cv::Mat image, int tolerance, int x, int y);
 
+/**
+ * Computer movement speed from droplet logs based on the timestamps and centroids
+ *
+ * The movement speed is in pixels per second
+ */
+double computeMovementSpeed(DropletLog first, DropletLog second);
+
 #endif

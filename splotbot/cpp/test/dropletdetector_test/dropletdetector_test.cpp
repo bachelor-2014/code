@@ -1,7 +1,8 @@
 #include <iostream>
+#include <time.h>
 #include <opencv2/opencv.hpp>
 #include "../../computer_vision/dropletdetector.h"
-#include "../../computer_vision/colorpicker.h"
+#include "../../computer_vision/computervisionutils.h"
 
 using namespace std;
 
@@ -20,6 +21,9 @@ void mouseEventCallBack(int event, int x, int y, int flags, void* userdata)
 
 int main() {
     cv::Mat image;
+    DropletLog firstDropletLog;
+    DropletLog secondDropletLog;
+    int timestamp;
 
     cv::VideoCapture cap("droplet_video.mp4");
 
@@ -56,6 +60,17 @@ int main() {
         cv::waitKey(1);
         
         success = cap.read(image);
+        timestamp = (int)time(NULL);
+
+        firstDropletLog = secondDropletLog;
+
+        secondDropletLog.timestamp = timestamp;
+        secondDropletLog.droplet = droplet;
+
+        if (firstDropletLog.timestamp != 0) {
+            double movementSpeed = computeMovementSpeed(firstDropletLog, secondDropletLog);
+            cout << "Movement speed of droplet: " << movementSpeed << " px/s" << endl;
+        }
 
         //cout << "area: " << droplet.area << endl;
         //cout << "minX: " << droplet.minX << endl;
