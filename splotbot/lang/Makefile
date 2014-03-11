@@ -1,8 +1,9 @@
-all: splotlang.out
+all: test.out
 
-splotlang.out: splot.l splot.y splotlang.cpp
+test.out: splot.l splot.y test.cpp util.cpp
 	bison -d splot.y
 	flex splot.l
-	g++ splot.tab.c lex.yy.c splotlang.cpp -lfl -o splotlang.out -std=c++0x
+	g++ util.cpp splot.tab.c lex.yy.c test.cpp -lfl -o test.out -std=c++0x
+
 clean:
-	rm splot.tab.h splot.tab.c lex.yy.c
+	rm splot.tab.h splot.tab.c lex.yy.c test.out
