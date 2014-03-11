@@ -15,3 +15,6 @@
 *.dSYM
 build/
 node_modules
+splot.tab.h
+splot.tab.c
+lex.yy.c

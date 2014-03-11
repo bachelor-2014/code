@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <iostream>
+#include <semaphore.h>
 
 using namespace std;
 
