@@ -1,4 +1,7 @@
 #include <cstdio>
+#include <vector>
+
+using namespace std;
 
 extern "C" int yylex();
 extern "C" int yyparse();

@@ -1,7 +1,9 @@
 %{
 #include <cstdio>
 #include <iostream>
+#include <vector>
 #include "util.h"
+#include "Absyn.h"
 using namespace std;
 
 %}
@@ -18,8 +20,7 @@ using namespace std;
 }
 
 // define the constant-string tokens:
-%token SNAZZLE TYPE
-%token END
+%token LPAR RPAR DOT
 
 // define the "terminal symbol" token types I'm going to use (in CAPS
 // by convention), and associate each with a field of the union:
@@ -29,37 +30,22 @@ using namespace std;
 
 %%
 
-// the first rule defined is the highest-level rule, which in our
-// case is just the concept of a whole "snazzle file":
-snazzle:
-    header template body_section footer { cout << "done with a snazzle file!" << endl; }
-    ;
-header:
-    SNAZZLE FLOAT { cout << "reading a snazzle file version " << $2 << endl; }
-    ;
-template:
-    typelines
-    ;
-typelines:
-    typelines typeline
-    | typeline
-    ;
-typeline:
-    TYPE STRING { cout << "new defined snazzle type: " << $2 << endl; }
-    ;
-body_section:
-    body_lines
-    ;
-body_lines:
-    body_lines body_line
-    | body_line
-    ;
-body_line:
-    INT INT INT INT STRING { cout << "new snazzle: " << $1 << $2 << $3 << $4 << $5 << endl; }
-    ;
-footer:
-    END
-    ;
+//A module call
+Main:
+   Tops
+;
 
+Tops:
+    /* empty */ { }
+    | Top Tops 
+;
+
+Top:
+    ComponentCall
+;
+
+ComponentCall:
+    STRING DOT STRING LPAR RPAR{ vector<int> args; auto cc = ComponentCall($1, $3, args); cout << cc.toString(); }
+;
 %%
 
