@@ -45,12 +45,13 @@ void Splotbot::registerCallback(function<void(string,string)> callback) {
  */
 void Splotbot::run() {
     runAsThread( [&] () {
-        while (true) {
-            int popped[1];
-            buffer.popInstructions(1, popped);
-            int action = popped[0];
+        //while (true) {
+            //int popped[1];
+            //buffer.popInstructions(1, popped);
+            //int action = popped[0];
 
-            actions[action](&buffer);
-        }
+            //actions[action](&buffer);
+        //}
+        cout << "Yay!" << endl;
     });
 }
