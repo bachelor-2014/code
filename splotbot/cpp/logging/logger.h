@@ -9,8 +9,9 @@ class Logger {
     public:
         Logger(string identifier);
         ~Logger();
-        int Write(void*);
-        int Read(void*);
+        bool Write(void*);
+        bool Read(void*);
+        //typedef bool Read (void*);
     protected:
         string identifier;
     private:

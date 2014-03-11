@@ -15,17 +15,17 @@ Logger::~Logger(){
     End();
 }
 
-int Logger::Write(void *data){
+bool Logger::Write(void *data){
     char *d;
     d = (char*)data;
-    cout << "Writing" << d << endl;
+    //cout << "Writing" << d << endl;
     return 0;
 }
 
 void Logger::Start() {
-    cout << "Starting " << identifier << endl;
+    //cout << "Starting " << identifier << endl;
 }
 
 void Logger::End() {
-    cout << "Ending" << endl;
+    //cout << "Ending" << identifier << endl;
 }

@@ -5,15 +5,25 @@
 
 using namespace std;
 
-ofstream dataIn;
-ofStream dataOut;
+ofstream dataOut;
+string filename;
 
 FileLogger::FileLogger(string identifier) : Logger(identifier){
+    filename = "data/"+identifier;
 }
 
-int FileLogger::Write(void *data){
+FileLogger::~FileLogger(){
+}
+
+bool FileLogger::Write(void *data){
     char *d;
     d = (char*)data;
-    
+    if(!dataOut.is_open()){
+        dataOut.open(filename,ios::out | ios::trunc);
+    }
+
+    dataOut << d << endl;
+    dataOut.close();
     return 0;
 }
+
