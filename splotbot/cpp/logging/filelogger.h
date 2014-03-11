@@ -7,13 +7,17 @@
 
 using namespace std;
 
-class FileLogger : private Logger{
+class FileLogger : public Logger{
 
     public:
         FileLogger(string);
         ~FileLogger();
         bool Write(void*);
 
+        /**
+        * Oh c++. Header file and implementation cant be seperate when 
+        * using templates. Gotta love that low-level
+        */
         template<class T>
         T Read(){
 
@@ -26,13 +30,8 @@ class FileLogger : private Logger{
                 (*outstr).append(auxstring);
             }
 
-            cout << *outstr << endl;
             dataIn.close();
-            //*outstr = "JOHN";
-            //static_cast<void*>(outstr);
-            //char* output = (char*)outstr.c_str();
-            //static_cast<void*>(outstr);
-            return *outstr; //"strrrring beijiinG";
+            return *outstr;
         }
         //typedef bool Read (void*);
     private:
