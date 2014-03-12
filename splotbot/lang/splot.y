@@ -32,12 +32,12 @@ using namespace std;
 
 //A module call
 Main:
-   Tops
+   Tops 
 ;
 
 Tops:
-    /* empty */ { }
-    | Top Tops 
+    /* empty */ 
+    | Top Tops  
 ;
 
 Top:
@@ -45,7 +45,7 @@ Top:
 ;
 
 ComponentCall:
-    STRING DOT STRING LPAR RPAR{ vector<int> args; auto cc = ComponentCall($1, $3, args); cout << cc.toString(); }
+    STRING DOT STRING LPAR RPAR{auto cc = ComponentCall($1, $3, vector<int>()); cout << cc.toString();}
 ;
 %%
 
