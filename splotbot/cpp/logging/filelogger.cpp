@@ -27,3 +27,16 @@ bool FileLogger::Write(void *data){
     return 0;
 }
 
+string FileLogger::readDataFromFile(){
+    string* outstr = new string;
+
+    ifstream dataIn(filename);
+
+    string auxstring;
+    while (std::getline(dataIn,auxstring)) {
+        (*outstr).append(auxstring);
+    }
+
+    dataIn.close();
+    return *outstr;
+}

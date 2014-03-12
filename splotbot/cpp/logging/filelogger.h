@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <typeinfo>
 #include "logger.h"
 
 using namespace std;
@@ -20,22 +21,13 @@ class FileLogger : public Logger{
         */
         template<class T>
         T Read(){
-
-            string* outstr = new string;
-
-            ifstream dataIn(filename);
-
-            string auxstring;
-            while (std::getline(dataIn,auxstring)) {
-                (*outstr).append(auxstring);
+            if(typeid(T) == typeid(string)){
+                return readDataFromFile();
             }
-
-            dataIn.close();
-            return *outstr;
         }
-        //typedef bool Read (void*);
     private:
         string filename;
+        string readDataFromFile();
 };
 
 #endif
