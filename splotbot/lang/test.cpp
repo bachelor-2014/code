@@ -1,7 +1,11 @@
 #include <iostream>
 #include <cstdio>
 #include "util.h"
+#include "Absyn.h"
 using namespace std;
+
+extern Block *programBlock;
+
 
 main() {
     // open a file handle to a particular file:
@@ -15,9 +19,8 @@ main() {
     yyin = myfile;
 
     // parse through the input until there is no more:
-    do {
-        yyparse();
-    } while (!feof(yyin));
-    
+    yyparse();
+
+    cout << programBlock->toString();
 }
 

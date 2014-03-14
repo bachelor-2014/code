@@ -6,6 +6,7 @@
 #include "Absyn.h"
 using namespace std;
 
+Block *programBlock;
 %}
 
 // Bison fundamentally works by asking flex to get the next token, which it
@@ -14,9 +15,12 @@ using namespace std;
 // holding each of the types of tokens that Flex could return, and have Bison
 // use that union instead of "int" for the definition of "yystype":
 %union {
+    Statement *stmt;
+    Block *block;
+    ComponentCall *ccall;
     int ival;
     float fval;
-    char *sval;
+    string *sval;
 }
 
 // define the constant-string tokens:
@@ -28,24 +32,23 @@ using namespace std;
 %token <fval> FLOAT
 %token <sval> STRING
 
+%type <block> program stmts
+%type <stmt> stmt
+
 %%
 
 //A module call
-Main:
-   Tops 
+program : stmts { programBlock = $1; }
 ;
 
-Tops:
-    /* empty */ 
-    | Top Tops  
+stmt:
+    STRING DOT STRING LPAR RPAR{$$ = new ComponentCall($1, $3, vector<int>());}
 ;
 
-Top:
-    ComponentCall
+stmts : stmt { $$ = new Block(); $$->AddStatement($<stmt>1); }
+      | stmts stmt  { $1->AddStatement($<stmt>2);}
 ;
 
-ComponentCall:
-    STRING DOT STRING LPAR RPAR{auto cc = ComponentCall($1, $3, vector<int>()); cout << cc.toString();}
-;
+
 %%
 
