@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string.h>
 #include "Absyn.h"
-#include "splot.tab.h"
+#include "rucola.tab.h"
 using namespace std;
 #define YY_DECL extern "C" int yylex()
 %}

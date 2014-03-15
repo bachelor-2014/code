@@ -9,7 +9,7 @@ extern Block *programBlock;
 
 main() {
     // open a file handle to a particular file:
-    FILE *myfile = fopen("code.spl", "r");
+    FILE *myfile = fopen("code.rcl", "r");
     // make sure it's valid:
     if (!myfile) {
         cout << "I can't open a.snazzle.file!" << endl;
