@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "Absyn.h"
 
 using namespace std;
@@ -41,10 +42,14 @@ string Block::toString() {
 /**
  * ComponentCall Implementations
  */
-ComponentCall::ComponentCall(string *component, string *action, vector<int> args): component(component), action(action), args(args) {
+ComponentCall::ComponentCall(string *component, string *action, vector<int> *args): component(component), action(action), args(args) {
     //Empty
 }
 
 string ComponentCall::toString() {
-    return "Component: " + *component + " Action: " + *action;
+    string a;
+    for(int arg : *args){
+        a += to_string(arg) + " ";
+    }
+    return "Component: " + *component + " Action: " + *action + " Args: " + a;
 }

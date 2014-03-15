@@ -26,13 +26,13 @@ class Block: public Statement {
 
 class ComponentCall: public Statement {
     public:
-       ComponentCall(string *component, string *action, vector<int> args); 
+       ComponentCall(string *component, string *action, vector<int> *args); 
        string toString();
 
     private:
        string *component;
        string *action;
-       vector<int> args;
+       vector<int> *args;
 };
 
 #endif

@@ -11,6 +11,7 @@ using namespace std;
 \(              { return LPAR; }
 \)              { return RPAR; }
 \.              { return DOT; }
+,               { return COMMA; }
 [0-9]+\.[0-9]+  { yylval.fval = atof(yytext); return FLOAT; }
 [0-9]+          { yylval.ival = atoi(yytext); return INT; }
 [a-zA-Z0-9]+    {
