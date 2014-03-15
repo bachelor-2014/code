@@ -15,6 +15,6 @@
 *.dSYM
 build/
 node_modules
-splot.tab.h
-splot.tab.c
+rucola.tab.h
+rucola.tab.c
 lex.yy.c
