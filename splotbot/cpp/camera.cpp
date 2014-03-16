@@ -57,7 +57,7 @@ void Camera::run() {
                  cout << "ERROR: Cannot read a frame from video device: " << videoDevice << endl;
                  break;
             }
-            
+
             //Convert image to base64
             vector<uchar> buff;//buffer for coding
             vector<int> param = vector<int>(0);

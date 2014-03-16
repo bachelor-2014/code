@@ -1,9 +1,8 @@
 COMPILER = g++
 CPPFLAGS = -ggdb -std=c++0x
-LIBS = -lm -pthread
-#`pkg-config --libs --cflags opencv`
-CPPFILES = ../../logging/logger.cpp ../../logging/filelogger.cpp logger_test.cpp
-HFILES = ../../logging/logger.h ../../logging/filelogger.h
+LIBS = -lm -pthread `pkg-config --libs --cflags opencv`
+CPPFILES = ../../logging/logger.cpp ../../logging/filelogger.cpp logger_test.cpp ../../logging/videologger.cpp
+HFILES = ../../logging/logger.h ../../logging/filelogger.h ../../logging/videologger.h
 
 all: logger_test.out
 

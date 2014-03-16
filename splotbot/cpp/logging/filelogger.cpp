@@ -10,24 +10,25 @@ string filename;
 
 FileLogger::FileLogger(string identifier) : Logger(identifier){
     filename = "data/"+identifier;
+
+    dataOut.open(filename,ios::out | ios::trunc);
+    dataOut.close();
 }
 
 FileLogger::~FileLogger(){
 }
 
-bool FileLogger::Write(void *data){
-    char *d;
-    d = (char*)data;
+bool FileLogger::writeStringData(string data){
     if(!dataOut.is_open()){
-        dataOut.open(filename,ios::out | ios::trunc);
+        dataOut.open(filename,ios::out | ios::app);
     }
 
-    dataOut << d << endl;
+    dataOut << data << endl;
     dataOut.close();
     return 0;
 }
 
-string FileLogger::readDataFromFile(){
+string FileLogger::readStringData(){
     string* outstr = new string;
 
     ifstream dataIn(filename);
@@ -39,4 +40,14 @@ string FileLogger::readDataFromFile(){
 
     dataIn.close();
     return *outstr;
+}
+
+bool FileLogger::infoStringData(string data){
+    string s = "Info: "+data;
+    writeStringData(s);
+}
+
+bool FileLogger::errorStringData(string data){
+    string s = "Error: "+data;
+    writeStringData(s);
 }

@@ -5,6 +5,8 @@
 
 #include "instructionbuffer.h"
 
+#include "logging/filelogger.h"
+
 using namespace std;
 
 /**
@@ -16,11 +18,14 @@ using namespace std;
  */
 class Component {
     public:
+        Component();
         virtual void registerActions(vector<function<void(InstructionBuffer *)>> *actions) {};
         void registerCallback(function<void(string,string)> *callback);
 
     protected:
         function<void(string,string)> *eventCallback;
+        FileLogger *file_logger;
+
 };
 
 #endif

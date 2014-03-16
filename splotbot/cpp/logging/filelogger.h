@@ -13,21 +13,41 @@ class FileLogger : public Logger{
     public:
         FileLogger(string);
         ~FileLogger();
-        bool Write(void*);
 
-        /**
-        * Oh c++. Header file and implementation cant be seperate when 
-        * using templates. Gotta love that low-level
-        */
+        template<class T>
+        bool Write(T t){
+            if(typeid(T) == typeid(string)){
+                return writeStringData(t);
+            }
+        }
+
         template<class T>
         T Read(){
             if(typeid(T) == typeid(string)){
-                return readDataFromFile();
+                return readStringData();
             }
         }
+
+        template<class T>
+        bool Info(T t){
+            if(typeid(T) == typeid(string)){
+                return infoStringData(t);
+            }
+        }
+
+        template<class T>
+        bool Error(T t){
+            if(typeid(T) == typeid(string)){
+                return errorStringData(t);
+            }
+        }
+
     private:
         string filename;
-        string readDataFromFile();
+        string readStringData();
+        bool writeStringData(string);
+        bool infoStringData(string);
+        bool errorStringData(string);
 };
 
 #endif
