@@ -25,6 +25,7 @@ class Camera: public Component {
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
 
     private:
+        VideoLogger *video_logger;
         string name;
         int videoDevice;
         string eventName;

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "singlesteppermotor.h"
 
@@ -22,7 +23,11 @@ void SingleStepperMotor::registerActions(vector<function<void(InstructionBuffer 
         int instr[1];
         (*buffer).popInstructions(1, instr);
         int steps = instr[0];
-        cout << "SingleStepperMotor (" << name << ") moving " << steps << " steps" << endl;
+
+        stringstream ss;
+        ss << "SingleStepperMotor (" << name << ") moving " << steps << " steps" << endl;
+        string s = ss.str();
+        (*file_logger).Info<string>(s);
     };
 
     (*actions).push_back(move);

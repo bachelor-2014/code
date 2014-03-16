@@ -13,28 +13,21 @@ using namespace cv;
 class VideoLogger : public Logger{
 
     public:
-        VideoLogger(string);
+        VideoLogger(string,VideoCapture*);
         ~VideoLogger();
 
         template<class T>
         bool Write(T t){
-            if(typeid(T) == typeid(string)){
+            if(typeid(T) == typeid(Mat*)){
                 return writeVideoData(t);
             }
         }
 
-        template<class T>
-        T Read(){
-            if(typeid(T) == typeid(string)){
-                return readVideoData();
-            }
-        }
-
     private:
-        VideoWriter videoWriter;
+        string filename;
+        VideoWriter *videoWriter;
         VideoCapture cap;
-        string readVideoData();
-        bool writeVideoData(string);
+        bool writeVideoData(Mat*);
 };
 
 #endif
