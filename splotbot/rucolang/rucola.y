@@ -4,9 +4,12 @@
 #include <vector>
 #include "util.h"
 #include "Absyn.h"
+#include "lexer.h"
 using namespace std;
+using namespace Rucola;
 
 Block *programBlock;
+Block *ParseString(string s);
 %}
 
 // Bison fundamentally works by asking flex to get the next token, which it
@@ -15,9 +18,9 @@ Block *programBlock;
 // holding each of the types of tokens that Flex could return, and have Bison
 // use that union instead of "int" for the definition of "yystype":
 %union {
-    Statement *stmt;
-    Block *block;
-    ComponentCall *ccall;
+    Rucola::Statement *stmt;
+    Rucola::Block *block;
+    Rucola::ComponentCall *ccall;
     int ival;
     float fval;
     string *sval;
@@ -57,4 +60,3 @@ args :     { $$ = new vector<int>();}
 ;
 
 %%
-

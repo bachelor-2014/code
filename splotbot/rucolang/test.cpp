@@ -1,26 +1,15 @@
 #include <iostream>
 #include <cstdio>
-#include "util.h"
-#include "Absyn.h"
+#include "rucola.h"
 using namespace std;
-
-extern Block *programBlock;
-
+using namespace Rucola;
 
 main() {
-    // open a file handle to a particular file:
-    FILE *myfile = fopen("code.rcl", "r");
-    // make sure it's valid:
-    if (!myfile) {
-        cout << "I can't open a.snazzle.file!" << endl;
-        return -1;
-    }
-    // set flex to read from it instead of defaulting to STDIN:
-    yyin = myfile;
+    string s = 
+        "module1.do(1,2)"
+        "module2.do(1,2)";
+    Block *program = Rucola::ParseString(s);
 
-    // parse through the input until there is no more:
-    yyparse();
-
-    cout << programBlock->toString();
+    cout << program->toString();
 }
 
