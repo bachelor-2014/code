@@ -1,6 +1,6 @@
-#include "util.h"
 #include "Absyn.h"
-#include "lexer.h"
+#include "lex.yy.h"
+#include "rucola.tab.h"
 #include "rucola.h"
 #include <string>
 using namespace std;
@@ -12,7 +12,7 @@ extern Block *programBlock;
  * Parse Rucola Abstract Syntax from a string
  */
 Block *Rucola::ParseString(string s){
-    lex_from_string(s);
+    yy_scan_string(s.c_str());
     yyparse(); 
     return programBlock; 
 }

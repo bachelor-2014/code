@@ -3,10 +3,8 @@
 #include <string.h>
 #include "Absyn.h"
 #include "rucola.tab.h"
-#include "lexer.h"
 using namespace std;
 using namespace Rucola;
-#define YY_DECL extern "C" int yylex()
 %}
 %%
 [ \t] ;
@@ -22,10 +20,3 @@ using namespace Rucola;
 }
 .              ;
 %%
-
-/**
- * Set the string to be lexed from
- */
-void lex_from_string(string s){
-    yy_scan_string(s.c_str());
-}

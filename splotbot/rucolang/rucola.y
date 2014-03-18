@@ -2,14 +2,16 @@
 #include <cstdio>
 #include <iostream>
 #include <vector>
-#include "util.h"
 #include "Absyn.h"
-#include "lexer.h"
+#include "rucola.tab.h"
+#include "lex.yy.h"
 using namespace std;
 using namespace Rucola;
 
 //The global program block, used to store the resulting AST
 Block *programBlock;
+
+void yyerror(const char *s);
 %}
 
 //Possible types returned from Flex or Parsed into
@@ -60,3 +62,12 @@ args :     { $$ = new vector<int>();}
 ;
 
 %%
+
+/**
+ * Print parsing error
+ */
+void yyerror(const char *s) {
+    cout << "Parse error!  Message: " << s << endl;
+    // might as well halt now:
+    exit(-1);
+}
