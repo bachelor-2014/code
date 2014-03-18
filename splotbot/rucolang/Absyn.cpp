@@ -43,7 +43,8 @@ namespace Rucola{
     /**
      * ComponentCall Implementations
      */
-    ComponentCall::ComponentCall(string *component, string *action, vector<int> *args): component(component), action(action), args(args) {
+    ComponentCall::ComponentCall(string *component, string *action, vector<int>
+            *args): component(component), action(action), args(args) {
         //Empty
     }
 

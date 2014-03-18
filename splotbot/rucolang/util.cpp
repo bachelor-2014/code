@@ -3,8 +3,11 @@
 
 using namespace std;
 
+/**
+ * Print parsing error
+ */
 void yyerror(const char *s) {
-    cout << "EEK, parse error!  Message: " << s << endl;
+    cout << "Parse error!  Message: " << s << endl;
     // might as well halt now:
     exit(-1);
 }

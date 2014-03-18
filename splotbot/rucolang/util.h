@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//External resources from lexer and parser
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;

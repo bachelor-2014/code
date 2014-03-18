@@ -8,12 +8,18 @@ using namespace std;
 
 
 namespace Rucola {
+    /**
+     * A Statement Interface
+     */
     class Statement {
         public:
             virtual string toString() {};
             //virtual vector<int> compile() {};
     };
 
+    /**
+     * A Block of Statements
+     */
     class Block: public Statement {
         public:
             Block();
@@ -26,6 +32,9 @@ namespace Rucola {
             vector<Statement*> statements;
     }; 
 
+    /**
+     * A call to a component's action
+     */
     class ComponentCall: public Statement {
         public:
            ComponentCall(string *component, string *action, vector<int> *args); 
