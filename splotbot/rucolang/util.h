@@ -1,3 +1,5 @@
+#ifndef UTIL_H
+#define UTIL_H
 #include <cstdio>
 #include <vector>
 
@@ -8,3 +10,5 @@ extern "C" int yyparse();
 extern "C" FILE *yyin;
 
 void yyerror(const char *s);
+
+#endif

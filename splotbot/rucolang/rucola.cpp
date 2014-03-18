@@ -8,6 +8,9 @@ using namespace Rucola;
 
 extern Block *programBlock;
 
+/**
+ * Parse Rucola Abstract Syntax from a string
+ */
 Block *Rucola::ParseString(string s){
     lex_from_string(s);
     yyparse(); 

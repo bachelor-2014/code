@@ -24,6 +24,9 @@ using namespace Rucola;
 .              ;
 %%
 
+/**
+ * Set the string to be lexed from
+ */
 void lex_from_string(string s){
     yy_scan_string(s.c_str());
 }

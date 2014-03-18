@@ -4,10 +4,10 @@
 
 using namespace std;
 
-/**
- * Block Implementation
- */
 namespace Rucola{
+    /**
+     * Block Implementation
+     */
     Block::Block() {
         statements = vector<Statement*>();
     }
