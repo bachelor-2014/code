@@ -8,46 +8,25 @@
 
 using namespace std;
 
-class FileLogger : public Logger{
+class FileLogger : public Logger<string> {
 
     public:
         FileLogger(string);
         ~FileLogger();
 
-        template<class T>
-        bool Write(T t){
-            if(typeid(T) == typeid(string)){
-                return writeStringData(t);
-            }
-        }
+        bool Write(string);
 
-        template<class T>
-        T Read(){
-            if(typeid(T) == typeid(string)){
-                return readStringData();
-            }
-        }
+        vector<string> Read();
 
-        template<class T>
-        bool Info(T t){
-            if(typeid(T) == typeid(string)){
-                return infoStringData(t);
-            }
-        }
+        bool Info(string);
 
-        template<class T>
-        bool Error(T t){
-            if(typeid(T) == typeid(string)){
-                return errorStringData(t);
-            }
-        }
+        bool Error(string);
+
+        bool Clear();
 
     private:
         string filename;
-        string readStringData();
-        bool writeStringData(string);
-        bool infoStringData(string);
-        bool errorStringData(string);
+        ofstream dataOut;
 };
 
 #endif

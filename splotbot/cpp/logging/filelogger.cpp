@@ -1,53 +1,59 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "filelogger.h"
+#include "logger.h"
 
 using namespace std;
 
-ofstream dataOut;
-string filename;
-
-FileLogger::FileLogger(string identifier) : Logger(identifier){
+FileLogger::FileLogger(string identifier) : Logger<string>(identifier){
     filename = "data/"+identifier;
 
-    dataOut.open(filename,ios::out | ios::trunc);
-    dataOut.close();
+    dataOut.open(filename,ios::out | ios::app);
 }
 
 FileLogger::~FileLogger(){
+    dataOut.close();
 }
-
-bool FileLogger::writeStringData(string data){
+bool FileLogger::Write(string data){
     if(!dataOut.is_open()){
         dataOut.open(filename,ios::out | ios::app);
     }
 
     dataOut << data << endl;
     dataOut.close();
-    return 0;
+    return true;
 }
 
-string FileLogger::readStringData(){
-    string* outstr = new string;
+vector<string> FileLogger::Read(){
+
+    vector<string> *data = new vector<string>();
 
     ifstream dataIn(filename);
 
     string auxstring;
     while (std::getline(dataIn,auxstring)) {
-        (*outstr).append(auxstring);
+        (*data).push_back(auxstring);
     }
 
     dataIn.close();
-    return *outstr;
+
+    return (*data);
 }
 
-bool FileLogger::infoStringData(string data){
+bool FileLogger::Info(string data){
     string s = "Info: "+data;
-    writeStringData(s);
+    FileLogger::Write(s);
 }
 
-bool FileLogger::errorStringData(string data){
+bool FileLogger::Error(string data){
     string s = "Error: "+data;
-    writeStringData(s);
+    FileLogger::Write(s);
+}
+
+bool FileLogger::Clear(){
+    dataOut.close();
+    dataOut.open(filename,ios::trunc);
+    dataOut.close();
 }

@@ -9,29 +9,21 @@
 
 using namespace std;
 
-class DBLogger : public Logger{
+class DBLogger : public Logger<string>{
 
     public:
         DBLogger(string);
         ~DBLogger();
 
-        template<class T>
-        bool Write(T t){
-            if(typeid(T) == typeid(string)){
-                return writeStringData(t);
-            }
-        }
+        bool Write(string);
 
-        template<class T>
-        vector<T> Read(){
-            if(typeid(T) == typeid(string)){
-                return readStringData();
-            }
-        }
+        vector<string> Read();
 
-    private:
-        bool writeStringData(string);
-        vector<string> readStringData();
+        bool Info(string);
+
+        bool Error(string);
+
+        bool Clear();
 };
 
 #endif

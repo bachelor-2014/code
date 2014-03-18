@@ -8,7 +8,7 @@ using namespace std;
 using namespace cv;
 
 Size frameSize;
-VideoLogger::VideoLogger(string identifier, VideoCapture *cap) : Logger(identifier){
+VideoLogger::VideoLogger(string identifier, VideoCapture *cap) : Logger<Mat*>(identifier){
     filename = "data/"+identifier+".avi";
 
     double dWidth = (*cap).get(CV_CAP_PROP_FRAME_WIDTH);
@@ -24,7 +24,7 @@ VideoLogger::VideoLogger(string identifier, VideoCapture *cap) : Logger(identifi
 VideoLogger::~VideoLogger(){
 }
 
-bool VideoLogger::writeVideoData(Mat *image){
+bool VideoLogger::Write(Mat *image){
 
     (*videoWriter).write(*image);
 

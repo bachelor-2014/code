@@ -10,24 +10,17 @@
 using namespace std;
 using namespace cv;
 
-class VideoLogger : public Logger{
+class VideoLogger : public Logger<Mat*>{
 
     public:
         VideoLogger(string,VideoCapture*);
         ~VideoLogger();
 
-        template<class T>
-        bool Write(T t){
-            if(typeid(T) == typeid(Mat*)){
-                return writeVideoData(t);
-            }
-        }
-
+        bool Write(Mat*);
     private:
         string filename;
         VideoWriter *videoWriter;
         VideoCapture cap;
-        bool writeVideoData(Mat*);
 };
 
 #endif

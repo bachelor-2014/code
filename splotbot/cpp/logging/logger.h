@@ -1,23 +1,29 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <string>
+#include <iostream>
 #include <typeinfo>
+#include <vector>
 
 using namespace std;
 
+template <typename T>
 class Logger {
     public:
-        Logger(string identifier);
-        ~Logger();
+        Logger(string identifier){};
+        ~Logger(){};
 
-        template<class T>
-        bool Write(T t);
+        virtual bool Write(T t){
+            cout << "hat" << endl;
+        };
 
-        template<class T>
-        T Read();
+        virtual vector<T> Read(){};
 
-        bool Clear();
+        virtual bool Info(T t){};
+
+        virtual bool Error(T t){};
+
+        virtual bool Clear(){};
 
     protected:
         string identifier;
