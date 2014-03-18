@@ -17,11 +17,8 @@ class Logger {
         template<class T>
         T Read();
 
-        template<class T>
-        bool Info(T);
+        bool Clear();
 
-        template<class T>
-        bool Error(T);
     protected:
         string identifier;
 };

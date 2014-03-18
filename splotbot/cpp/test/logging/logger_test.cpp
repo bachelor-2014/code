@@ -1,10 +1,12 @@
 #include <functional>
 #include <iostream>
+#include <vector>
 #include <string>
 
 #include "../../logging/logger.h"
 #include "../../logging/filelogger.h"
 #include "../../logging/videologger.h"
+#include "../../logging/dblogger.h"
 
 #define SH_FG_RED            "\033[0;31m"
 #define SH_FG_GREEN          "\033[0;32m"
@@ -71,6 +73,29 @@ bool test_video_read_write(){
     }
 }
 
+bool test_db_write(){
+    clog << __func__ << endl;
+    DBLogger *dblogger = new DBLogger("john");
+
+    return  (*dblogger).Write(string("data1")) &&
+            (*dblogger).Write(string("data2")) &&
+            (*dblogger).Write(string("data3"));
+}
+
+bool test_db_read(){
+    clog << __func__ << endl;
+
+    DBLogger *dblogger = new DBLogger("john");
+
+    vector<string> res = (*dblogger).Read<string>();
+
+    for(string s : res){
+        cout << s << endl;
+    }
+
+    return true;
+}
+
 bool test(function<bool()> f, string message){
     if(!f()){
         status = false;
@@ -83,7 +108,9 @@ bool test(function<bool()> f, string message){
 int main() {
     test(test_file_read_write,"test write failed");
     test(test_logger_instantiation,"test_instantiation failed!");
-    test(test_video_read_write,"test video failed");
+    //test(test_video_read_write,"test video failed");
+    test(test_db_write,"test write db failed");
+    test(test_db_read,"test read db failed");
 
     if(status){
         return 0;
