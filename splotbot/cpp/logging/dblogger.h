@@ -24,6 +24,9 @@ class DBLogger : public Logger<string>{
         bool Error(string);
 
         bool Clear();
+
+    private:
+        bool write(string,string);
 };
 
 #endif

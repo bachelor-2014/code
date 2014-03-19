@@ -13,9 +13,7 @@ class Logger {
         Logger(string identifier){};
         ~Logger(){};
 
-        virtual bool Write(T t){
-            cout << "hat" << endl;
-        };
+        virtual bool Write(T t){};
 
         virtual vector<T> Read(){};
 

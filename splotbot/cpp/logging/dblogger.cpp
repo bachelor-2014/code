@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const string database = "data/test.db";
+const string database = "data/experiments.db";
 sqlite3 *db;
 char *zErrMsg = 0;
 
@@ -25,15 +25,7 @@ DBLogger::~DBLogger(){
 }
 
 bool DBLogger::Write(string data){
-    string sql = "INSERT INTO data (experiment,string_data) VALUES" \
-                "('"+identifier+"','"+data+"')";
-    int rc = sqlite3_exec(db,sql.c_str(),NULL,0,&zErrMsg);
-    if( rc!=SQLITE_OK ){
-        fprintf(stderr, "SQL error: %s\n", zErrMsg);
-        sqlite3_free(zErrMsg);
-        return false;
-    }
-    return true;
+    write("none",data);
 }
 
 int readData(void *out, int argc, char **argv, char **azColName){
@@ -69,10 +61,10 @@ vector<string> DBLogger::Read(){
 }
 
 bool DBLogger::Info(string s){
-    return Write(s);
+    return write("info",s);
 }
 bool DBLogger::Error(string s){
-    return Write(s);
+    return write("error",s);
 }
 bool DBLogger::Clear(){
     string sql = "DELETE FROM data WHERE "\
@@ -86,5 +78,17 @@ bool DBLogger::Clear(){
         return false;
     }
 
+    return true;
+}
+
+bool DBLogger::write(string type, string data){
+    string sql = "INSERT INTO data (experiment,typ,string_data) VALUES" \
+                "('"+identifier+"','"+type+"','"+data+"')";
+    int rc = sqlite3_exec(db,sql.c_str(),NULL,0,&zErrMsg);
+    if( rc!=SQLITE_OK ){
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return false;
+    }
     return true;
 }
