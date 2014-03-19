@@ -27,7 +27,7 @@ void SingleStepperMotor::registerActions(vector<function<void(InstructionBuffer 
         stringstream ss;
         ss << "SingleStepperMotor (" << name << ") moving " << steps << " steps" << endl;
         string s = ss.str();
-        (*file_logger).Info<string>(s);
+        (*file_logger).Info(s);
     };
 
     (*actions).push_back(move);

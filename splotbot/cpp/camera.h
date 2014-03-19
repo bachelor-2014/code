@@ -4,6 +4,7 @@
 #include <string>
 #include "instructionbuffer.h"
 #include "component.h"
+#include "logging/videologger.h"
 
 using namespace std;
 

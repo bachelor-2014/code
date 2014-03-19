@@ -62,7 +62,7 @@ void Camera::run() {
             }
 
             // Log the image
-            (*video_logger).Write(image);
+            (*video_logger).Write(&image);
 
             //Convert image to base64
             vector<uchar> buff;//buffer for coding
