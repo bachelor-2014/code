@@ -19,7 +19,7 @@ bool status = true;
 bool test_logger_instantiation(){
     clog << __func__ << endl;
 
-    Logger fl = FileLogger("file");
+    Logger<string> fl = FileLogger("file");
 
     return true;
 }
@@ -29,14 +29,24 @@ bool test_file_read_write(){
 
     string towrite = "JohnJohn";
 
-    FileLogger fl = FileLogger("file");
-    fl.Write<string>(towrite);
+    for(int i=0; i++; i < 2){
 
-    string s = fl.Read<string>();
+        FileLogger fl("file");
+        fl.Clear();
+        fl.Write(towrite);
 
-    if(s != towrite){
-        cout << s << endl;
-        return false;
+        vector<string> res = fl.Read();
+
+        //for(string s : res){
+        //    cout << s << endl;
+        //}
+        if(res.size() != 1)
+            return false;
+
+        if(res[0] != towrite){
+            cerr << res[0] << endl;
+            return false;
+        }
     }
 
     return true;
@@ -73,24 +83,31 @@ bool test_video_read_write(){
     }
 }
 
-bool test_db_write(){
-    clog << __func__ << endl;
-    DBLogger *dblogger = new DBLogger("john");
-
-    return  (*dblogger).Write(string("data1")) &&
-            (*dblogger).Write(string("data2")) &&
-            (*dblogger).Write(string("data3"));
-}
-
-bool test_db_read(){
+bool test_db_read_write(){
     clog << __func__ << endl;
 
     DBLogger *dblogger = new DBLogger("john");
 
-    vector<string> res = (*dblogger).Read<string>();
+    (*dblogger).Clear();
 
-    for(string s : res){
-        cout << s << endl;
+    bool w =    (*dblogger).Write(string("data1")) &&
+                (*dblogger).Write(string("data2")) &&
+                (*dblogger).Write(string("data3"));
+    if(!w){
+        return false;
+    }
+
+    vector<string> res = (*dblogger).Read();
+    if(res.size() != 3){
+        clog << "Write didn't work. Size: " << res.size() << endl;
+        return false;
+    }
+
+    (*dblogger).Clear();
+    res = (*dblogger).Read();
+    if(res.size() != 0){
+        clog << "Clear didn't work. Remaining: " << res.size() << endl;
+        return false;
     }
 
     return true;
@@ -109,8 +126,7 @@ int main() {
     test(test_file_read_write,"test write failed");
     test(test_logger_instantiation,"test_instantiation failed!");
     //test(test_video_read_write,"test video failed");
-    test(test_db_write,"test write db failed");
-    test(test_db_read,"test read db failed");
+    test(test_db_read_write,"test read write db failed");
 
     if(status){
         return 0;
