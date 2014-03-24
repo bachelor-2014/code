@@ -16,9 +16,9 @@ VideoLogger::VideoLogger(string identifier, VideoCapture *cap) : Logger<Mat*>(id
 
     frameSize = Size(static_cast<int>(dWidth), static_cast<int>(dHeight));
 
-    videoWriter = new VideoWriter(  filename,
-                                    CV_FOURCC('M','P','E','G'),
-                                    20,frameSize);
+//    videoWriter = new VideoWriter(  filename,
+//                                    CV_FOURCC('M','P','E','G'),
+//                                    20,frameSize);
 }
 
 VideoLogger::~VideoLogger(){
@@ -26,7 +26,7 @@ VideoLogger::~VideoLogger(){
 
 bool VideoLogger::Write(Mat *image){
 
-    (*videoWriter).write(*image);
+//    (*videoWriter).write(*image);
 
     return true;
 }

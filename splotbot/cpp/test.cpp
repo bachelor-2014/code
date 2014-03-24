@@ -21,7 +21,9 @@ int main() {
 
     //Register a test callback to print
     splotbot.registerCallback([] (string name, string data) -> void {
-        cout << "Callback '" << name << "': " << data << endl;
+        if(name != "image_data"){
+            cout << "Callback '" << name << "': " << data << endl;
+        }
     });
 
     // Execute some instructions
