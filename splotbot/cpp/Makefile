@@ -6,7 +6,10 @@ HFILES = libraries/cJSON/cJSON.h component.h instructionbuffer.h camera.h single
 
 all: test.out
 
-test.out: $(HFILES) $(CPPFILES)
+data/experiments.db:
+	sqlite3 data/experiments.db < logging/data/table.sql
+
+test.out: $(HFILES) $(CPPFILES) data/experiments.db
 	$(COMPILER) $(CPPFLAGS) $(CPPFILES) -o test.out $(LIBS)
 clean:
 	rm test.out
