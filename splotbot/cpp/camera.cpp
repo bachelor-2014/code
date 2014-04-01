@@ -102,32 +102,38 @@ void Camera::run() {
 
 
         while (true) {
-            //Pull image
-            bool success = cap.read(image);
+            if(mode > 0){
+                //Pull image
+                bool success = cap.read(image);
 
-            if (!success)
-            {
-                 cout << "ERROR: Cannot read a frame from video device: " << videoDevice << endl;
-                 break;
+                if (!success)
+                {
+                     cout << "ERROR: Cannot read a frame from video device: " << videoDevice << endl;
+                     break;
+                }
+
+                if(mode > 1 && dropletdetector != NULL){
+                    //Droplet detection
+                }
+
+                // Log the image
+                (*video_logger).Write(&image);
+
+                //Convert image to base64
+                vector<uchar> buff;//buffer for coding
+                vector<int> param = vector<int>(0);
+
+                //param[0]=CV_IMWRITE_JPEG_QUALITY;
+                //param[1]=95;//default(95) 0-100
+
+                imencode(".png", image, buff, param);
+
+                string base64 = base64_encode(&buff[0],buff.size());
+
+                //Send the images to the event
+                (*eventCallback)(eventName, base64);
+                sleep(1);
             }
-
-            // Log the image
-            (*video_logger).Write(&image);
-
-            //Convert image to base64
-            vector<uchar> buff;//buffer for coding
-            vector<int> param = vector<int>(0);
-
-            //param[0]=CV_IMWRITE_JPEG_QUALITY;
-            //param[1]=95;//default(95) 0-100
-
-            imencode(".png", image, buff, param);
-
-            string base64 = base64_encode(&buff[0],buff.size());
-
-            //Send the images to the event
-            (*eventCallback)(eventName, base64);
-            sleep(1);
         }
     });
 }
