@@ -47,6 +47,9 @@ void Camera::run() {
     runAsThread( [&] () {
         //VideoCapture
         VideoCapture cap(videoDevice);
+
+        video_logger = new VideoLogger("exp",&cap);
+
         Mat image;
         while (true) {
             //Pull image
@@ -57,7 +60,10 @@ void Camera::run() {
                  cout << "ERROR: Cannot read a frame from video device: " << videoDevice << endl;
                  break;
             }
-            
+
+            // Log the image
+            (*video_logger).Write(&image);
+
             //Convert image to base64
             vector<uchar> buff;//buffer for coding
             vector<int> param = vector<int>(0);

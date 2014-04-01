@@ -20,7 +20,10 @@ NodeJS can be installed and updated doing:
 > sudo n 0.10.26
 
 ##Building the C++ code and test program (splotbot/cpp)
-Enter the cpp directory and run the make file:
+Enter the cpp directory. Create the database directory (for logging)
+> mkdir data
+
+Run the make file:
 > make
 
 Now you can run the test program with:
