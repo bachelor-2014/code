@@ -9,6 +9,7 @@ PROGRAM = test.out
 all: $(CPPFILES) $(PROGRAM)
 
 data/experiments.db:
+	-@mkdir data 2>/dev/null || true
 	sqlite3 data/experiments.db < logging/data/table.sql
 
 $(PROGRAM): $(OBJFILES) data/experiments.db
