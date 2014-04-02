@@ -6,6 +6,7 @@ angular.module('clientApp')
       
       // Connect to the web server
       var socket = io.connect("http://localhost:8000");
+      //var socket = io.connect("http://192.168.133.132:8000");
 
       return {
         // Allow for registering events on incoming data

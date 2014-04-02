@@ -13,6 +13,7 @@ angular.module('clientApp')
             // Fixed number of actions for each component type
             var componentActions = {
               "SingleStepperMotor": 1,
+              "RCServoMotor": 1,
               "Camera": 1
             }
 
