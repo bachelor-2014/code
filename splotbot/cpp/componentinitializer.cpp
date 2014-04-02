@@ -2,6 +2,7 @@
 #include <fstream>
 #include "componentinitializer.h"
 #include "singlesteppermotor.h"
+#include "rcservomotor.h"
 #include "camera.h"
 #include "libraries/cJSON/cJSON.h"
 
@@ -23,6 +24,22 @@ Component* createSingleStepperMotor(cJSON * document) {
 
     //Create the SingleStepperMotor
     return new SingleStepperMotor(name, gpioMode1, gpioMode2, gpioStep, gpioSleep);
+}
+
+/**
+ * createRCServoMotor creates a RC servo motor from JSON
+ */
+Component* createRCServoMotor(cJSON * document) {
+    //Get the name
+    string name(cJSON_GetObjectItem(document, "name")->valuestring);
+
+    //Get the parameters
+    cJSON *parameters = cJSON_GetObjectItem(document, "parameters");
+    string device(cJSON_GetObjectItem(parameters, "device")->valuestring);
+    int channel(cJSON_GetObjectItem(parameters, "channel")->valueint);
+
+    //Create the RC servo motor 
+    return new RCServoMotor(name, device, (unsigned char) channel);
 }
 
 /**
@@ -74,6 +91,10 @@ vector<Component *> initializeComponents(function<void(string,string)> *callback
         //Determine components
         if (type.compare("SingleStepperMotor") == 0) {
             Component *c = createSingleStepperMotor(componentDocument);
+            (*c).registerCallback(callback);
+            components.push_back(c);
+        } else if (type.compare("RCServoMotor") == 0) {
+            Component *c = createRCServoMotor(componentDocument);
             (*c).registerCallback(callback);
             components.push_back(c);
         } else if (type.compare("Camera") == 0) {
