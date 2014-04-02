@@ -1,14 +1,15 @@
 COMPILER = g++
 CPPFLAGS = -ggdb -std=c++0x
 LIBS = -lm -pthread `pkg-config --libs --cflags opencv` 
-CPPFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp component.cpp instructionbuffer.cpp camera.cpp singlesteppermotor.cpp componentinitializer.cpp splotbot.cpp test.cpp logging/logger.cpp logging/filelogger.cpp logging/videologger.cpp
-HFILES = libraries/cJSON/cJSON.h component.h instructionbuffer.h camera.h singlesteppermotor.h componentinitializer.h splotbot.h utils/base64.h utils/threading.h logging/logger.h logging/filelogger.h logging/videologger.h
+CPPFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp component.cpp instructionbuffer.cpp camera.cpp singlesteppermotor.cpp rcservomotor.cpp componentinitializer.cpp splotbot.cpp test.cpp logging/logger.cpp logging/filelogger.cpp logging/videologger.cpp
+HFILES = libraries/cJSON/cJSON.h component.h instructionbuffer.h camera.h singlesteppermotor.h rcservomotor.h componentinitializer.h splotbot.h utils/base64.h utils/threading.h logging/logger.h logging/filelogger.h logging/videologger.h
 OBJFILES = $(CPPFILES:.cpp=.o)
 PROGRAM = test.out
 
 all: $(CPPFILES) $(PROGRAM)
 
 data/experiments.db:
+	-@mkdir data 2>/dev/null || true
 	sqlite3 data/experiments.db < logging/data/table.sql
 
 $(PROGRAM): $(OBJFILES) data/experiments.db

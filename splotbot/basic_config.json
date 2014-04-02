@@ -20,11 +20,11 @@
         }
     },
     {
-        "type": "Camera",
-        "name": "Camera1",
+        "type": "RCServoMotor",
+        "name": "RCServo1",
         "parameters": {
-            "video_device": 0,
-            "event_name": "image_data"
+            "device": "/dev/ttyACM0",
+            "channel": 0
         }
     }
 ]
