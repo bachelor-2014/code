@@ -4,7 +4,7 @@
 angular.module('clientApp')
   .service('splotService', function($http){
     // The web server URL
-    var url = "http://localhost:8000/";
+    var url = "http://130.226.133.54:8000/";
     //var url = "http://192.168.133.132:8000/";
 
     // Post the given data (instructions) to the web server

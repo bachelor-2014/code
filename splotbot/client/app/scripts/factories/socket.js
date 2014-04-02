@@ -5,7 +5,7 @@ angular.module('clientApp')
   .factory('socket', function($rootScope) {
       
       // Connect to the web server
-      var socket = io.connect("http://localhost:8000");
+      var socket = io.connect("http://130.226.133.54:8000");
       //var socket = io.connect("http://192.168.133.132:8000");
 
       return {
