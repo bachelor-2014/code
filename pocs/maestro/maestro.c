@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <termios.h>
+#include <math.h>
  
 // Gets the position of a Maestro channel.
 // See the "Serial Servo Commands" section of the user's guide.
@@ -25,8 +26,9 @@ int maestroGetPosition(int fd, unsigned char channel)
     perror("error reading");
     return -1;
   }
-   
-  return response[0] + 256*response[1];
+
+  int result = response[0] + 256*response[1];
+  return (int) round((((double) (result - 4000)) / 44.4444));
 }
  
 // Sets the target of a Maestro channel.
@@ -34,6 +36,10 @@ int maestroGetPosition(int fd, unsigned char channel)
 // The units of 'target' are quarter-microseconds.
 int maestroSetTarget(int fd, unsigned char channel, unsigned short target)
 {
+  // Convert the target to quarter-of-microseconds
+  target = (unsigned short) round(4000 + ((double) target) * 44.4444);
+
+  // Send the command
   unsigned char command[] = {0x84, channel, target & 0x7F, target >> 7 & 0x7F};
   if (write(fd, command, sizeof(command)) == -1)
   {
@@ -67,8 +73,8 @@ int main(int argc, char* argv[])
     return 1;
   }
    
-  //int position = maestroGetPosition(fd, 0);
-  //printf("Current position is %d.\n", position); 
+  int currentPosition = maestroGetPosition(fd, channel);
+  printf("Current position is %d.\n", currentPosition); 
  
   //int target = (position < 6000) ? 7000 : 5000;
   //printf("Setting target to %d (%d us).\n", target, target/4);
