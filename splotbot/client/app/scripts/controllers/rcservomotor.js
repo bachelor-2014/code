@@ -17,10 +17,11 @@ angular.module('clientApp')
       splotService.postInput([$scope.elementInfo.start_action,0]);
     };
 
-    // The action of moving the corresponding hardware motor
+    // The action of set the position of the hardware motor
     // Send the instruction to the web server
-    $scope.move = function(direction){
-      $scope.currentPosition += direction;
+    $scope.setPosition = function(position) {
+      $scope.currentPosition = position;
+        
       $scope.currentPosition = $scope.currentPosition < 0 ? 0 : $scope.currentPosition;
       $scope.currentPosition = $scope.currentPosition > 90 ? 90 : $scope.currentPosition;
 
@@ -29,4 +30,16 @@ angular.module('clientApp')
       splotService.postInput([$scope.elementInfo.start_action, $scope.currentPosition]);
     };
 
+    // Move the motor the specified number of steps
+    // Depends on the setPosition function
+    $scope.move = function(direction) {
+      $scope.setPosition($scope.currentPosition + direction);
+    };
+
+    // Input field key press event
+    $scope.keyPressEvent = function(event) {
+      if(event.keyCode == 13) {
+        $scope.setPosition($scope.position);
+      }
+    };
   });

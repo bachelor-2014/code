@@ -9,4 +9,10 @@
 
   <span class="glyphicon glyphicon-arrow-right nav-arrow"
     ng-click="move(10)"></span>
+
+  <div>
+    Set position:
+    <input type="text" ng-model="position" ng-keypress="keyPressEvent($event)" />
+    <button ng-click="setPosition(position)">Set</button>
+  </div>
 </div>
