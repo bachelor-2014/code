@@ -1,0 +1,11 @@
+<!-- Control for the 'IntegerCoderCtrl' component type -->
+<div class="control-box col-md-12" ng-controller="IntegerCoderCtrl" ng-init="init(elementInfo)">
+  <h1>Integer Coder</h1>
+  <form class="form-inline" role="form">
+      <div class="form-group col-md-10">
+      <input ng-model="integercode" class="form-control"
+      ng-keypress="keyPressEvent($event)"></input>
+      </div>
+      <button ng-click="sendIntegerCode()" class="btn btn-primary">Send</button>
+  </form>
+</div>
