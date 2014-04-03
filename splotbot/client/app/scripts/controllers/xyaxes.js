@@ -24,6 +24,7 @@ angular.module('clientApp')
     $scope.moveTo = function(x, y) {
       $scope.currentPosition.x += x;
       $scope.currentPosition.y += y;
+      console.log("Sending:", $scope.currentPosition);
       splotService.postInput([$scope.elementInfo.start_action, $scope.currentPosition.x, $scope.currentPosition.y]);
     };
   });
