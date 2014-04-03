@@ -63,6 +63,7 @@ io.sockets.on('connection', function (socket) {
 // Post request for running code on splotbot
 app.post('/runcode', getdata, function(req, res){
     var code = JSON.parse(req.data);
+    console.log("Code was:",code);
     splotbot.runCode(code);
     res.send();
 });
