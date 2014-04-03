@@ -2,6 +2,7 @@
 #include <fstream>
 #include "componentinitializer.h"
 #include "singlesteppermotor.h"
+#include "xyaxes.h"
 #include "rcservomotor.h"
 #include "camera.h"
 #include "libraries/cJSON/cJSON.h"
@@ -61,16 +62,17 @@ Component* createCamera(cJSON * document) {
 /**
  * createXYAxis creates a XYAxis from JSON
  */
-Component* createXYAxis(cJSON * document) {
+Component* createXYAxes(cJSON * document) {
     //Get the name
     string name(cJSON_GetObjectItem(document, "name")->valuestring);
 
     //Get the parameters
     cJSON *parameters = cJSON_GetObjectItem(document, "parameters");
-    char axis = cJSON_GetObjectItem(parameters, "axis")->valueaxis;
+    char x_port = cJSON_GetObjectItem(parameters, "x_port")->valueint;
+    char y_port = cJSON_GetObjectItem(parameters, "y_port")->valueint;
 
-    //Create the camera
-    return new XYAxis(name, axis);
+    //Create the xyaxis
+    return new XYAxes(name, x_port,y_port);
 }
 
 /**
@@ -116,8 +118,8 @@ vector<Component *> initializeComponents(function<void(string,string)> *callback
             Component *c = createCamera(componentDocument);
             (*c).registerCallback(callback);
             components.push_back(c);
-        } else if (type.compare("XYAxis") == 0) {
-            Component *c = createXYAxis(componentDocument);
+        } else if (type.compare("XYAxes") == 0) {
+            Component *c = createXYAxes(componentDocument);
             (*c).registerCallback(callback);
             components.push_back(c);
         } else {

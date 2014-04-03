@@ -1,1 +1,1 @@
-void runGCode();
+void runGCode(string);
