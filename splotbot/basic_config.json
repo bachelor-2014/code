@@ -23,7 +23,7 @@
         "type": "Camera",
         "name": "Camera",
         "parameters": {
-            "device": 0,
+            "video_device": 0,
             "event_name": "image_data"
         }
     },
