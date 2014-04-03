@@ -1,0 +1,23 @@
+<!-- Control for the 'XYAxes' component type -->
+<div class="control-box col-md-4" ng-controller="XYAxesCtrl" ng-init="init(elementInfo)">
+  <h1>{{elementInfo.name}}</h1>
+  <p>XYAxes</p>
+
+  <!-- Buttons for moving along the axes -->
+  <div class="glyphicon glyphicon-arrow-left nav-arrow"
+    ng-click="moveTo(-movementAmount, 0)"></div>
+
+  <div class="glyphicon glyphicon-arrow-down nav-arrow"
+    ng-click="moveTo(0, -movementAmount)"></div>
+
+  <div class="glyphicon glyphicon-arrow-up nav-arrow"
+    ng-click="moveTo(0, movementAmount)"></div>
+
+  <span class="glyphicon glyphicon-arrow-right nav-arrow"
+    ng-click="moveTo(movementAmount, 0)"></span>
+
+  <div>
+    Movement amount (per click):
+    <input type="text" ng-model="movementAmount" />
+  </div>
+</div>
