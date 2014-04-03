@@ -9,7 +9,7 @@ using namespace std;
 /**
  * SingleStepperMotor constructor
  */
-XYAxes::XYAxes(string name, char xPort, char yPort): name(name), 
+XYAxes::XYAxes(string name, string xPort, string yPort): name(name), 
     xPort(xPort), yPort(yPort) {
     //Empty constructor
 }

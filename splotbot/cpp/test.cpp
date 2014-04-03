@@ -23,7 +23,7 @@ int main() {
 
     //Register a test callback to print
     splotbot.registerCallback([] (string name, string data) -> void {
-        cout << "Callback '" << name << "': " << data << endl;
+        //cout << "Callback '" << name << "': " << data << endl;
     });
 
     // Execute some instructions

@@ -68,11 +68,11 @@ Component* createXYAxes(cJSON * document) {
 
     //Get the parameters
     cJSON *parameters = cJSON_GetObjectItem(document, "parameters");
-    char x_port = cJSON_GetObjectItem(parameters, "x_port")->valueint;
-    char y_port = cJSON_GetObjectItem(parameters, "y_port")->valueint;
+    string xPort(cJSON_GetObjectItem(parameters, "x_port")->valuestring);
+    string yPort(cJSON_GetObjectItem(parameters, "y_port")->valuestring);
 
     //Create the xyaxis
-    return new XYAxes(name, x_port,y_port);
+    return new XYAxes(name,xPort,yPort);
 }
 
 /**
@@ -123,7 +123,7 @@ vector<Component *> initializeComponents(function<void(string,string)> *callback
             (*c).registerCallback(callback);
             components.push_back(c);
         } else {
-            cout << "Unknown component found" << endl;
+            cout << "Unknown component " << type << "found" << endl;
         }
     } 
 
