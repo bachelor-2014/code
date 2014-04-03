@@ -11,7 +11,3 @@ void runGCode(string s){
 
     out.close();
 }
-
-int main(int argc, char** argv){
-    runGCode(string(argv[1]));
-}

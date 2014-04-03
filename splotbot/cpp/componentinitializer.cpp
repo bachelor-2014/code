@@ -59,6 +59,21 @@ Component* createCamera(cJSON * document) {
 }
 
 /**
+ * createXYAxis creates a XYAxis from JSON
+ */
+Component* createXYAxis(cJSON * document) {
+    //Get the name
+    string name(cJSON_GetObjectItem(document, "name")->valuestring);
+
+    //Get the parameters
+    cJSON *parameters = cJSON_GetObjectItem(document, "parameters");
+    char axis = cJSON_GetObjectItem(parameters, "axis")->valueaxis;
+
+    //Create the camera
+    return new XYAxis(name, axis);
+}
+
+/**
  * getConfigDocument gets the JSON config document
  */
 cJSON* getConfigDocument() {
@@ -99,6 +114,10 @@ vector<Component *> initializeComponents(function<void(string,string)> *callback
             components.push_back(c);
         } else if (type.compare("Camera") == 0) {
             Component *c = createCamera(componentDocument);
+            (*c).registerCallback(callback);
+            components.push_back(c);
+        } else if (type.compare("XYAxis") == 0) {
+            Component *c = createXYAxis(componentDocument);
             (*c).registerCallback(callback);
             components.push_back(c);
         } else {
