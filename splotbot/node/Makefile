@@ -8,7 +8,7 @@ release: splotbot_wrapper.cc binding.gyp data/experiments.db
 
 data/experiments.db:
 	-@mkdir data 2>/dev/null || true
-	sqlite3 data/experiments.db < logging/data/table.sql
+	sqlite3 data/experiments.db < ../cpp/logging/data/table.sql
 
 
 clean:
