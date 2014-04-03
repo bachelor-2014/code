@@ -31,8 +31,16 @@
         "type": "RCServoMotor",
         "name": "RCServo1",
         "parameters": {
-            "device": "/dev/ttyACM3",
+            "device": "/dev/ttyACM0",
             "channel": 0
+        }
+    },
+    {
+        "type": "XYAxes",
+        "name": "TopAxes",
+        "parameters": {
+            "x_port": "X",
+            "y_port": "Y"
         }
     }
 ]

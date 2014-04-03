@@ -73,8 +73,14 @@ app.post('/event/:name', getdata, function(req, res){
     res.send();
 });
 
+app.get('/',function(req,res){
+    res.sendfile("client/app/index.html");
+});
+
 //Serving the client folder
-app.use(express.static('../client/app/'))
+app.get('/*', function(req,res){
+       res.sendfile("client/app/" + req.params[0]);
+});
 
 // Bind server to port
 server.listen(8000);
