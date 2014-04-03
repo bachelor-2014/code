@@ -22,8 +22,8 @@ angular.module('clientApp')
     // The action of set the position of the hardware motor
     // Send the instruction to the web server
     $scope.moveTo = function(x, y) {
-      $scope.currentPosition.x += x;
-      $scope.currentPosition.y += y;
+      $scope.currentPosition.x = ParseInt($scope.currentPosition.x) + ParseInt(x);
+      $scope.currentPosition.y = ParseInt($scope.currentPosition.y) + ParseInt(y);
       console.log("Sending:", $scope.currentPosition);
       splotService.postInput([$scope.elementInfo.start_action, $scope.currentPosition.x, $scope.currentPosition.y]);
     };
