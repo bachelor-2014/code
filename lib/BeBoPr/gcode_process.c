@@ -188,34 +188,36 @@ void dump_position_info( void)
 
 static void clip_move( axis_e axis, int32_t* pnext_target, int32_t current_pos, int32_t home_pos)
 {
-  double limit;
-  if (*pnext_target >= current_pos) {
-    // forward move or no move
-    if (config_max_soft_limit( axis, &limit)) {
-      int32_t pos_limit = MM2POS( limit);
-      if (home_pos + current_pos > pos_limit) {
-        pos_limit = home_pos + current_pos;
-      }
-      if (home_pos + *pnext_target > pos_limit) {
-        printf( "WARNING: Clipping target.%c (%d) to %d due to upper soft limit= %d (home= %d)\n",
-                axisName( axis), *pnext_target, pos_limit, MM2POS( limit), home_pos);
-        *pnext_target = pos_limit - home_pos;
-      }
-    }       
-  } else {
-    // backward move
-    if (config_min_soft_limit( axis, &limit)) {
-      int32_t pos_limit = MM2POS( limit);
-      if (home_pos + current_pos < pos_limit) {
-        pos_limit = home_pos + current_pos;
-      }
-      if (home_pos + *pnext_target < pos_limit) {
-        printf( "WARNING: Clipping target.%c (%d) to %d due to lower soft limit= %d (home= %d)\n",
-                axisName( axis), *pnext_target, pos_limit, MM2POS( limit), home_pos);
-        *pnext_target = pos_limit - home_pos;
-      }
-    }       
-  }
+  // BACHELOR - Outcommented
+
+  //double limit;
+  //if (*pnext_target >= current_pos) {
+  //  // forward move or no move
+  //  if (config_max_soft_limit( axis, &limit)) {
+  //    int32_t pos_limit = MM2POS( limit);
+  //    if (home_pos + current_pos > pos_limit) {
+  //      pos_limit = home_pos + current_pos;
+  //    }
+  //    if (home_pos + *pnext_target > pos_limit) {
+  //      printf( "WARNING: Clipping target.%c (%d) to %d due to upper soft limit= %d (home= %d)\n",
+  //              axisName( axis), *pnext_target, pos_limit, MM2POS( limit), home_pos);
+  //      *pnext_target = pos_limit - home_pos;
+  //    }
+  //  }       
+  //} else {
+  //  // backward move
+  //  if (config_min_soft_limit( axis, &limit)) {
+  //    int32_t pos_limit = MM2POS( limit);
+  //    if (home_pos + current_pos < pos_limit) {
+  //      pos_limit = home_pos + current_pos;
+  //    }
+  //    if (home_pos + *pnext_target < pos_limit) {
+  //      printf( "WARNING: Clipping target.%c (%d) to %d due to lower soft limit= %d (home= %d)\n",
+  //              axisName( axis), *pnext_target, pos_limit, MM2POS( limit), home_pos);
+  //      *pnext_target = pos_limit - home_pos;
+  //    }
+  //  }       
+  //}
 }
 
 static void process_non_move_command( GCODE_COMMAND* target)
