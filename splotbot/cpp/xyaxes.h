@@ -27,6 +27,8 @@ class XYAxes: public Component {
         string yPort;
         string xLimitSwitchPort;
         string yLimitSwitchPort;
+        int currentPositionX;
+        int currentPositionY;
 };
 
 #endif

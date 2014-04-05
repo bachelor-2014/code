@@ -12,7 +12,9 @@ using namespace std;
  */
 XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort): name(name), 
     xPort(xPort), yPort(yPort), xLimitSwitchPort(xLimitSwitchPort), yLimitSwitchPort(yLimitSwitchPort) {
-    //Empty constructor
+    // Initialize the current position
+    currentPositionX = 0;
+    currentPositionY = 0;
 }
 
 /*
@@ -76,23 +78,25 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
             yPressed = isLimitSwitchPressed(yLimitSwitchPort);
             
             // If not pressed and not homed already, move a single step
-            xMove = !xPressed && !xHomed ? 1 : 0;
-            yMove = !yPressed && !yHomed ? 1 : 0;
+            xMove = !xPressed && !xHomed ? -1 : 0;
+            yMove = !yPressed && !yHomed ? -1 : 0;
             
             // Else if an axis is not homed, but the limit switch is pressed,
             // move a step back and consider the axis homed
             if (xPressed && !xHomed) {
-                xMove = -1;
+                xMove = 1;
                 xHomed = true;
             }
             if (yPressed && !yHomed) {
-                yMove = -1;
+                yMove = 1;
                 yHomed = true;
             }
 
             // Send the move command
+            runGCode("G91");
+
             stringstream command;
-            command << "G91 G1 " << xPort << xMove << " " << yPort << yMove << endl;
+            command << "G1 " << xPort << xMove << " " << yPort << yMove << endl;
             string c = command.str();
             runGCode(c);
             
@@ -105,22 +109,32 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
             //TODO shorter wait time
             sleep(1);
         }
+
+        // Reset the current position
+        currentPositionX = 0;
+        currentPositionY = 0;
     };
 
-    // 'Move' <number of steps>
+    // 'Move' <x position> <y position>
     function<void(InstructionBuffer *)> move = [&](InstructionBuffer *buffer) -> void {
         int instr[2];
         (*buffer).popInstructions(2, instr);
-        int xSteps = instr[0];
-        int ySteps = instr[1];
+        int xPosition = instr[0];
+        int yPosition = instr[1];
+
+        xPosition = xPosition < 0 ? 0 : xPosition;
+        yPosition = yPosition < 0 ? 0 : yPosition;
+
+        int xSteps = xPosition - currentPositionX;
+        int ySteps = yPosition - currentPositionY;
 
         stringstream ss;
-        ss << "axis (" << name << ") moving (x,y)=(" << xSteps << "," << ySteps << ")" << endl;
+        ss << "XYAxes (" << name << ") moving (x,y)=(" << xSteps << "," << ySteps << ")" << endl;
         string s = ss.str();
         (*file_logger).Info(s);
 
         stringstream command;
-        command << "G1 " << xPort << xSteps << " " << yPort << ySteps << endl;
+        command << "G91 G1 " << xPort << xSteps << " " << yPort << ySteps << endl;
         string c = command.str();
         runGCode(c);
     };

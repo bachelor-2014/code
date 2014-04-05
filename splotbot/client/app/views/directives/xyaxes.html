@@ -3,6 +3,10 @@
   <h1>{{elementInfo.name}}</h1>
   <p>XYAxes</p>
 
+  <!-- Button for homing -->
+  <div class="glyphicon glyphicon-home"
+    ng-click="home()"></div>
+
   <!-- Buttons for moving along the axes -->
   <div class="glyphicon glyphicon-arrow-left nav-arrow"
     ng-click="moveTo(-movementAmount, 0)"></div>
