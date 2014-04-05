@@ -40,7 +40,9 @@
         "name": "TopAxes",
         "parameters": {
             "x_port": "X",
-            "y_port": "Y"
+            "y_port": "Y",
+            "x_limit_switch_port": "J9",
+            "y_limit_switch_port": "J11"
         }
     }
 ]

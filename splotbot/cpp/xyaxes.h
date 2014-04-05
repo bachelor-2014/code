@@ -18,13 +18,15 @@ using namespace std;
  */
 class XYAxes: public Component {
     public:
-        XYAxes(string name, string xPort, string yPort);
+        XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
 
     private:
         string name;
         string xPort;
         string yPort;
+        string xLimitSwitchPort;
+        string yLimitSwitchPort;
 };
 
 #endif
