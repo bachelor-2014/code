@@ -20,6 +20,10 @@ angular.module('clientApp')
     // Sends the instruction to the web server
     $scope.home = function() {
       splotService.postInput([$scope.elementInfo.start_action]);
+        $scope.currentPosition = {
+          x: 0,
+          y: 0
+        }
     }
 
     // The action of set the position of the hardware motor
