@@ -1,48 +1,10 @@
 [
     {
-        "type": "SingleStepperMotor",
-        "name": "Stepper motor",
-        "parameters": {
-            "gpio_mode1": "P8-8",
-            "gpio_mode2": "P8-9",
-            "gpio_step": "P8-10",
-            "gpio_sleep": "P8-11"
-        }
-    },
-    {
-        "type": "SingleStepperMotor",
-        "name": "Stepper motor2",
-        "parameters": {
-            "gpio_mode1": "P8-8",
-            "gpio_mode2": "P8-9",
-            "gpio_step": "P8-10",
-            "gpio_sleep": "P8-11"
-        }
-    },
-    {
         "type": "Camera",
         "name": "Camera",
         "parameters": {
             "video_device": 0,
             "event_name": "image_data"
-        }
-    },
-    {
-        "type": "RCServoMotor",
-        "name": "RCServo1",
-        "parameters": {
-            "device": "/dev/ttyACM0",
-            "channel": 0
-        }
-    },
-    {
-        "type": "XYAxes",
-        "name": "TopAxes",
-        "parameters": {
-            "x_port": "X",
-            "y_port": "Y",
-            "x_limit_switch_port": "J9",
-            "y_limit_switch_port": "J11"
         }
     }
 ]

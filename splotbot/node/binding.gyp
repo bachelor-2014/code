@@ -15,7 +15,7 @@
         "-lm", "-pthread", "-ggdb", "-lcurl"
       ],
       'cflags!': [ '-fno-exceptions' ],
-      'cflags_cc!': [ '-fno-exceptions' ],
+      'cflags_cc!': [ '-fno-exceptions','-fno-rtti'],
       "defines": [ "DEBUG", "_DEBUG" ]
     }
   ]
