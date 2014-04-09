@@ -188,8 +188,7 @@ void dump_position_info( void)
 
 static void clip_move( axis_e axis, int32_t* pnext_target, int32_t current_pos, int32_t home_pos)
 {
-  // BACHELOR - Outcommented
-
+  //BACHELOR Outcommented the function
   //double limit;
   //if (*pnext_target >= current_pos) {
   //  // forward move or no move

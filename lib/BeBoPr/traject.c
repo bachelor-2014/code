@@ -756,6 +756,42 @@ int traject_init( void)
   step_size_z = config_get_step_size( z_axis);
   step_size_e = config_get_step_size( e_axis);
 
+  // BACHELOR hardcoded the axis to be the same
+  //printf("\n########## DEBUG ##########\n");
+
+  //printf("vx_max: %f\n", vx_max);
+  //printf("vy_max: %f\n", vy_max);
+  //printf("vz_max: %f\n", vz_max);
+  //printf("ve_max: %f\n\n", ve_max);
+
+  //printf("recipr_a_max_x: %f\n", recipr_a_max_x);
+  //printf("recipr_a_max_y: %f\n", recipr_a_max_y);
+  //printf("recipr_a_max_z: %f\n", recipr_a_max_z);
+  //printf("recipr_a_max_e: %f\n\n", recipr_a_max_e);
+
+  //printf("step_size_x: %f\n", step_size_x);
+  //printf("step_size_y: %f\n", step_size_y);
+  //printf("step_size_z: %f\n", step_size_z);
+  //printf("step_size_e: %f\n", step_size_e);
+
+  //printf("########## DEBUG ##########\n\n");
+
+  vx_max = 0.05;
+  vy_max = 0.05;
+  vz_max = 0.05;
+  ve_max = 0.05;
+
+  recipr_a_max_x = 1.0; 
+  recipr_a_max_y = 1.0; 
+  recipr_a_max_z = 1.0; 
+  recipr_a_max_e = 1.0; 
+
+  step_size_x = 0.000003; 
+  step_size_y = 0.000003; 
+  step_size_z = 0.000003; 
+  step_size_e = 0.000003; 
+
+
   if (DEBUG_TRAJECT && (debug_flags & DEBUG_TRAJECT)) {
     printf( "  step: X = %9.3lf, Y = %9.3lf, Z = %9.3lf, E = %9.3lf [um]\n",
             SI2UM( step_size_x), SI2UM( step_size_y), SI2UM( step_size_z), SI2UM( step_size_e)); 
