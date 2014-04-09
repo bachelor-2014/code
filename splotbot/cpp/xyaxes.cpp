@@ -15,6 +15,8 @@ XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort,
     // Initialize the current position
     currentPositionX = 0;
     currentPositionY = 0;
+
+    runGCode("G91");
 }
 
 /*
@@ -72,6 +74,9 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
 
         bool xPressed, yPressed;
         int xMove, yMove;
+
+        // Send the move command
+        runGCode("G91");
         while (true) {
             // Get whether or not the limit switches / end stops are pressed
             xPressed = isLimitSwitchPressed(xLimitSwitchPort);
@@ -86,14 +91,12 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
             if (xPressed && !xHomed) {
                 xMove = 1;
                 xHomed = true;
+                
             }
             if (yPressed && !yHomed) {
                 yMove = 1;
                 yHomed = true;
             }
-
-            // Send the move command
-            runGCode("G91");
 
             stringstream command;
             command << "G1 " << xPort << xMove << " " << yPort << yMove << endl;
@@ -122,11 +125,26 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
         int xPosition = instr[0];
         int yPosition = instr[1];
 
+        cout << "xPos1" << xPosition << endl;
+        cout << "yPos1" << yPosition << endl;
+
         xPosition = xPosition < 0 ? 0 : xPosition;
         yPosition = yPosition < 0 ? 0 : yPosition;
 
+        cout << "xPos2" << xPosition << endl;
+        cout << "yPos2" << yPosition << endl;
+
+        cout << "currentx" << currentPositionX << endl;
+        cout << "currenty" << currentPositionY << endl;
+
         int xSteps = xPosition - currentPositionX;
         int ySteps = yPosition - currentPositionY;
+
+        currentPositionX = xPosition;
+        currentPositionY = yPosition;
+
+        cout << "xsteps" << xSteps << endl;
+        cout << "ysteps" << ySteps << endl;
 
         stringstream ss;
         ss << "XYAxes (" << name << ") moving (x,y)=(" << xSteps << "," << ySteps << ")" << endl;
@@ -134,7 +152,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
         (*file_logger).Info(s);
 
         stringstream command;
-        command << "G91 G1 " << xPort << xSteps << " " << yPort << ySteps << endl;
+        command << "G1 " << xPort << xSteps << " " << yPort << ySteps << endl;
         string c = command.str();
         runGCode(c);
     };
