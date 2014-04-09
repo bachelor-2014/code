@@ -4,6 +4,8 @@
 // Defines the loading of the config file
 angular.module('clientApp')
   .service('configService', function($http){
+    //this.host = "http://130.226.133.54";
+    this.host = location.protocol + '//' + location.hostname;
     // Load the config file
     this.getConfig = function(path){
         return $http.get(path).then(
@@ -13,7 +15,9 @@ angular.module('clientApp')
             // Fixed number of actions for each component type
             var componentActions = {
               "SingleStepperMotor": 1,
-              "Camera": 1
+              "RCServoMotor": 1,
+              "Camera": 1,
+              "XYAxes": 2
             }
 
             var actions = 0;

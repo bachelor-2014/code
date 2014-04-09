@@ -25,7 +25,7 @@ DBLogger::~DBLogger(){
 }
 
 bool DBLogger::Write(string data){
-    write("none",data);
+    return write("none",data);
 }
 
 int readData(void *out, int argc, char **argv, char **azColName){

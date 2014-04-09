@@ -6,6 +6,8 @@
 
 #include "splotbot.h"
 #include "singlesteppermotor.h"
+#include "rcservomotor.h"
+#include "xyaxes.h"
 #include "utils/threading.h"
 
 using namespace std;
@@ -40,7 +42,7 @@ int main() {
 
     splotbot.executeInstructions(numberOfInstructions, instructions);
 
-    sleep(2);
+    sleep(10);
 
     return 0;
 }

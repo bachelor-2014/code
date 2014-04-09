@@ -63,6 +63,7 @@ io.sockets.on('connection', function (socket) {
 // Post request for running code on splotbot
 app.post('/runcode', getdata, function(req, res){
     var code = JSON.parse(req.data);
+    console.log("Code was:",code);
     splotbot.runCode(code);
     res.send();
 });
@@ -71,6 +72,15 @@ app.post('/runcode', getdata, function(req, res){
 app.post('/event/:name', getdata, function(req, res){
     eventCallback(req.params.name, req.data);
     res.send();
+});
+
+app.get('/',function(req,res){
+    res.sendfile("client/app/index.html");
+});
+
+//Serving the client folder
+app.get('/*', function(req,res){
+       res.sendfile("client/app/" + req.params[0]);
 });
 
 // Bind server to port

@@ -1,0 +1,18 @@
+<!-- Control for the 'RCServoMotor' component type -->
+<div class="control-box col-md-4" ng-controller="RCServoMotorCtrl" ng-init="init(elementInfo)">
+  <h1>{{elementInfo.name}}</h1>
+  <p>RCServoMotor</p>
+
+  <!-- Buttons for moving the motor -->
+  <div class="glyphicon glyphicon-arrow-left nav-arrow"
+    ng-click="move(-10)"></div>
+
+  <span class="glyphicon glyphicon-arrow-right nav-arrow"
+    ng-click="move(10)"></span>
+
+  <div>
+    Set position:
+    <input type="text" ng-model="position" ng-keypress="keyPressEvent($event)" />
+    <button ng-click="setPosition(position)">Set</button>
+  </div>
+</div>

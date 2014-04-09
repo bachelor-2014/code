@@ -2,6 +2,8 @@
 #include <fstream>
 #include "componentinitializer.h"
 #include "singlesteppermotor.h"
+#include "xyaxes.h"
+#include "rcservomotor.h"
 #include "camera.h"
 #include "libraries/cJSON/cJSON.h"
 
@@ -26,6 +28,22 @@ Component* createSingleStepperMotor(cJSON * document) {
 }
 
 /**
+ * createRCServoMotor creates a RC servo motor from JSON
+ */
+Component* createRCServoMotor(cJSON * document) {
+    //Get the name
+    string name(cJSON_GetObjectItem(document, "name")->valuestring);
+
+    //Get the parameters
+    cJSON *parameters = cJSON_GetObjectItem(document, "parameters");
+    string device(cJSON_GetObjectItem(parameters, "device")->valuestring);
+    int channel(cJSON_GetObjectItem(parameters, "channel")->valueint);
+
+    //Create the RC servo motor 
+    return new RCServoMotor(name, device, (unsigned char) channel);
+}
+
+/**
  * createCamera create a camera from JSON
  */
 Component* createCamera(cJSON * document) {
@@ -39,6 +57,24 @@ Component* createCamera(cJSON * document) {
 
     //Create the camera
     return new Camera(name, videoDevice, eventName);
+}
+
+/**
+ * createXYAxis creates a XYAxis from JSON
+ */
+Component* createXYAxes(cJSON * document) {
+    //Get the name
+    string name(cJSON_GetObjectItem(document, "name")->valuestring);
+
+    //Get the parameters
+    cJSON *parameters = cJSON_GetObjectItem(document, "parameters");
+    string xPort(cJSON_GetObjectItem(parameters, "x_port")->valuestring);
+    string yPort(cJSON_GetObjectItem(parameters, "y_port")->valuestring);
+    string xLimitSwitchPort(cJSON_GetObjectItem(parameters, "x_limit_switch_port")->valuestring);
+    string yLimitSwitchPort(cJSON_GetObjectItem(parameters, "y_limit_switch_port")->valuestring);
+
+    //Create the xyaxis
+    return new XYAxes(name,xPort,yPort, xLimitSwitchPort, yLimitSwitchPort);
 }
 
 /**
@@ -76,12 +112,20 @@ vector<Component *> initializeComponents(function<void(string,string)> *callback
             Component *c = createSingleStepperMotor(componentDocument);
             (*c).registerCallback(callback);
             components.push_back(c);
+        } else if (type.compare("RCServoMotor") == 0) {
+            Component *c = createRCServoMotor(componentDocument);
+            (*c).registerCallback(callback);
+            components.push_back(c);
         } else if (type.compare("Camera") == 0) {
             Component *c = createCamera(componentDocument);
             (*c).registerCallback(callback);
             components.push_back(c);
+        } else if (type.compare("XYAxes") == 0) {
+            Component *c = createXYAxes(componentDocument);
+            (*c).registerCallback(callback);
+            components.push_back(c);
         } else {
-            cout << "Unknown component found" << endl;
+            cout << "Unknown component " << type << "found" << endl;
         }
     } 
 

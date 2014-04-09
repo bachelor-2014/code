@@ -97,6 +97,8 @@ void Camera::run() {
     runAsThread( [&] () {
         //VideoCapture
         VideoCapture cap(videoDevice);
+        cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+        cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
         video_logger = new VideoLogger("exp",&cap);
 
@@ -132,7 +134,6 @@ void Camera::run() {
 
                 //Send the images to the event
                 (*eventCallback)(eventName, base64);
-                sleep(1);
             }
         }
     });

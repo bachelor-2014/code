@@ -15,14 +15,12 @@ angular.module('clientApp')
     // Add the canvas to the GUI control
     $scope.init = function(elementInfo){
       $scope.elementInfo = elementInfo;
-
-      //$scope.setupCanvas(elementInfo);
       addCanvas($("#"+elementInfo.name));
     }
 
     // Initialize the canvas and context, including event listeners
     function setupCanvas (){
-      
+
       // Initialize the canvas
       var cId = $scope.elementInfo.name+"_canvas";
       canvas = document.getElementById(cId);
@@ -62,10 +60,11 @@ angular.module('clientApp')
 
     // Adds a canvas to the GUI control initialized form the given config element
     function addCanvas(element){
-      console.log($scope.elementInfo);
+
       element.append($compile(""+
-        "<canvas id='"+$scope.elementInfo.name+"_canvas' width='800'"+
-        " height='640'></canvas>")($scope))
+        "<canvas id='"+$scope.elementInfo.name+"_canvas' width='320'"+
+        " height='240'></canvas>")($scope))
+
       setupCanvas();
     }
 
