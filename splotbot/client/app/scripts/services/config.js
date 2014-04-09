@@ -16,7 +16,7 @@ angular.module('clientApp')
             var componentActions = {
               "SingleStepperMotor": 1,
               "RCServoMotor": 1,
-              "Camera": 2,
+              "Camera": 3,
               "XYAxes": 2
             }
 

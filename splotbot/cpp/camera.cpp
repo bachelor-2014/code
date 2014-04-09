@@ -17,6 +17,7 @@ using namespace cv;
  */
 Camera::Camera(string name, int videoDevice, string eventName): name(name), videoDevice(videoDevice), eventName(eventName) {
     mode = 1;
+    tolerance = 20;
     run();
 }
 
@@ -42,15 +43,18 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
     // 'Set droplet variables' 
     // <min area> <max area> <structuring element size> <tolerance>
     function<void(InstructionBuffer *)> setDropletVariables = [&](InstructionBuffer *buffer) -> void {
-    };
+        int instr[4];
+        (*buffer).popInstructions(4, instr);
 
-    // 'Start droplet color selector'
-    function<void(InstructionBuffer *)> startDropletSelector = [&](InstructionBuffer *buffer) -> void {
-        dropletSelection = true;
+        dropletdetector.minArea = instr[0];
+        dropletdetector.maxArea = instr[1];
+        dropletdetector.structuringElementSize = instr[2];
+        tolerance = instr[3];
+
     };
 
     // 'End color selector' <x> <y>
-    function<void(InstructionBuffer *)> endDropletSelector = [&](InstructionBuffer *buffer) -> void {
+    function<void(InstructionBuffer *)> dropletSelector = [&](InstructionBuffer *buffer) -> void {
 
         //Get coordinates
         int instr[2];
@@ -59,14 +63,14 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         int y = instr[0];
 
         dropletdetector.colorInterval =
-            computeColorIntervalFromSelection(image, 20,x,y);
+            computeColorIntervalFromSelection(image, tolerance,x,y);
 
         //Stop the droplet selection
-        dropletSelection = false;
     };
 
     (*actions).push_back(setMode);
-    (*actions).push_back(endDropletSelector);
+    (*actions).push_back(dropletSelector);
+    (*actions).push_back(setDropletVariables);
 }
 
 

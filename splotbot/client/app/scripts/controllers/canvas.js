@@ -50,10 +50,16 @@ angular.module('clientApp')
           "on(",e.pageX-canvasPosition.x,",",
           e.pageY-canvasPosition.y,")");
 
+          var scale_x = img.width / context.canvas.clientWidth;
+          var scale_y = img.height / context.canvas.clientHeight;
+
           var click_x = e.pageX-canvasPosition.x;
           var click_y = e.pageY-canvasPosition.y;
-          splotService.postInput([$scope.elementInfo.start_action+1,click_x,
-              click_y]);
+
+          var x = Math.floor(click_x * scale_x);
+          var y = Math.floor(click_y * scale_y);
+
+          splotService.postInput([$scope.elementInfo.start_action+1,x,y]);
 
 
       });

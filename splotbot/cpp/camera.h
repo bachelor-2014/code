@@ -32,9 +32,13 @@ class Camera: public Component {
         string name;
         int videoDevice;
         int mode;
-        bool dropletSelection;
         string eventName;
+
+        /**
+         * Droplet detection variables
+         */
         DropletDetector dropletdetector;
+        int tolerance;
 
         /**
          * Internal Methods
