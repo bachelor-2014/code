@@ -29,24 +29,12 @@ class Camera: public Component {
     private:
         VideoLogger *video_logger;
         Mat image;
-        /**
-         * Config variables
-         */
         string name;
         int videoDevice;
         int mode;
-        string eventName;
-        
-        /**
-         * Droplet detection variables
-         */
-        int minArea;
-        int maxArea;
-        int tolerance;
-        int structuringElementSize;
-        ColorInterval colorInterval;
-        DropletDetector *dropletdetector;
         bool dropletSelection;
+        string eventName;
+        DropletDetector dropletdetector;
 
         /**
          * Internal Methods

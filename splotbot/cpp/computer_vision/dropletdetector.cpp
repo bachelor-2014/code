@@ -11,6 +11,13 @@ DropletDetector::DropletDetector(int minArea, int maxArea, ColorInterval colorIn
     // Empty constructor
 }
 
+// Default Constructor
+DropletDetector::DropletDetector(){
+    minArea = 0;
+    maxArea = 9999;
+    structuringElementSize = 3;
+}
+
 // Detect the largest matching droplet on the given image
 Droplet DropletDetector::detectDroplet(cv::Mat image) {
     //// DEBUG: Print color interval

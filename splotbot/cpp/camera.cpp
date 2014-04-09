@@ -16,14 +16,7 @@ using namespace cv;
  * Camera constructor
  */
 Camera::Camera(string name, int videoDevice, string eventName): name(name), videoDevice(videoDevice), eventName(eventName) {
-    //Default values
-    int minArea = 0;
-    int maxArea = 9999; 
-    int tolerance = 20;
-
-    int mode = 0;
-    int structuringElementSize = 3;
-
+    mode = 1;
     run();
 }
 
@@ -42,14 +35,13 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         //Get mode
         int instr[1];
         (*buffer).popInstructions(1, instr);
-        int mode = instr[0];
+        mode = instr[0];
         cout << "Camera (" << name << ") mode set to " << mode << endl;
     };
 
     // 'Set droplet variables' 
     // <min area> <max area> <structuring element size> <tolerance>
     function<void(InstructionBuffer *)> setDropletVariables = [&](InstructionBuffer *buffer) -> void {
-
     };
 
     // 'Start droplet color selector'
@@ -66,26 +58,15 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         int x = instr[0];
         int y = instr[0];
 
-        computeColorIntervalFromSelection(image, tolerance, x, y);
-        updateDropletDetector();
+        dropletdetector.colorInterval =
+            computeColorIntervalFromSelection(image, 20,x,y);
 
         //Stop the droplet selection
         dropletSelection = false;
     };
 
     (*actions).push_back(setMode);
-}
-
-/**
- * Updates the dropletdetector to reflect the new parameters
- */
-void Camera::updateDropletDetector(){
-    if(dropletdetector != NULL){
-        delete dropletdetector;
-    }
-
-    dropletdetector = new DropletDetector(minArea, maxArea, colorInterval,
-            structuringElementSize);
+    (*actions).push_back(endDropletSelector);
 }
 
 
@@ -114,8 +95,13 @@ void Camera::run() {
                      break;
                 }
 
-                if(mode > 1 && dropletdetector != NULL){
+                if(mode > 1){
                     //Droplet detection
+                    Droplet droplet = dropletdetector.detectDroplet(image);
+                cv::rectangle(image, cv::Point(droplet.minX, droplet.minY),
+                        cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0,
+                            255, 0));
+
                 }
 
                 // Log the image
