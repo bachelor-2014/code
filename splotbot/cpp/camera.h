@@ -27,7 +27,6 @@ class Camera: public Component {
 
     private:
         VideoLogger *video_logger;
-        string name;
         int videoDevice;
         string eventName;
         void run();

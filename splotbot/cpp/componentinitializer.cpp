@@ -74,8 +74,11 @@ Component* createXYAxes(cJSON * document) {
     string xLimitSwitchPort(cJSON_GetObjectItem(parameters, "x_limit_switch_port")->valuestring);
     string yLimitSwitchPort(cJSON_GetObjectItem(parameters, "y_limit_switch_port")->valuestring);
 
+    int xStepLimit = cJSON_GetObjectItem(parameters, "x_step_limit")->valueint;
+    int yStepLimit = cJSON_GetObjectItem(parameters, "y_step_limit")->valueint;
+
     //Create the xyaxis
-    return new XYAxes(name,xPort,yPort, xLimitSwitchPort, yLimitSwitchPort);
+    return new XYAxes(name,xPort,yPort, xLimitSwitchPort, yLimitSwitchPort, xStepLimit,yStepLimit);
 }
 
 /**

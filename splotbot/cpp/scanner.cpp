@@ -13,8 +13,8 @@ using namespace std;
 /**
  * Scanner constructor
  */
-Scanner::Scanner(string name, Camera *camera, XYAxes *xyaxes): name(name), camera(camera), xyaxes(xyaxes) {
-    //Empty constructor
+Scanner::Scanner(string name, Camera *camera, XYAxes *xyaxes): camera(camera), xyaxes(xyaxes) {
+    this->name = name;
 }
 
 void Scanner::scan(int stepsBetweenImages, int fromX, int fromY, int toX, int toY) {

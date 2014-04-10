@@ -18,7 +18,7 @@ using namespace std;
  */
 class XYAxes: public Component {
     public:
-        XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort);
+        XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
 
     private:
@@ -26,6 +26,10 @@ class XYAxes: public Component {
         string yPort;
         string xLimitSwitchPort;
         string yLimitSwitchPort;
+
+        int xStepLimit;
+        int yStepLimit;
+
         int currentPositionX;
         int currentPositionY;
 };

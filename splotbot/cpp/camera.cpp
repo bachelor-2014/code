@@ -13,7 +13,8 @@ using namespace cv;
 /**
  * Camera constructor
  */
-Camera::Camera(string name, int videoDevice, string eventName): name(name), videoDevice(videoDevice), eventName(eventName) {
+Camera::Camera(string name, int videoDevice, string eventName): videoDevice(videoDevice), eventName(eventName) {
+    this->name = name;
     run();
 }
 

@@ -1,25 +1,5 @@
 [
     {
-        "type": "SingleStepperMotor",
-        "name": "Stepper motor",
-        "parameters": {
-            "gpio_mode1": "P8-8",
-            "gpio_mode2": "P8-9",
-            "gpio_step": "P8-10",
-            "gpio_sleep": "P8-11"
-        }
-    },
-    {
-        "type": "SingleStepperMotor",
-        "name": "Stepper motor2",
-        "parameters": {
-            "gpio_mode1": "P8-8",
-            "gpio_mode2": "P8-9",
-            "gpio_step": "P8-10",
-            "gpio_sleep": "P8-11"
-        }
-    },
-    {
         "type": "Camera",
         "name": "Camera",
         "parameters": {
@@ -31,7 +11,7 @@
         "type": "RCServoMotor",
         "name": "RCServo1",
         "parameters": {
-            "device": "/dev/ttyACM0",
+            "device": "/dev/ttyACM3",
             "channel": 0
         }
     },
@@ -39,10 +19,20 @@
         "type": "XYAxes",
         "name": "TopAxes",
         "parameters": {
-            "x_port": "X",
-            "y_port": "Y",
+            "x_port": "Z",
+            "y_port": "E",
             "x_limit_switch_port": "J9",
-            "y_limit_switch_port": "J11"
+            "y_limit_switch_port": "J11",
+            "x_step_limit": 79,
+            "y_step_limit": 58
+        }
+    },
+    {
+        "type": "Scanner",
+        "name": "Scanner",
+        "parameters": {
+            "camera_name": "Camera",
+            "xyaxes_name": "TopAxes"
         }
     }
 ]
