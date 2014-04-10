@@ -157,6 +157,10 @@ vector<Component *> initializeComponents(function<void(string,string)> *callback
             Component *c = createXYAxes(componentDocument);
             (*c).registerCallback(callback);
             components.push_back(c);
+        } else if (type.compare("Scanner") == 0) {
+            Component *c = createScanner(componentDocument, components);
+            (*c).registerCallback(callback);
+            components.push_back(c);
         } else {
             cout << "Unknown component " << type << "found" << endl;
         }

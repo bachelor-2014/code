@@ -61,22 +61,10 @@ bool isLimitSwitchPressed(string switchPort) {
     return result == 1;
 }
 
-/**
- * registerActions register the actions of the single stepper motor
+/*
+ * Homes the XYAxes component
  */
-void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>> 
-        *actions) {
-    cout << "XYAxes (" << name << ") registering actions" << endl;
-
-    // 'Home'
-    function<void(InstructionBuffer *)> home = [&](InstructionBuffer *buffer) -> void {
-        // Log the action
-        stringstream ss;
-        ss << "XYAxes (" << name << ") homing" << endl;
-        string s = ss.str();
-        (*file_logger).Info(s);
-
-        // Do the homing
+void XYAxes::home() {
         bool xHomed = false;
         bool yHomed = false;
 
@@ -124,38 +112,70 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
         // Reset the current position
         currentPositionX = 0;
         currentPositionY = 0;
+}
+
+/*
+ * Moves the XYAxes component to the given absolute position
+ * Takes the following arguments:
+ *
+ * xPosition: The x coordinate of the absolute position to move to
+ * yPosition: The y coordinate of the absolute position to move to
+ */
+void XYAxes::move(int xPosition, int yPosition) {
+    xPosition = xPosition < 0 ? 0 : xPosition;
+    yPosition = yPosition < 0 ? 0 : yPosition;
+
+    xPosition = xPosition > xStepLimit ? xStepLimit : xPosition;
+    yPosition = yPosition > yStepLimit ? yStepLimit : yPosition;
+
+    int xSteps = xPosition - currentPositionX;
+    int ySteps = yPosition - currentPositionY;
+
+    currentPositionX = xPosition;
+    currentPositionY = yPosition;
+
+    stringstream command;
+    command << "G1 " << xPort << xSteps << " " << yPort << ySteps << endl;
+    string c = command.str();
+    runGCode(c);
+}
+
+/**
+ * registerActions register the actions of the single stepper motor
+ */
+void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>> 
+        *actions) {
+    cout << "XYAxes (" << name << ") registering actions" << endl;
+
+    // 'Home'
+    function<void(InstructionBuffer *)> homeAction = [&](InstructionBuffer *buffer) -> void {
+        // Log the action
+        stringstream ss;
+        ss << "XYAxes (" << name << ") homing" << endl;
+        string s = ss.str();
+        (*file_logger).Info(s);
+
+        //Do the homing
+        home();
     };
 
     // 'Move' <x position> <y position>
-    function<void(InstructionBuffer *)> move = [&](InstructionBuffer *buffer) -> void {
+    function<void(InstructionBuffer *)> moveAction = [&](InstructionBuffer *buffer) -> void {
         int instr[2];
         (*buffer).popInstructions(2, instr);
         int xPosition = instr[0];
         int yPosition = instr[1];
 
-        xPosition = xPosition < 0 ? 0 : xPosition;
-        yPosition = yPosition < 0 ? 0 : yPosition;
-
-        xPosition = xPosition > xStepLimit ? xStepLimit : xPosition;
-        yPosition = yPosition > yStepLimit ? yStepLimit : yPosition;
-
-        int xSteps = xPosition - currentPositionX;
-        int ySteps = yPosition - currentPositionY;
-
-        currentPositionX = xPosition;
-        currentPositionY = yPosition;
-
+        // Log the action
         stringstream ss;
-        ss << "XYAxes (" << name << ") moving (x,y)=(" << xSteps << "," << ySteps << ")" << endl;
+        ss << "XYAxes (" << name << ") moving to position (x,y)=(" << xPosition << "," << yPosition << ")" << endl;
         string s = ss.str();
         (*file_logger).Info(s);
 
-        stringstream command;
-        command << "G1 " << xPort << xSteps << " " << yPort << ySteps << endl;
-        string c = command.str();
-        runGCode(c);
+        // Do the move
+        move(xPosition, yPosition);
     };
 
-    (*actions).push_back(home);
-    (*actions).push_back(move);
+    (*actions).push_back(homeAction);
+    (*actions).push_back(moveAction);
 }
