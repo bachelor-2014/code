@@ -8,8 +8,8 @@ using namespace std;
 /**
  * SingleStepperMotor constructor
  */
-SingleStepperMotor::SingleStepperMotor(string name, string gpioMode1, string gpioMode2, string gpioStep, string gpioSleep): name(name), gpioMode1(gpioMode1), gpioMode2(gpioMode2), gpioStep(gpioStep), gpioSleep(gpioSleep) {
-    //Empty constructor
+SingleStepperMotor::SingleStepperMotor(string name, string gpioMode1, string gpioMode2, string gpioStep, string gpioSleep): gpioMode1(gpioMode1), gpioMode2(gpioMode2), gpioStep(gpioStep), gpioSleep(gpioSleep) {
+    this->name = name;
 }
 
 /**

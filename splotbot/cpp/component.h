@@ -21,6 +21,7 @@ class Component {
         Component();
         virtual void registerActions(vector<function<void(InstructionBuffer *)>> *actions) {};
         void registerCallback(function<void(string,string)> *callback);
+        string name;
 
     protected:
         function<void(string,string)> *eventCallback;

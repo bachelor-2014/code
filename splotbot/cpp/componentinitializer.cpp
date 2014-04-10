@@ -5,6 +5,7 @@
 #include "xyaxes.h"
 #include "rcservomotor.h"
 #include "camera.h"
+#include "scanner.h"
 #include "libraries/cJSON/cJSON.h"
 
 using namespace std;
@@ -75,6 +76,35 @@ Component* createXYAxes(cJSON * document) {
 
     //Create the xyaxis
     return new XYAxes(name,xPort,yPort, xLimitSwitchPort, yLimitSwitchPort);
+}
+
+/**
+ * creatScanner creates a Scanner from JSON
+ */
+Component* createScanner(cJSON * document, vector<Component *> components) {
+    //Get the name
+    string name(cJSON_GetObjectItem(document, "name")->valuestring);
+
+    //Get the parameters
+    cJSON *parameters = cJSON_GetObjectItem(document, "parameters");
+    string cameraName(cJSON_GetObjectItem(parameters, "camera_name")->valuestring);
+    string xyaxesName(cJSON_GetObjectItem(parameters, "xyaxes_name")->valuestring);
+
+    //Get the referenced components by their name
+    Camera* camera;
+    XYAxes *xyaxes;
+
+    for (auto it = components.begin(); it != components.end(); ++it) {
+        if (cameraName.compare((*it)->name) == 0) {
+            camera = (Camera *) (*it);
+        }
+        if (xyaxesName.compare((*it)->name) == 0) {
+            xyaxes = (XYAxes *) (*it);
+        }
+    }
+
+    //Create the scanner 
+    return new Scanner(name, camera, xyaxes);
 }
 
 /**

@@ -10,8 +10,9 @@ using namespace std;
 /**
  * SingleStepperMotor constructor
  */
-XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort): name(name), 
-    xPort(xPort), yPort(yPort), xLimitSwitchPort(xLimitSwitchPort), yLimitSwitchPort(yLimitSwitchPort) {
+XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort): xPort(xPort), yPort(yPort), xLimitSwitchPort(xLimitSwitchPort), yLimitSwitchPort(yLimitSwitchPort) {
+    this->name = name;
+
     // Initialize the current position
     currentPositionX = 0;
     currentPositionY = 0;

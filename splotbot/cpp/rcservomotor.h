@@ -25,7 +25,6 @@ class RCServoMotor: public Component {
         int setPosition(unsigned short target);
 
     private:
-        string name;
         string device;
         unsigned char channel;
         int openDeviceFile();

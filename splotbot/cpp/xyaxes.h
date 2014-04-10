@@ -22,7 +22,6 @@ class XYAxes: public Component {
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
 
     private:
-        string name;
         string xPort;
         string yPort;
         string xLimitSwitchPort;

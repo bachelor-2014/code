@@ -14,8 +14,8 @@ using namespace std;
 /**
  * RCServoMotor constructor
  */
-RCServoMotor::RCServoMotor(string name, string device, unsigned char channel): name(name), device(device), channel(channel) {
-    //Empty constructor
+RCServoMotor::RCServoMotor(string name, string device, unsigned char channel): device(device), channel(channel) {
+    this->name = name;
 }
 
 /**
