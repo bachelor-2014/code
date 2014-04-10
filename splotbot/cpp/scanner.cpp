@@ -19,6 +19,10 @@ Scanner::Scanner(string name, Camera *camera, XYAxes *xyaxes): camera(camera), x
 
 void Scanner::scan(int stepsBetweenImages, int fromX, int fromY, int toX, int toY) {
     //TODO
+    //This is a mock implementation
+    xyaxes->move(fromX, fromY);
+    sleep(1);
+    xyaxes->move(toX, toY);
 }
 
 /**
