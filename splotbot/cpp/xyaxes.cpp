@@ -10,12 +10,17 @@ using namespace std;
 /**
  * SingleStepperMotor constructor
  */
-XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort): name(name), 
-    xPort(xPort), yPort(yPort), xLimitSwitchPort(xLimitSwitchPort), yLimitSwitchPort(yLimitSwitchPort) {
+XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit): 
+    name(name), xPort(xPort), yPort(yPort),
+    xLimitSwitchPort(xLimitSwitchPort),
+    yLimitSwitchPort(yLimitSwitchPort), xStepLimit(xStepLimit),
+    yStepLimit(yStepLimit){
     // Initialize the current position
     currentPositionX = 0;
     currentPositionY = 0;
 
+    cout << "xLimit" << xStepLimit << endl;
+    cout << "yLimit" << yStepLimit << endl;
     runGCode("G91");
 }
 
@@ -125,26 +130,17 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
         int xPosition = instr[0];
         int yPosition = instr[1];
 
-        cout << "xPos1" << xPosition << endl;
-        cout << "yPos1" << yPosition << endl;
-
         xPosition = xPosition < 0 ? 0 : xPosition;
         yPosition = yPosition < 0 ? 0 : yPosition;
 
-        cout << "xPos2" << xPosition << endl;
-        cout << "yPos2" << yPosition << endl;
-
-        cout << "currentx" << currentPositionX << endl;
-        cout << "currenty" << currentPositionY << endl;
+        xPosition = xPosition > xStepLimit ? xStepLimit : xPosition;
+        yPosition = yPosition > yStepLimit ? yStepLimit : yPosition;
 
         int xSteps = xPosition - currentPositionX;
         int ySteps = yPosition - currentPositionY;
 
         currentPositionX = xPosition;
         currentPositionY = yPosition;
-
-        cout << "xsteps" << xSteps << endl;
-        cout << "ysteps" << ySteps << endl;
 
         stringstream ss;
         ss << "XYAxes (" << name << ") moving (x,y)=(" << xSteps << "," << ySteps << ")" << endl;
