@@ -26,7 +26,12 @@ cv::Mat FeaturesImageStitcher::stitch() {
     // Do the stitching;
     cv::Mat resultImage;
     cv::Stitcher stitcher = cv::Stitcher::createDefault();
-    stitcher.stitch(images, resultImage);
+    cv::Stitcher::Status status = stitcher.stitch(images, resultImage);
+
+    // Error handling
+    if (status != cv::Stitcher::Status::OK) {
+        throw runtime_error("FeaturesImageStitcher failed to stitch images");
+    }
 
     return resultImage;
 }
