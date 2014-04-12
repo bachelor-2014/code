@@ -40,7 +40,7 @@ void ImageStitcher::grabImage(int positionX, int positionY) {
 
     //TODO DEBUG remove this when done
     stringstream fs;
-    fs << "images/grab" << positionX << "_" << positionY << ".jpg";
+    fs << "data/images/grab" << positionX << "_" << positionY << ".jpg";
     cv::imwrite(fs.str(), image);
     //TODO remove the above when done
 

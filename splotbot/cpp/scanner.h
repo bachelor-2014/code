@@ -24,7 +24,7 @@ class Scanner: public Component {
     public:
         Scanner(string name, Camera *camera, XYAxes *xyaxes);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
-        void scan(int stepsBetweenImages, int fromX, int fromY, int toX, int toY);
+        void scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, int fromY, int toX, int toY, int stitchingAlgorithm);
 
     private:
         Camera *camera;
