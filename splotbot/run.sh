@@ -2,7 +2,7 @@
 
 set -x
 socket="data/mendel.sock"
-mendel_cmd="./mendel.elf"
+mendel_cmd="../mendel.elf"
 
 (cd node ; echo "" > $socket)
 (cd node ; tail -f $socket | $mendel_cmd &)
