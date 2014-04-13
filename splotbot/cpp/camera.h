@@ -24,10 +24,10 @@ class Camera: public Component {
     public:
         Camera(string name, int videoDevice, string eventName);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
+        int videoDevice;
 
     private:
         VideoLogger *video_logger;
-        int videoDevice;
         string eventName;
         void run();
 };
