@@ -5,6 +5,7 @@
 #include "instructionbuffer.h"
 #include "component.h"
 #include "logging/videologger.h"
+#include "computer_vision/dropletdetector.h"
 
 using namespace std;
 
@@ -28,8 +29,22 @@ class Camera: public Component {
 
     private:
         VideoLogger *video_logger;
+        Mat image;
+        string name;
+        int mode;
         string eventName;
+
+        /**
+         * Droplet detection variables
+         */
+        DropletDetector dropletdetector;
+        int tolerance;
+
+        /**
+         * Internal Methods
+         */
         void run();
+        void updateDropletDetector();
 };
 
 #endif

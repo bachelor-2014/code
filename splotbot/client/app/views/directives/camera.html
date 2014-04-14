@@ -1,6 +1,11 @@
 <!-- Control for the 'Camera' component type -->
 <div class="control-box col-md-4" ng-controller="CanvasCtrl" ng-init="init(elementInfo)">
   <h1>{{elementInfo.name}}</h1>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default" ng-click="mode(0)">Off</button>
+    <button type="button" class="btn btn-default" ng-click="mode(1)">On</button>
+    <button type="button" class="btn btn-default" ng-click="mode(2)">Droplet</button>
+  </div>
   <p>Camera</p>
   <!--canvas id="{{elementInfo.name}}_canvas" width="800" height="640" 
     ></canvas-->
