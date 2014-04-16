@@ -19,9 +19,9 @@ Camera::Camera(string name, int videoDevice, string eventName): videoDevice(vide
     this->name = name;
     setMode(1);
     tolerance = 20;
-    cap = new VideoCapture(videoDevice);
-    cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+    //cap = new VideoCapture(videoDevice);
+    //cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    //cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
     run();
 }
 
@@ -82,6 +82,9 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
  * Sets the current camera mode
  */
 void Camera::setMode(int m){
+    if (mode == 0 && m > 0) {
+        run();
+    }
     mode = m;
 }
 
@@ -90,6 +93,7 @@ void Camera::setMode(int m){
  */
 void Camera::stop(){
     setMode(0);
+    sleep(3);
 }
 
 /**
@@ -97,7 +101,9 @@ void Camera::stop(){
  */
 void Camera::start(){
     //Don't stop the droplet detection
-    if(mode < 2){
+    if(mode == 0){
+        setMode(1);
+    } else if (mode < 2) {
         setMode(1);
     }
 }
@@ -113,10 +119,15 @@ void Camera::dropletDetection(){
  * Grabs the current camera image
  */
 Mat Camera::grabImage() {
+    //cout << "Camera: Entering function 'grabImage()'" << endl;
     Mat newimage;
+    //cout << "Camera: Acquiring lock ..." << endl;
     imagelock.lock();
+    //cout << "Camera: Acquired lock ..." << endl;
     newimage = image.clone();
+    //cout << "Camera: Releasing lock ..." << endl;
     imagelock.unlock();
+    //cout << "Camera: Released lock ..." << endl;
     return newimage;
 }
 
@@ -127,43 +138,51 @@ Mat Camera::grabImage() {
 void Camera::run() {
     runAsThread( [&] () {
 
+        cout << "Camera: Thread opening capture device ..." << endl;
+        VideoCapture cap(videoDevice);
+        cout << "Camera: Thread opened capture device" << endl;
+        cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+        cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+
         //video_logger = new VideoLogger("exp",&cap);
 
 
-        while (true) {
+        while (mode > 0) {
             imagelock.lock();
-            bool success = cap->read(image); 
+            bool success = cap.read(image); 
+            Mat img = image.clone();
             imagelock.unlock();
 
-            if(mode > 0){
-                Mat img = image.clone();
+            if(mode > 1){
+                //Droplet detection
+                Droplet droplet = dropletdetector.detectDroplet(img);
+            cv::rectangle(img, cv::Point(droplet.minX, droplet.minY),
+                    cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0,
+                        255, 0));
 
-                if(mode > 1){
-                    //Droplet detection
-                    Droplet droplet = dropletdetector.detectDroplet(img);
-                cv::rectangle(img, cv::Point(droplet.minX, droplet.minY),
-                        cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0,
-                            255, 0));
-
-                }
-
-                // Log the image
-                //(*video_logger).Write(&img);
-
-                //Convert image to base64
-                vector<uchar> buff;//buffer for coding
-                vector<int> param = vector<int>(0);
-
-                //param[0]=CV_IMWRITE_JPEG_QUALITY;
-                //param[1]=95;//default(95) 0-100
-
-                imencode(".png", img, buff, param);
-
-                string base64 = base64_encode(&buff[0],buff.size());
-
-                //Send the images to the event
-                (*eventCallback)(eventName, base64);
             }
+
+            // Log the image
+            //(*video_logger).Write(&img);
+
+            //Convert image to base64
+            vector<uchar> buff;//buffer for coding
+            vector<int> param = vector<int>(0);
+
+            //param[0]=CV_IMWRITE_JPEG_QUALITY;
+            //param[1]=95;//default(95) 0-100
+
+            imencode(".png", img, buff, param);
+
+            string base64 = base64_encode(&buff[0],buff.size());
+
+            //Send the images to the event
+            (*eventCallback)(eventName, base64);
         }
+
+        cout << "Camera: Releasing the capture device ..." << endl;
+        cap.release();
+        //free(cap);
+        cout << "Camera: Released the capture device" << endl;
     });
 }

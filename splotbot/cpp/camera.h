@@ -39,9 +39,8 @@ class Camera: public Component {
 
     private:
         VideoLogger *video_logger;
-        VideoCapture *cap;
+        //VideoCapture *cap;
         mutex imagelock;
-        string name;
         int mode;
         string eventName;
         Mat image;
