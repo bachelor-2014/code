@@ -1,11 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include "mendel.h"
 
-using namespace std;
+Mendel::Mendel(string socketPath):socketPath(socketPath){}
 
-void runGCode(string s){
+void Mendel::runGCode(string s){
     ofstream out;
-    out.open("data/mendel.sock",std::ofstream::out | std::ofstream::app);
+    out.open(socketPath,std::ofstream::out | std::ofstream::app);
 
     out << s << endl;
 

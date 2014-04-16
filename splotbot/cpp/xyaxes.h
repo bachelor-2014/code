@@ -4,6 +4,7 @@
 #include <string>
 #include "instructionbuffer.h"
 #include "component.h"
+#include "mendel.h"
 
 using namespace std;
 
@@ -34,6 +35,8 @@ class XYAxes: public Component {
 
         int currentPositionX;
         int currentPositionY;
+
+        Mendel *mendel;
 };
 
 #endif
