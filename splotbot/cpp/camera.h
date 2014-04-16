@@ -44,6 +44,7 @@ class Camera: public Component {
         string name;
         int mode;
         string eventName;
+        Mat image;
 
         /**
          * Droplet detection variables

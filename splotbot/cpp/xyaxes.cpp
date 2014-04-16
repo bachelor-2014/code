@@ -9,7 +9,7 @@ using namespace std;
 /**
  * SingleStepperMotor constructor
  */
-XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit): 
+XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit, string mendelSocket): 
     xPort(xPort), yPort(yPort),
     xLimitSwitchPort(xLimitSwitchPort),
     yLimitSwitchPort(yLimitSwitchPort), xStepLimit(xStepLimit),
@@ -24,7 +24,7 @@ XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort,
     cout << "xLimit" << xStepLimit << endl;
     cout << "yLimit" << yStepLimit << endl;
 
-    mendel = new Mendel("/tmp/mendel.sock");
+    mendel = new Mendel(mendelSocket);
     mendel->runGCode("G91");
 }
 

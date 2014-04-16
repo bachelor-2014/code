@@ -39,9 +39,6 @@ class Splotbot {
         vector<Component *> components;
         vector<function<void(InstructionBuffer *)>> actions;
         function<void(string,string)> eventCallback;
-
-        string configFile;
-        string mendelSocket;
 };
 
 #endif

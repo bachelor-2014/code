@@ -45,20 +45,18 @@ angular.module('clientApp')
       // Add an on-click event to the canvas, logging the location
       // of the mouse click in the console
       canvas.addEventListener("click",function(e){
-        console.log("Click on canvas",
-          $scope.elementInfo.name,
-          "on(",e.pageX-canvasPosition.x,",",
-          e.pageY-canvasPosition.y,")");
-
           var scale_x = img.width / context.canvas.clientWidth;
           var scale_y = img.height / context.canvas.clientHeight;
 
           var click_x = e.pageX-canvasPosition.x;
           var click_y = e.pageY-canvasPosition.y;
+          var click = getCursorPosition(e,context.canvas);
 
-          var x = Math.floor(click_x * scale_x);
-          var y = Math.floor(click_y * scale_y);
+          var x = Math.floor(click.x * scale_x);
+          var y = Math.floor(click.y * scale_y);
 
+          console.log("Clicked the canvas: ", click);
+          console.log("Clicked on the image: ",x,y);
           splotService.postInput([$scope.elementInfo.start_action+1,x,y]);
 
 
@@ -91,4 +89,24 @@ angular.module('clientApp')
         var img_data = 'data:image/png;base64,'+data;
         img.src = img_data;
     }
-  })
+  });
+
+function getCursorPosition(e,canvas) {
+    var x;
+    var y;
+    if (e.pageX != undefined && e.pageY != undefined) {
+    x = e.pageX;
+    y = e.pageY;
+    }
+    else {
+    x = e.clientX + document.body.scrollLeft +
+            document.documentElement.scrollLeft;
+    y = e.clientY + document.body.scrollTop +
+            document.documentElement.scrollTop;
+    }
+    
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
+
+    return { x:x, y:y };
+}

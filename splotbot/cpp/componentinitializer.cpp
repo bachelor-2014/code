@@ -63,7 +63,7 @@ Component* createCamera(cJSON * document) {
 /**
  * createXYAxis creates a XYAxis from JSON
  */
-Component* createXYAxes(cJSON * document) {
+Component* createXYAxes(cJSON * document,string mendelSocket) {
     //Get the name
     string name(cJSON_GetObjectItem(document, "name")->valuestring);
 
@@ -78,7 +78,7 @@ Component* createXYAxes(cJSON * document) {
     int yStepLimit = cJSON_GetObjectItem(parameters, "y_step_limit")->valueint;
 
     //Create the xyaxis
-    return new XYAxes(name,xPort,yPort, xLimitSwitchPort, yLimitSwitchPort, xStepLimit,yStepLimit);
+    return new XYAxes(name,xPort,yPort, xLimitSwitchPort, yLimitSwitchPort, xStepLimit,yStepLimit, mendelSocket);
 }
 
 /**
@@ -113,9 +113,9 @@ Component* createScanner(cJSON * document, vector<Component *> components) {
 /**
  * getConfigDocument gets the JSON config document
  */
-cJSON* getConfigDocument() {
+cJSON* getConfigDocument(string configFilename) {
     //Load config file
-    ifstream in("../basic_config.json");
+    ifstream in(configFilename);
     string contents(
             (istreambuf_iterator<char>(in)), 
             istreambuf_iterator<char>()
@@ -128,11 +128,11 @@ cJSON* getConfigDocument() {
 /**
  * initilizeComponents initilizes the components from the config file
  */
-vector<Component *> initializeComponents(function<void(string,string)> *callback) {
+vector<Component *> initializeComponents(function<void(string,string)> *callback, string configFilename, string mendelSocket) {
     //Load components
     vector<Component *> components;
 
-    cJSON *document = getConfigDocument();
+    cJSON *document = getConfigDocument(configFilename);
 
     //Run throught components
     for (int i = 0 ; i < cJSON_GetArraySize(document) ; i++) {
@@ -154,7 +154,7 @@ vector<Component *> initializeComponents(function<void(string,string)> *callback
             (*c).registerCallback(callback);
             components.push_back(c);
         } else if (type.compare("XYAxes") == 0) {
-            Component *c = createXYAxes(componentDocument);
+            Component *c = createXYAxes(componentDocument,mendelSocket);
             (*c).registerCallback(callback);
             components.push_back(c);
         } else if (type.compare("Scanner") == 0) {
