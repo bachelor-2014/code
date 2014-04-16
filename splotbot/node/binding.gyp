@@ -5,7 +5,7 @@
       "sources":
       ["addon.cc","splotbot_wrapper.cc",
 "../cpp/libraries/cJSON/cJSON.cpp","../cpp/utils/base64.cpp","../cpp/utils/threading.cpp",
-"../cpp/computer_vision/imagestitcher.cpp","../cpp/computer_vision/featuresimagestitcher.cpp",
+"../cpp/computer_vision/imagestitcher.cpp","../cpp/computer_vision/featuresimagestitcher.cpp", "../cpp/scanner.cpp",
 "../cpp/component.cpp","../cpp/mendel.cpp",
 "../cpp/instructionbuffer.cpp","../cpp/camera.cpp","../cpp/singlesteppermotor.cpp","../cpp/rcservomotor.cpp","../cpp/xyaxes.cpp",
 "../cpp/scanner.cpp",
