@@ -13,8 +13,8 @@
         "parameters": {
             "x_port": "E",
             "y_port": "Z",
-            "x_limit_switch_port": "J9",
-            "y_limit_switch_port": "J11",
+            "x_limit_switch_port": "J11",
+            "y_limit_switch_port": "J9",
             "x_step_limit": 79,
             "y_step_limit": 58
         }
