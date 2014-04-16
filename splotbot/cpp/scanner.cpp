@@ -41,7 +41,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     ImageStitcher *stitcher;
     switch (stitchingAlgorithm) {
         default: {
-            FeaturesImageStitcher fst(camera->videoDevice);
+            FeaturesImageStitcher fst(camera);
             stitcher = &fst;
         }
         break;
