@@ -29,7 +29,7 @@ using namespace std;
  */
 class Splotbot {
     public:
-        Splotbot();
+        Splotbot(string configFile, string mendelSocket);
         void executeInstructions(int numberOfInstructions, int instructions[]);
         void registerCallback(function<void(string,string)> callback);
         void run();
@@ -39,6 +39,9 @@ class Splotbot {
         vector<Component *> components;
         vector<function<void(InstructionBuffer *)>> actions;
         function<void(string,string)> eventCallback;
+
+        string configFile;
+        string mendelSocket;
 };
 
 #endif
