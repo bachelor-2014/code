@@ -113,11 +113,11 @@ void Camera::dropletDetection(){
  * Grabs the current camera image
  */
 Mat Camera::grabImage() {
-    Mat image;
+    Mat newimage;
     imagelock.lock();
-    cap->read(image);
+    newimage = image.clone();
     imagelock.unlock();
-    return image;
+    return newimage;
 }
 
 /**
@@ -131,21 +131,24 @@ void Camera::run() {
 
 
         while (true) {
+            imagelock.lock();
+            bool success = cap->read(image); 
+            imagelock.unlock();
+
             if(mode > 0){
-                //Pull image
-                Mat image = grabImage();
+                Mat img = image.clone();
 
                 if(mode > 1){
                     //Droplet detection
-                    Droplet droplet = dropletdetector.detectDroplet(image);
-                cv::rectangle(image, cv::Point(droplet.minX, droplet.minY),
+                    Droplet droplet = dropletdetector.detectDroplet(img);
+                cv::rectangle(img, cv::Point(droplet.minX, droplet.minY),
                         cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0,
                             255, 0));
 
                 }
 
                 // Log the image
-                //(*video_logger).Write(&image);
+                //(*video_logger).Write(&img);
 
                 //Convert image to base64
                 vector<uchar> buff;//buffer for coding
@@ -154,7 +157,7 @@ void Camera::run() {
                 //param[0]=CV_IMWRITE_JPEG_QUALITY;
                 //param[1]=95;//default(95) 0-100
 
-                imencode(".png", image, buff, param);
+                imencode(".png", img, buff, param);
 
                 string base64 = base64_encode(&buff[0],buff.size());
 
