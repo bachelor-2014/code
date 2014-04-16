@@ -38,14 +38,22 @@ Scanner::Scanner(string name, Camera *camera, XYAxes *xyaxes): camera(camera), x
  */
 void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, int fromY, int toX, int toY, int stitchingAlgorithm) {
     // Create the image stitcher
-    ImageStitcher *stitcher;
-    switch (stitchingAlgorithm) {
-        default: {
-            FeaturesImageStitcher fst(camera);
-            stitcher = &fst;
-        }
-        break;
-    }
+    //ImageStitcher *stitcher;
+    //switch (stitchingAlgorithm) {
+    //    default: {
+    //        FeaturesImageStitcher fst(camera);
+    //        stitcher = &fst;
+    //    }
+    //    break;
+    //}
+    
+    FeaturesImageStitcher stitcher(camera);
+
+    // Stop the camera
+    //TODO is this needed?
+    cout << "Scanner: Stopping the camera ..." << endl;
+    camera->stop();
+    cout << "Scanner: Stopped the camera" << endl;
 
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
@@ -59,13 +67,21 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             usleep(sleepBetweenImages);
 
             // Grab the image
-            stitcher->grabImage(x, y);
+            stitcher.grabImage(x, y);
         }
     }
+
+    // Start the camera
+    //TODO is this needed?
+    //cout << "Scanner: Starting the camera ..." << endl;
+    //camera->start();
+    //cout << "Scanner: Started the camera" << endl;
     
     // Stitch the images together
     cv::Mat stitchedImage;
-    stitchedImage = stitcher->stitch();
+    cout << "Scanner: Stitching grabbed images ..." << endl;
+    stitchedImage = stitcher.stitch();
+    cout << "Scanner: Stitched grabbed images" << endl;
 
     // Convert the image to base64
     vector<uchar> buff;
@@ -74,7 +90,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     string base64 = base64_encode(&buff[0],buff.size());
 
     // Send the image as an event
-    (*eventCallback)(name, base64);
+    //(*eventCallback)(name, base64);
+    (*eventCallback)("image_data", base64);
 }
 
 /**
