@@ -4,6 +4,8 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 
+#include "../camera.h"
+
 using namespace std;
 
 typedef struct {
@@ -17,16 +19,17 @@ typedef struct {
  * various image stitching algorithm implementations.
  *
  * Image stitching is achieved through the following methods:
- * 
+ * grabImage:   Grabs an image an stores it
+ * stitch:      Stitches the grabbed images and returns the results
  */
 class ImageStitcher {
     public:
-        ImageStitcher(int videoDevice);
+        ImageStitcher(Camera *camera);
         void grabImage(int positionX, int positionY);
         virtual cv::Mat stitch() {};
 
     protected:
-        int videoDevice;
+        Camera *camera;
         vector<GrabbedImage> grabbedImages;
 };
 
