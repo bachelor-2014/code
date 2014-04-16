@@ -30,7 +30,7 @@ cv::Mat FeaturesImageStitcher::stitch() {
 
     // Error handling
     if (status != cv::Stitcher::Status::OK) {
-        throw runtime_error("FeaturesImageStitcher failed to stitch images");
+        //throw runtime_error("FeaturesImageStitcher failed to stitch images");
     }
 
     return resultImage;

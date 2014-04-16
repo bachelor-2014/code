@@ -17,8 +17,11 @@ using namespace cv;
  */
 Camera::Camera(string name, int videoDevice, string eventName): videoDevice(videoDevice), eventName(eventName) {
     this->name = name;
-    mode = 1;
+    setMode(1);
     tolerance = 20;
+    cap = new VideoCapture(videoDevice);
+    cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
     run();
 }
 
@@ -33,11 +36,11 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
     // 0 - Camera Off
     // 1 - Camera On
     // 2 - Droplet detection
-    function<void(InstructionBuffer *)> setMode = [&](InstructionBuffer *buffer) -> void {
+    function<void(InstructionBuffer *)> setCameraMode = [&](InstructionBuffer *buffer) -> void {
         //Get mode
         int instr[1];
         (*buffer).popInstructions(1, instr);
-        mode = instr[0];
+        setMode(instr[0]);
         cout << "Camera (" << name << ") mode set to " << mode << endl;
     };
 
@@ -63,17 +66,59 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         int x = instr[0];
         int y = instr[0];
 
+        Mat image = grabImage();
         dropletdetector.colorInterval =
             computeColorIntervalFromSelection(image, tolerance,x,y);
 
         //Stop the droplet selection
     };
 
-    (*actions).push_back(setMode);
+    (*actions).push_back(setCameraMode);
     (*actions).push_back(dropletSelector);
     (*actions).push_back(setDropletVariables);
 }
 
+/**
+ * Sets the current camera mode
+ */
+void Camera::setMode(int m){
+    mode = m;
+}
+
+/**
+ * Stops the camera, making it no longer grabbing new images
+ */
+void Camera::stop(){
+    setMode(0);
+}
+
+/**
+ * Starts the camera
+ */
+void Camera::start(){
+    //Don't stop the droplet detection
+    if(mode < 2){
+        setMode(1);
+    }
+}
+
+/**
+ * Start the droplet detection
+ */
+void Camera::dropletDetection(){
+    setMode(2);
+}
+
+/**
+ * Grabs the current camera image
+ */
+Mat Camera::grabImage() {
+    Mat image;
+    imagelock.lock();
+    cap->read(image);
+    imagelock.unlock();
+    return image;
+}
 
 /**
  * The run functions
@@ -81,24 +126,14 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
  */
 void Camera::run() {
     runAsThread( [&] () {
-        //VideoCapture
-        VideoCapture cap(videoDevice);
-        cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-        cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
-        video_logger = new VideoLogger("exp",&cap);
+        //video_logger = new VideoLogger("exp",&cap);
 
 
         while (true) {
             if(mode > 0){
                 //Pull image
-                bool success = cap.read(image);
-
-                if (!success)
-                {
-                     cout << "ERROR: Cannot read a frame from video device: " << videoDevice << endl;
-                     break;
-                }
+                Mat image = grabImage();
 
                 if(mode > 1){
                     //Droplet detection
@@ -110,7 +145,7 @@ void Camera::run() {
                 }
 
                 // Log the image
-                (*video_logger).Write(&image);
+                //(*video_logger).Write(&image);
 
                 //Convert image to base64
                 vector<uchar> buff;//buffer for coding
