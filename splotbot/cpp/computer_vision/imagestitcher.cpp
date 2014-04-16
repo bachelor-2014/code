@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <opencv2/opencv.hpp>
 
 #include "imagestitcher.h"
@@ -31,7 +32,7 @@ void ImageStitcher::grabImage(int positionX, int positionY) {
     if (!success) {
         stringstream ss;
         ss << "ImageStitcher failed to grab image from device " << videoDevice;
-        //throw runtime_error(ss.str());
+        throw runtime_error(ss.str());
     }
 
     cap.release();
