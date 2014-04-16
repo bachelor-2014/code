@@ -25,9 +25,8 @@ using namespace std;
 class DropletDetector {
     public:
         DropletDetector(int minArea, int maxArea, ColorInterval colorInterval, int structuringElementSize);
+        DropletDetector();
         Droplet detectDroplet(cv::Mat image);
-
-    private:
         int minArea;
         int maxArea;
         int structuringElementSize;

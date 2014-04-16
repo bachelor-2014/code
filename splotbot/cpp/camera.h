@@ -2,9 +2,11 @@
 #define CAMERA_H 
 
 #include <string>
+#include <mutex>
 #include "instructionbuffer.h"
 #include "component.h"
 #include "logging/videologger.h"
+#include "computer_vision/dropletdetector.h"
 
 using namespace std;
 
@@ -17,19 +19,43 @@ using namespace std;
  *
  * Use the registerActions(*actions) to register the actions performed by the camera:
  * Mode [1]: Sets the mode of the camera
+ * DropletSelector [2]: Selected the droplet using the given x,y coordinates
+ * SetDropletVariables [4]: Sets the droplet variables with minSets the droplet
+ *      variables with min area, max area, structuring element size and tolerance
  *
  * The Camera will automatically pull images on construction 
  */
 class Camera: public Component {
     public:
         Camera(string name, int videoDevice, string eventName);
-        void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
         int videoDevice;
+        void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
+        void setMode(int m);
+        void stop();
+        void start();
+        void dropletDetection();
+        Mat grabImage();
+        
 
     private:
         VideoLogger *video_logger;
+        VideoCapture *cap;
+        mutex imagelock;
+        string name;
+        int mode;
         string eventName;
+
+        /**
+         * Droplet detection variables
+         */
+        DropletDetector dropletdetector;
+        int tolerance;
+
+        /**
+         * Internal Methods
+         */
         void run();
+        void updateDropletDetector();
 };
 
 #endif
