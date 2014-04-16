@@ -28,13 +28,13 @@ ColorInterval computeColorIntervalFromSelection(cv::Mat image, int tolerance, in
     cv::Vec3b pixel = hsvImage.at<cv::Vec3b>(y, x);
     int minH = ((int)pixel[0]) - tolerance;
     int minS = ((int)pixel[1]) - tolerance;
-    //int minV = ((int)pixel[2]) - tolerance;
-    int minV = 0;
+    int minV = ((int)pixel[2]) - tolerance;
+    //int minV = 0;
 
     int maxH = ((int)pixel[0]) + tolerance;
     int maxS = ((int)pixel[1]) + tolerance;
-    //int maxV = ((int)pixel[2]) + tolerance;
-    int maxV = 255;
+    int maxV = ((int)pixel[2]) + tolerance;
+    //int maxV = 255;
 
     //// DEBUG: Print values
     //cout << "ColorPicker interval computed:" << endl;
