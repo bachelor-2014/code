@@ -1,0 +1,30 @@
+[
+    {
+        "type": "Camera",
+        "name": "Camera",
+        "parameters": {
+            "video_device": 0,
+            "event_name": "image_data"
+        }
+    },
+    {
+        "type": "XYAxes",
+        "name": "BottomAxes",
+        "parameters": {
+            "x_port": "X",
+            "y_port": "Y",
+            "x_limit_switch_port": "J11",
+            "y_limit_switch_port": "J9",
+            "x_step_limit": 1000000,
+            "y_step_limit": 1000000
+        }
+    },
+    {
+        "type": "Scanner",
+        "name": "Scanner",
+        "parameters": {
+            "camera_name": "Camera",
+            "xyaxes_name": "BottomAxes"
+        }
+    }
+]
