@@ -9,16 +9,15 @@ using namespace cv;
 /**
  * Camera constructor
  */
-CameraCalibrator::CameraCalibrator(string name) {
-}
+CameraCalibrator::CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes) {}
 
 /**
  * registerActions registeres the actions of the Camera unto an actions buffer
  */
 void CameraCalibrator::registerActions(vector<function<void(InstructionBuffer *)>> *actions) {
 
-    function<void(InstructionBuffer *)> doStuff = [&](InstructionBuffer *buffer) -> void {
+    function<void(InstructionBuffer *)> calibrate = [&](InstructionBuffer *buffer) -> void {
     };
 
-    (*actions).push_back(doStuff);
+    (*actions).push_back(calibrate);
 }

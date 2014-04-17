@@ -6,6 +6,7 @@
 #include "rcservomotor.h"
 #include "camera.h"
 #include "scanner.h"
+#include "cameracalibrator.h"
 #include "libraries/cJSON/cJSON.h"
 
 using namespace std;
@@ -94,7 +95,7 @@ Component* createScanner(cJSON * document, vector<Component *> components) {
     string xyaxesName(cJSON_GetObjectItem(parameters, "xyaxes_name")->valuestring);
 
     //Get the referenced components by their name
-    Camera* camera;
+    Camera *camera;
     XYAxes *xyaxes;
 
     for (auto it = components.begin(); it != components.end(); ++it) {
@@ -111,6 +112,45 @@ Component* createScanner(cJSON * document, vector<Component *> components) {
 }
 
 /**
+ * createCameraCalibrator creates a CameraCalibrator from JSON
+ */
+Component* createCameraCalibrator(cJSON * document, vector<Component *> components) {
+    //Get the name
+    string name(cJSON_GetObjectItem(document, "name")->valuestring);
+
+    //Get the parameters
+    cJSON *parameters = cJSON_GetObjectItem(document, "parameters");
+    string xyaxesName = getStringParam(parameters, "xyaxes_name");
+    string cameraName = getStringParam(parameters, "camera_name");
+    string configFile = getStringParam(parameters, "config_file");
+
+    //Get the referenced components based on their name
+    Camera *camera;
+    XYAxes *xyaxes;
+
+    for (auto it = components.begin(); it != components.end(); ++it) {
+        if (cameraName.compare((*it)->name) == 0) {
+            camera = (Camera *) (*it);
+        }
+        if (xyaxesName.compare((*it)->name) == 0) {
+            xyaxes = (XYAxes *) (*it);
+        }
+    }
+
+    if(camera == NULL){
+        cerr << "Camera component not found for calibrator" << endl;
+        exit(1);
+    }
+
+    if(xyaxes == NULL){
+        cerr << "XYAxes component not found for calibrator" << endl;
+        exit(1);
+    }
+
+    return new CameraCalibrator(name,camera,xyaxes);
+}
+
+/**
  * getConfigDocument gets the JSON config document
  */
 cJSON* getConfigDocument(string configFilename) {
@@ -124,6 +164,15 @@ cJSON* getConfigDocument(string configFilename) {
     //Parse the JSON
     return cJSON_Parse(contents.c_str());
 }
+
+/**
+ * Extract a string value corresponding to key in 
+ * the parameters in the config
+ */
+string getStringParam(cJSON *parameters,string key){
+    return cJSON_GetObjectItem(parameters, key.c_str())->valuestring;
+}
+
 
 /**
  * initilizeComponents initilizes the components from the config file
