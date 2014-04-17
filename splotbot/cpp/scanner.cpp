@@ -90,8 +90,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     string base64 = base64_encode(&buff[0],buff.size());
 
     // Send the image as an event
-    //(*eventCallback)(name, base64);
-    (*eventCallback)("image_data", base64);
+    (*eventCallback)(name, base64);
 }
 
 /**

@@ -12,9 +12,4 @@ angular.module('clientApp')
         console.log(arri);
         splotService.postInput(arri);
     };
-    $scope.keyPressEvent = function(event) {
-      if(event.keyCode == 13) {
-          $scope.sendIntegerCode();
-      }
-    };
   })

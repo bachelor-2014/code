@@ -1,11 +1,51 @@
 <div class="control-box col-md-4" ng-controller="ScannerCtrl" ng-init="init(elementInfo)">
   <h1>{{elementInfo.name}}</h1>
-  <label>Stepsize<input type="number"></input></label>
-  <p>start (x,y) = </p>
-      <input type="number" class="col-md-4"></input>
-      <input type="number" class="col-md-4"></input>
-        <br />
-      <p>stop (x,y) = </p>
-      <input type="number" class="col-md-4"></input>
-      <input type="number" class="col-md-4"></input>
+  <form class="form" role="form" ng-submit="scannersubmit()">
+      <img ng-src="{{scannedimg}}" ng-show="scannedimg"></img>
+      <div class="form-group">
+          <label>Step Size</label>
+          <input type="text" class="form-control" ng-model="scanner.stepsize" required>
+          </input>
+      </div>
+      <div class="form-group">
+          <label>Sleep between images</label>
+          <input type="text" class="form-control" ng-model="scanner.sleep" required>
+          </input>
+      </div>
+      <div class="form-group">
+          <label>Start(x,y)</label>
+          <input type="text" class="form-control"
+          ng-model="scanner.start.x" required></input>
+          <input type="text" class="form-control"
+          ng-model="scanner.start.y" required></input>
+      </div>
+      <div class="form-group">
+          <label>Stop(x,y)</label>
+          <input type="text" class="form-control"
+          ng-model="scanner.stop.x" required></input>
+          <input type="text" class="form-control"
+          ng-model="scanner.stop.y" required></input>
+      </div>
+      <!-- Algorithm  0: indbygget, 1: position based-->
+      <div class="form-group">
+          <label>Algorithm</label>
+          <div class="radio">
+              <label>
+                  <input type="radio" ng-model="scanner.algorithm"
+                  value="0"></input>
+                  OpenCV Image Stitching
+              </label>
+          </div>
+          <div class="radio">
+              <label>
+                  <input type="radio" ng-model="scanner.algorithm"
+                  value="1"></input>
+                  Position Based Image Stitching
+              </label>
+          </div>
+      </div>
+      <div class="form-group">
+          <input type="submit" class="form-control btn btn-default"></input>
+      </div>
+  </form>
 </div>
