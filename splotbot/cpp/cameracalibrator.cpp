@@ -9,7 +9,10 @@ using namespace cv;
 /**
  * Camera constructor
  */
-CameraCalibrator::CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes) {}
+CameraCalibrator::CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes) {
+    cout    << "Instantiating calibrator " << name << " With camera "
+            << camera->name << " and xyaxes " << xyaxes->name << endl;
+}
 
 /**
  * registerActions registeres the actions of the Camera unto an actions buffer

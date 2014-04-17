@@ -210,6 +210,10 @@ vector<Component *> initializeComponents(function<void(string,string)> *callback
             Component *c = createScanner(componentDocument, components);
             (*c).registerCallback(callback);
             components.push_back(c);
+        } else if (type.compare("CameraCalibrator") == 0) {
+            Component *c = createCameraCalibrator(componentDocument, components);
+            (*c).registerCallback(callback);
+            components.push_back(c);
         } else {
             cout << "Unknown component " << type << "found" << endl;
         }
