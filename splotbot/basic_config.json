@@ -11,8 +11,8 @@
         "type": "XYAxes",
         "name": "BottomAxes",
         "parameters": {
-            "x_port": "E",
-            "y_port": "Z",
+            "x_port": "X",
+            "y_port": "Y",
             "x_limit_switch_port": "J11",
             "y_limit_switch_port": "J9",
             "x_step_limit": 79,

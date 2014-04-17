@@ -21,9 +21,6 @@ XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort,
     currentPositionX = 0;
     currentPositionY = 0;
 
-    cout << "xLimit" << xStepLimit << endl;
-    cout << "yLimit" << yStepLimit << endl;
-
     mendel = new Mendel(mendelSocket);
     mendel->runGCode("G91");
 }
