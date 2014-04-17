@@ -27,7 +27,12 @@ angular.module('clientApp')
             $scope.scanner.algorithm
         ];
 
-        console.log(instr);
-        splotService.postInput(instr);
+        var instri = [];
+        for(var i = 0; i<instr.length; i++){
+            instri.push(parseInt(instr[i])); 
+        }
+
+        console.log(instri);
+        splotService.postInput(instri);
     };
   });
