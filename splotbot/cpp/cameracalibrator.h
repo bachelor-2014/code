@@ -1,33 +1,19 @@
-#ifndef CAMERA_H
-#define CAMERA_H 
+#ifndef CAMERACALIBRATOR_H
+#define CAMERACALIBRATOR_H 
 
 #include <string>
-#include <mutex>
 #include "instructionbuffer.h"
 #include "component.h"
-#include "logging/videologger.h"
-#include "computer_vision/dropletdetector.h"
+#include "camera.h"
+#include "xyaxes.h"
 
 using namespace std;
 
 /**
- * Camera Component class handles a system camera
- * Is constructed with the following variables:
- * name: Name of the camera
- * videoDevice: The video device id (eg. 0, 1 etc.)
- * eventName: Name of the event used by the camera to send images
- *
- * Use the registerActions(*actions) to register the actions performed by the camera:
- * Mode [1]: Sets the mode of the camera
- * DropletSelector [2]: Selected the droplet using the given x,y coordinates
- * SetDropletVariables [4]: Sets the droplet variables with minSets the droplet
- *      variables with min area, max area, structuring element size and tolerance
- *
- * The Camera will automatically pull images on construction 
  */
 class CameraCalibrator: public Component {
     public:
-        CameraCalibrator(string name);
+        CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
 };
 

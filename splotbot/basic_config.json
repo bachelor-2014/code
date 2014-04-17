@@ -26,5 +26,14 @@
             "camera_name": "Camera",
             "xyaxes_name": "BottomAxes"
         }
+    },
+    {
+        "type": "CameraCalibrator",
+        "name": "Calibri",
+        "parameters": {
+            "xyaxes_name": "BottomAxes",
+            "camera_name": "Camera",
+            "config_file":"data/camera_calibration.xml"
+        }
     }
 ]
