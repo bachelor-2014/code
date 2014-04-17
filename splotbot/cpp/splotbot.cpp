@@ -17,6 +17,7 @@ Splotbot::Splotbot(string configFile, string mendelSocket) {
         cout << "Default callback. You need to provide a better one." << endl;
     });
 
+    cout << "EvoBot intializing components ..." << endl;
     components = initializeComponents(&eventCallback,configFile,mendelSocket);
 
     cout << "Number of components in Splotbot: " << components.size() << endl;

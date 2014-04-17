@@ -17,12 +17,12 @@ using namespace cv;
  */
 Camera::Camera(string name, int videoDevice, string eventName): videoDevice(videoDevice), eventName(eventName) {
     this->name = name;
-    setMode(1);
+    setMode(0);
     tolerance = 20;
     //cap = new VideoCapture(videoDevice);
     //cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
     //cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-    run();
+    //run();
 }
 
 /**

@@ -2,7 +2,7 @@
 
 set -x
 socket="/tmp/mendel.sock"
-config="../basic_config"
+config="../basic_config.json"
 mendel_cmd="/usr/bin/mendel.elf"
 
 (cd node ; echo "" > $socket)
