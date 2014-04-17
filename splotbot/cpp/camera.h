@@ -35,7 +35,6 @@ class Camera: public Component {
         void start();
         void dropletDetection();
         Mat grabImage();
-        
 
     private:
         VideoLogger *video_logger;

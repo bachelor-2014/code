@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include <stdio.h>
 
 #include "calibrator.h"
 
@@ -98,4 +99,12 @@ void Calibrator::getCalibrationFromFile(cv::Mat *distortionCoeffs,
     fs["distortion_coefficients"] >> *distortionCoeffs;
     fs["intrinsic_matrix"] >> *intrinsicMatrix;
 
+}
+
+bool Calibrator::isCalibrated(){
+    return access(configFile.c_str(), F_OK) != -1;
+}
+
+bool Calibrator::unCalibrate(){
+    return remove(configFile.c_str()) != -1;
 }

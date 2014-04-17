@@ -19,6 +19,9 @@ class Calibrator {
         void getCalibrationFromFile(cv::Mat *distortionCoeffs,
                 cv::Mat *intrinsicMatrix);
 
+        bool isCalibrated();
+        bool unCalibrate();
+
     private:
         string configFile;
 };
