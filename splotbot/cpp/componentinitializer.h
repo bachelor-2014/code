@@ -12,6 +12,6 @@ using namespace std;
  * Can be used with Lambda or function:
  *      initilizeComponents([](string eventName, string data){...});
  */
-vector<Component *> initializeComponents(function<void(string,string)> *callback);
+vector<Component *> initializeComponents(function<void(string,string)> *callback, string configFilename, string mendelSocket);
 
 #endif

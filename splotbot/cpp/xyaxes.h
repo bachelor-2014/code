@@ -4,6 +4,7 @@
 #include <string>
 #include "instructionbuffer.h"
 #include "component.h"
+#include "mendel.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ using namespace std;
  */
 class XYAxes: public Component {
     public:
-        XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit);
+        XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit, string mendelSocket);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
         void home();
         void move(int xPosition, int yPosition);
@@ -34,6 +35,8 @@ class XYAxes: public Component {
 
         int currentPositionX;
         int currentPositionY;
+
+        Mendel *mendel;
 };
 
 #endif

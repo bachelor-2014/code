@@ -8,13 +8,17 @@ using namespace std;
 /**
  * Splotbot constructor
  */
-Splotbot::Splotbot(void) {
+Splotbot::Splotbot(string configFile, string mendelSocket) {
+
+    cout << "Splotbot starting with " << endl << "config: " << configFile << endl << "Mendel socket: " << mendelSocket << endl;
+
     // Register empty callback
     registerCallback([] (string name, string data) -> void {
         cout << "Default callback. You need to provide a better one." << endl;
     });
 
-    components = initializeComponents(&eventCallback);
+    cout << "EvoBot intializing components ..." << endl;
+    components = initializeComponents(&eventCallback,configFile,mendelSocket);
 
     cout << "Number of components in Splotbot: " << components.size() << endl;
 

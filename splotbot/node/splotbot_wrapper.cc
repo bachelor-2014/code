@@ -15,7 +15,7 @@ Persistent<Function> SplotbotWrapper::constructor;
 Persistent<String> SplotbotWrapper::callback;
 Persistent<Object> SplotbotWrapper::module;
 
-Splotbot splotbot;
+Splotbot *splotbot;
 
 SplotbotWrapper::SplotbotWrapper() {
 }
@@ -50,14 +50,23 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
 
   module = Persistent<Object>::New(exports);
 
-  splotbot.registerCallback(eventCallback);
-
-  // Start the splotbot. 
-  splotbot.run();
+  cout << "IN INTI!!!" << endl;
 }
 
 Handle<Value> SplotbotWrapper::New(const Arguments& args) {
   HandleScope scope;
+
+
+  v8::String::Utf8Value param1(args[0]->ToString());
+  string configFile = string(*param1);
+
+  v8::String::Utf8Value param2(args[1]->ToString());
+  string mendelSocket = string(*param2);
+
+  // Make the splotbot.
+  splotbot = new Splotbot(configFile,mendelSocket);
+  splotbot->registerCallback(eventCallback);
+  splotbot->run();
 
   if (args.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
@@ -96,7 +105,7 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
     int *arr = &v[0];
 
     // Perform the instructions
-    splotbot.executeInstructions(length,arr);
+    splotbot->executeInstructions(length,arr);
 
     // Return 0
     return scope.Close(Number::New(0));

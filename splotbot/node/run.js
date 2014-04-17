@@ -11,6 +11,13 @@ var express = require('express'), // Web server
     // Bind socket.io. Logging is disabled because it's very verbose
     io = require('socket.io').listen(server, { log: false });
 
+args = process.argv
+if(args.length < 4){
+    console.log("Please provide config file and mendel socket as command line arguments");
+    process.exit(1);
+}
+var splotbot = new addon.SplotbotWrapper(process.argv[2],process.argv[3]);
+
 /**
  * Read incoming request data
  */
@@ -48,8 +55,6 @@ app.use(allowCrossDomain);
 function eventCallback(name, data){
     io.sockets.emit(name, { data: data });
 }
-
-var splotbot = new addon.SplotbotWrapper();
 
 // Listen for socket connections
 io.sockets.on('connection', function (socket) {

@@ -3,14 +3,13 @@
 #include <unistd.h>
 
 #include "xyaxes.h"
-#include "mendel.h"
 
 using namespace std;
 
 /**
  * SingleStepperMotor constructor
  */
-XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit): 
+XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit, string mendelSocket): 
     xPort(xPort), yPort(yPort),
     xLimitSwitchPort(xLimitSwitchPort),
     yLimitSwitchPort(yLimitSwitchPort), xStepLimit(xStepLimit),
@@ -22,9 +21,8 @@ XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort,
     currentPositionX = 0;
     currentPositionY = 0;
 
-    cout << "xLimit" << xStepLimit << endl;
-    cout << "yLimit" << yStepLimit << endl;
-    runGCode("G91");
+    mendel = new Mendel(mendelSocket);
+    mendel->runGCode("G91");
 }
 
 /*
@@ -72,7 +70,7 @@ void XYAxes::home() {
         int xMove, yMove;
 
         // Send the move command
-        runGCode("G91");
+        mendel->runGCode("G91");
         while (true) {
             // Get whether or not the limit switches / end stops are pressed
             xPressed = isLimitSwitchPressed(xLimitSwitchPort);
@@ -97,7 +95,7 @@ void XYAxes::home() {
             stringstream command;
             command << "G1 " << xPort << xMove << " " << yPort << yMove << endl;
             string c = command.str();
-            runGCode(c);
+            mendel->runGCode(c);
             
             // If both axes are homed, stop the loop
             if (xHomed && yHomed) {
@@ -137,7 +135,7 @@ void XYAxes::move(int xPosition, int yPosition) {
     stringstream command;
     command << "G1 " << xPort << xSteps << " " << yPort << ySteps << endl;
     string c = command.str();
-    runGCode(c);
+    mendel->runGCode(c);
 }
 
 /**

@@ -38,16 +38,15 @@ Scanner::Scanner(string name, Camera *camera, XYAxes *xyaxes): camera(camera), x
  */
 void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, int fromY, int toX, int toY, int stitchingAlgorithm) {
     // Create the image stitcher
-    //ImageStitcher *stitcher;
-    //switch (stitchingAlgorithm) {
-    //    default: {
-    //        FeaturesImageStitcher fst(camera);
-    //        stitcher = &fst;
-    //    }
-    //    break;
-    //}
+    ImageStitcher *stitcher;
+    switch (stitchingAlgorithm) {
+        default: {
+            stitcher = new FeaturesImageStitcher(camera);
+        }
+        break;
+    }
     
-    FeaturesImageStitcher stitcher(camera);
+    //FeaturesImageStitcher stitcher(camera);
 
     // Stop the camera
     //TODO is this needed?
@@ -67,7 +66,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             usleep(sleepBetweenImages);
 
             // Grab the image
-            stitcher.grabImage(x, y);
+            stitcher->grabImage(x, y);
         }
     }
 
@@ -80,7 +79,14 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     // Stitch the images together
     cv::Mat stitchedImage;
     cout << "Scanner: Stitching grabbed images ..." << endl;
-    stitchedImage = stitcher.stitch();
+    //stitchedImage = stitcher->stitch();
+
+    if (FeaturesImageStitcher *i = dynamic_cast<FeaturesImageStitcher*>(stitcher)) {
+        stitchedImage = i->stitch();
+    } else {
+       throw runtime_error("Unknown image stitcher type detected");
+    }
+
     cout << "Scanner: Stitched grabbed images" << endl;
 
     // Convert the image to base64

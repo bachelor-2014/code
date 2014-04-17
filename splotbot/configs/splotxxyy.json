@@ -15,8 +15,8 @@
             "y_port": "Y",
             "x_limit_switch_port": "J11",
             "y_limit_switch_port": "J9",
-            "x_step_limit": 79,
-            "y_step_limit": 58
+            "x_step_limit": 1000000,
+            "y_step_limit": 1000000
         }
     },
     {

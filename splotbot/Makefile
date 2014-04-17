@@ -1,13 +1,10 @@
 default: compile_all
 
-compile_all: node cpp mendelf
+compile_all: node cpp
 
-code: cpp
+code:
 	(cd cpp ; make)
 
-node: node
+node: 
 	(cd node ; npm install)
 	(cd node ; make)
-
-mendelf: ../lib/BeBoPr
-	(cd ../lib/BeBoPr ; make)

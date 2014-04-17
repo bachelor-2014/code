@@ -20,6 +20,7 @@ class SplotbotWrapper : public node::ObjectWrap {
   double value_;
   static v8::Persistent<v8::String> callback;
   static v8::Persistent<v8::Object> module;
+
 };
 
 #endif

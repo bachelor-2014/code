@@ -18,7 +18,7 @@ using namespace std;
  */
 int main() {
     //Start splotbot
-    Splotbot splotbot;
+    Splotbot splotbot("../basic_config.json","/tmp/mendel.sock");
     splotbot.run();
 
     //Register a test callback to print
