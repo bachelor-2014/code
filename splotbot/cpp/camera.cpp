@@ -151,13 +151,13 @@ void Camera::run() {
         while (mode > 0) {
             imagelock.lock();
             bool success = cap.read(image); 
-            Mat imgClone = image.clone();
-            Mat img;
+            Mat img = image.clone();
             imagelock.unlock();
 
-            if(coefs && matrix){
-                cv::undistort(imgClone,img,*matrix,*coefs);
-            }
+            //if(coefs && matrix){
+            //    Mat imgClone = image.clone();
+            //    cv::undistort(imgClone,img,*matrix,*coefs);
+            //}
 
             if(mode > 1){
                 //Droplet detection
