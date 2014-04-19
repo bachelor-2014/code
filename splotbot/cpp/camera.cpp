@@ -24,7 +24,7 @@ Camera::Camera(string name, int videoDevice, string eventName): videoDevice(vide
     //cap = new VideoCapture(videoDevice);
     //cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
     //cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-    //run();
+    run();
 }
 
 /**
