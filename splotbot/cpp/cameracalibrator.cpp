@@ -70,7 +70,6 @@ void CameraCalibrator::calibrate(){
     }
 
     cap.release();
-
     cv::Mat coefs;
     cv::Mat matrix;
     calibrator->calibrate(calibrationImages,&coefs,&matrix);

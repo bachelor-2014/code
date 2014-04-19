@@ -7,6 +7,7 @@
 "../cpp/libraries/cJSON/cJSON.cpp","../cpp/utils/base64.cpp",
 "../cpp/utils/threading.cpp","../cpp/computer_vision/imagestitcher.cpp",
 "../cpp/computer_vision/featuresimagestitcher.cpp",
+"../cpp/computer_vision/featuresandpositionimagestitcher.cpp",
 "../cpp/computer_vision/calibrator.cpp",
 "../cpp/scanner.cpp",
 "../cpp/cameracalibrator.cpp",
