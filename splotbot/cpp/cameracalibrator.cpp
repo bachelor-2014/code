@@ -65,11 +65,11 @@ void CameraCalibrator::calibrate(){
                 ss << "CameraCalibrator failed to grab image from device " << camera->videoDevice;
                 throw runtime_error(ss.str());
             }
-            cap.release();
             calibrationImages.push_back(image);
         }
     }
 
+    cap.release();
     cv::Mat coefs;
     cv::Mat matrix;
     calibrator->calibrate(calibrationImages,&coefs,&matrix);

@@ -1,10 +1,10 @@
 default: compile_all
 
-compile_all: node cpp
+compile_all: node_files cpp_files
 
-code:
+cpp_files: cpp
 	(cd cpp ; make)
 
-node: 
+node_files: node
 	(cd node ; npm install)
 	(cd node ; make)

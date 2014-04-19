@@ -151,13 +151,12 @@ void Camera::run() {
         while (mode > 0) {
             imagelock.lock();
             bool success = cap.read(image); 
-            Mat img = image.clone();
+            Mat imgClone = image.clone();
+            Mat img;
             imagelock.unlock();
 
-            cout << "UNLOCKING" << endl;
             if(coefs && matrix){
-                cout << "INDISATORTING" << endl;
-                //cv::undistort(img,img,*matrix,*coefs);
+                cv::undistort(imgClone,img,*matrix,*coefs);
             }
 
             if(mode > 1){
