@@ -17,7 +17,9 @@ angular.module('clientApp')
               "SingleStepperMotor": 1,
               "RCServoMotor": 1,
               "Camera": 3,
-              "XYAxes": 2
+              "XYAxes": 2,
+              "Scanner": 1,
+              "CameraCalibrator": 2
             }
 
             var actions = 0;

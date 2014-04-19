@@ -24,6 +24,10 @@ class XYAxes: public Component {
         void home();
         void move(int xPosition, int yPosition);
 
+        // Current position
+        int positionX();
+        int positionY();
+
     private:
         string xPort;
         string yPort;

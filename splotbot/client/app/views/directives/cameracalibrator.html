@@ -1,0 +1,13 @@
+<!-- Control for the 'CameraCalibrator' component type -->
+<div class="control-box col-md-4" ng-controller="CameraCalibratorCtrl" ng-init="init(elementInfo)">
+  <h1>{{elementInfo.name}}</h1>
+  <p>CameraCalibrator</p>
+
+  <!-- Status -->
+  <div class="alert alert-warning" ng-hide="cameraCalibrated">Camera not calibrated</div>
+  <div class="alert alert-success" ng-show="cameraCalibrated">Camera calibrated</div>
+
+  <!-- Buttons -->
+  <button class="btn btn-default" ng-click="calibrate()">Calibrate</button>
+  <button class="btn btn.default" ng-click="recalibrate()">Recalibrate</button>
+</div>
