@@ -3,6 +3,9 @@
 #include "threading.h"
 #include <unistd.h>
 #include <semaphore.h>
+#include <exception>
+
+using namespace std;
 
 // Struct containing the necessary parameters to the thread runner function
 typedef struct {
@@ -18,7 +21,11 @@ void *runner(void *param) {
     sem_t *sem = tp.sem;
 
     sem_post(sem);
-    func();
+    try {
+        func();
+    } catch (exception& e){
+        cout << "THESE ARE EXCEPTIONS?!?!" << e.what() << endl;
+    }
     pthread_exit(0);
 }
 
