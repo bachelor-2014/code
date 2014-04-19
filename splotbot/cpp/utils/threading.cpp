@@ -21,11 +21,7 @@ void *runner(void *param) {
     sem_t *sem = tp.sem;
 
     sem_post(sem);
-    try {
-        func();
-    } catch (exception& e){
-        cout << "THESE ARE EXCEPTIONS?!?!" << e.what() << endl;
-    }
+    func();
     pthread_exit(0);
 }
 

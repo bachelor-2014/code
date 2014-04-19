@@ -3,6 +3,7 @@
 #include <unistd.h>
 
 #include "xyaxes.h"
+#include "utils/errors.h"
 
 using namespace std;
 
@@ -75,7 +76,7 @@ void XYAxes::home() {
             // Get whether or not the limit switches / end stops are pressed
             xPressed = isLimitSwitchPressed(xLimitSwitchPort);
             yPressed = isLimitSwitchPressed(yLimitSwitchPort);
-            
+
             // If not pressed and not homed already, move a single step
             xMove = !xPressed && !xHomed ? -1 : 0;
             yMove = !yPressed && !yHomed ? -1 : 0;
@@ -120,6 +121,8 @@ void XYAxes::home() {
  * yPosition: The y coordinate of the absolute position to move to
  */
 void XYAxes::move(int xPosition, int yPosition) {
+
+    //throw runtime_error("ok");
     xPosition = xPosition < 0 ? 0 : xPosition;
     yPosition = yPosition < 0 ? 0 : yPosition;
 
@@ -152,6 +155,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
         ss << "XYAxes (" << name << ") homing" << endl;
         string s = ss.str();
         (*file_logger).Info(s);
+        cout << s << endl;
 
         //Do the homing
         home();
@@ -159,6 +163,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
 
     // 'Move' <x position> <y position>
     function<void(InstructionBuffer *)> moveAction = [&](InstructionBuffer *buffer) -> void {
+
         int instr[2];
         (*buffer).popInstructions(2, instr);
         int xPosition = instr[0];
