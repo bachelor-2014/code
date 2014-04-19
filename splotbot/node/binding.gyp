@@ -9,7 +9,7 @@
 "../cpp/computer_vision/featuresimagestitcher.cpp",
 "../cpp/computer_vision/calibrator.cpp",
 "../cpp/scanner.cpp",
-"../cpp/cameracalibrator.cpp"
+"../cpp/cameracalibrator.cpp",
 "../cpp/component.cpp","../cpp/mendel.cpp",
 "../cpp/instructionbuffer.cpp","../cpp/camera.cpp",
 "../cpp/singlesteppermotor.cpp","../cpp/rcservomotor.cpp",
