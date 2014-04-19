@@ -16,6 +16,10 @@ angular.module('clientApp')
     $scope.init = function(elementInfo){
       $scope.elementInfo = elementInfo;
       addCanvas($("#"+elementInfo.name));
+
+      socket.on($scope.elementInfo.name + "_dropletspeed", function(data){
+        $scope.dropletspeed = data.data;
+      });
     }
 
     //Set the camera mode
@@ -81,7 +85,8 @@ angular.module('clientApp')
     function addSocket(canvasId,eventName){
       socket.on(eventName,function(data){
         renderImage(data.data,canvas,context,$scope);
-      })
+      });
+
     }
 
     // Renders the given image data on the canvas

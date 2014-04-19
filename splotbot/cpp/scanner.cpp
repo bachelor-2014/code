@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <termios.h>
+#include <ctime>
 
 #include "utils/base64.h"
 #include "computer_vision/imagestitcher.h"
@@ -87,11 +88,26 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     cout << "Scanner: Stitching grabbed images ..." << endl;
     //stitchedImage = stitcher->stitch();
 
+    // Get time for timing
+    const long double startTime = time(0);
+
     if (FeaturesImageStitcher *i = dynamic_cast<FeaturesImageStitcher*>(stitcher)) {
+        stitchedImage = i->stitch();
+    } else if (FeaturesandPositionImageStitcher *i = dynamic_cast<FeaturesandPositionImageStitcher*>(stitcher)) {
         stitchedImage = i->stitch();
     } else {
        throw runtime_error("Unknown image stitcher type detected");
     }
+
+    // Get time for timing
+    const long double endTime = time(0);
+
+    // Send the stitching time as an event
+    int runTime = (int) (endTime - startTime);
+
+    (*eventCallback)(name + "_time", to_string(runTime));
+
+    cout << "runTime = " << runTime << endl;
 
     cout << "Scanner: Stitched grabbed images" << endl;
 

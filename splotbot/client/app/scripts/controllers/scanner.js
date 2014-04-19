@@ -14,7 +14,7 @@ angular.module('clientApp')
         });
 
         socket.on($scope.elementInfo.name + "_time", function(data){
-            $scope.scanTime = data;
+            $scope.scanTime = data.data;
         });
     };
 
