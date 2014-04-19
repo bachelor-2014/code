@@ -1,0 +1,7 @@
+<!-- Control for the 'ErrorDisplayCtrl' component type -->
+<div class="control-box col-md-12" ng-controller="ErrorDisplayCtrl" ng-init="init(elementInfo)">
+    <div ng-show="errorMessage" class="alert alert-danger">
+        <span ng-click="errorMessage = ''" class="glyphicon glyphicon-remove"></span>
+        {{errorMessage}}
+    </div>
+</div>
