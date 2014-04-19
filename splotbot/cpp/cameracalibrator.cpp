@@ -85,7 +85,7 @@ cv::imwrite(fs.str(), image);
     calibrator->calibrate(calibrationImages,&coefs,&matrix);
     cout << "Calibrated" << endl;
 
-
+    camera->calibrate(coefs, matrix);
 }
 
 void CameraCalibrator::recalibrate(){
