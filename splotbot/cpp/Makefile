@@ -10,7 +10,8 @@ CPPFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp \
 	componentinitializer.cpp splotbot.cpp test.cpp logging/logger.cpp \
 	logging/filelogger.cpp logging/videologger.cpp \
 	computer_vision/dropletdetector.cpp \
-	computer_vision/computervisionutils.cpp computer_vision/calibrator.cpp
+	computer_vision/computervisionutils.cpp computer_vision/calibrator.cpp \
+	computer_vision/featuresandpositionimagestitcher.cpp
 HFILES = libraries/cJSON/cJSON.h computer_vision/imagestitcher.h \
 	computer_vision/featuresimagestitcher.cpp component.h \
 	instructionbuffer.h camera.h singlesteppermotor.h \
@@ -18,7 +19,8 @@ HFILES = libraries/cJSON/cJSON.h computer_vision/imagestitcher.h \
 	componentinitializer.h splotbot.h utils/base64.h utils/threading.h \
 	logging/logger.h logging/filelogger.h logging/videologger.h \
 	computer_vision/dropletdetector.h \
-	computer_vision/computervisionutils.h computer_vision/calibrator.h
+	computer_vision/computervisionutils.h computer_vision/calibrator.h \
+	computer_vision/featuresandpositionimagestitcher.h
 
 OBJFILES = $(CPPFILES:.cpp=.o)
 PROGRAM = test.out

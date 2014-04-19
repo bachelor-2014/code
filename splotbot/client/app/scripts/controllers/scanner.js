@@ -4,6 +4,7 @@ angular.module('clientApp')
   .controller('ScannerCtrl', function ($scope,splotService, socket) {
     $scope.scanner = {};
     $scope.scanner.algorithm = 0;
+    $scope.scanTime = "";
 
     $scope.init = function(elementInfo){
         $scope.elementInfo = elementInfo;
@@ -11,10 +12,16 @@ angular.module('clientApp')
         socket.on($scope.elementInfo.name, function(data){
             $scope.scannedimg = 'data:image/png;base64,'+data.data;
         });
+
+        socket.on($scope.elementInfo.name + "_time", function(data){
+            $scope.scanTime = data;
+        });
     };
 
 
     $scope.scannersubmit = function(){
+        $scope.scanTime = "";
+
         console.log($scope.scanner);
         var instr = [
             $scope.elementInfo.start_action,

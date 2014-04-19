@@ -9,6 +9,7 @@
 #include "utils/base64.h"
 #include "computer_vision/imagestitcher.h"
 #include "computer_vision/featuresimagestitcher.h"
+#include "computer_vision/featuresandpositionimagestitcher.h"
 
 #include "scanner.h"
 
@@ -40,10 +41,15 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     // Create the image stitcher
     ImageStitcher *stitcher;
     switch (stitchingAlgorithm) {
-        default: {
+        case 0:
             stitcher = new FeaturesImageStitcher(camera);
-        }
-        break;
+            break;
+        case 1: 
+            stitcher = new FeaturesandPositionImageStitcher(camera);
+            break;
+        default: 
+            stitcher = new FeaturesImageStitcher(camera);
+            break;
     }
     
     //FeaturesImageStitcher stitcher(camera);
