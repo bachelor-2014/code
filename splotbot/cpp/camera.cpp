@@ -144,6 +144,7 @@ void Camera::run() {
         cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
         cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
+        cout << "Camera caps set" << endl;
         //video_logger = new VideoLogger("exp",&cap);
 
 
@@ -153,8 +154,10 @@ void Camera::run() {
             Mat img = image.clone();
             imagelock.unlock();
 
-            if(coefs != NULL && matrix != NULL){
-                cv::undistort(img,img,*matrix,*coefs);
+            cout << "UNLOCKING" << endl;
+            if(coefs && matrix){
+                cout << "INDISATORTING" << endl;
+                //cv::undistort(img,img,*matrix,*coefs);
             }
 
             if(mode > 1){
