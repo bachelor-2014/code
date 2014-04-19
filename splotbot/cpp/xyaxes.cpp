@@ -177,3 +177,11 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
     (*actions).push_back(homeAction);
     (*actions).push_back(moveAction);
 }
+
+int XYAxes::positionX(){
+    return currentPositionX;
+}
+
+int XYAxes::positionY(){
+    return currentPositionY;
+}
