@@ -31,7 +31,7 @@ cv::Mat FeaturesandPositionImageStitcher::stitch() {
         cout << "Now stitching image with position: (" <<
             to_string(grabbed.positionX) << "," << to_string(grabbed.positionY)
             << ")" << endl;
-        resultImage = stitchImg(grabbed.image, resultImage);
+        resultImage = stitchImg(&grabbed.image, &resultImage);
     }
 
 
@@ -39,12 +39,12 @@ cv::Mat FeaturesandPositionImageStitcher::stitch() {
     return resultImage;
 }
 
-cv::Mat FeaturesandPositionImageStitcher::stitchImg(cv::Mat image1, cv::Mat image2){
+cv::Mat FeaturesandPositionImageStitcher::stitchImg(cv::Mat *image1, cv::Mat *image2){
     cv::Mat resultImage;
     cout << "Vector" << endl;
     vector<cv::Mat> images;
-    images.push_back(image1);
-    images.push_back(image2);
+    images.push_back(*image1);
+    images.push_back(*image2);
     cout << "Stitching images" << endl;
     cv::Stitcher stitcher = cv::Stitcher::createDefault();
     cv::Stitcher::Status status = stitcher.stitch(images, resultImage);
