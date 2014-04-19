@@ -1,5 +1,5 @@
-#ifndef FEATURESIMAGESTITCHER_H
-#define FEATURESIMAGESTITCHER_H 
+#ifndef FEATURESANDPOSITIONIMAGESTITCHER_H
+#define FEATURESANDPOSITIONIMAGESTITCHER_H 
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/stitching/stitcher.hpp>
