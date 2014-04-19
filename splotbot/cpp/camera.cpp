@@ -64,7 +64,7 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         int instr[2];
         (*buffer).popInstructions(2, instr);
         int x = instr[0];
-        int y = instr[0];
+        int y = instr[1];
 
         Mat image = grabImage();
         dropletdetector.colorInterval =
