@@ -18,7 +18,7 @@ class FeaturesandPositionImageStitcher: public ImageStitcher {
         FeaturesandPositionImageStitcher(Camera *camera);
         cv::Mat stitch();
     private:
-        cv::Mat stitchImg(cv::Mat image1, cv::Mat image2);
+        cv::Mat stitchImg(cv::Mat *image1, cv::Mat *image2);
 };
 
 #endif

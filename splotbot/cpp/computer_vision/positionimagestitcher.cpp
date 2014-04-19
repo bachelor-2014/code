@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+#include <climits>
 
 #include "positionimagestitcher.h"
 
@@ -22,35 +23,16 @@ PositionImageStitcher::PositionImageStitcher(vector<GrabbedImage> grabbedImages,
  * Stitch together the images grabbed by the PositionImageStitcher
  */
 cv::Mat PositionImageStitcher::stitch() {
-
+    xStep = { 100, 0 }; 
+    yStep = { 0, 100 }; 
+    //Find the max values
+    findMaxValues();
     //Finally warp the images
     cv::Mat warped = warp();
     return warped;
 }
 
 cv::Mat PositionImageStitcher::warp() {
-    //Find min and max values
-    min_x = 0;
-    min_y = 0;
-    max_x = 1;
-    max_y = 0;
-
-    xStep = {100,0};
-    yStep = {0,100};
-
-    //Construct translation matrix
-    cv::Mat transmat = translationMatrix(max_x, max_y);
-    cout << transmat << endl;
-    
-    //Find the min and max pixel values in image with max steps
-    vector<float> mip = { 100.0, 100.0, 1.0 };
-    cv::Mat maximgpixels = cv::Mat(mip);
-    cout << maximgpixels << endl;
-
-    //Find total size of image 
-    cv::Mat size = transmat * maximgpixels;
-    cout << size << endl;
-
     //Result image to warp to
     int size_x = (int) size.at<float>(0);
     int size_y = (int) size.at<float>(1);
@@ -79,4 +61,35 @@ cv::Mat PositionImageStitcher::translationMatrix(int x, int y){
     tmat.at<float>(1,2) = (float)transvec[1];
 
     return tmat;
+}
+
+void PositionImageStitcher::findMaxValues(){
+    min_x = INT_MAX;
+    min_y = INT_MAX;
+    max_x = 0;
+    max_y = 0;
+    vector<float> mip;
+
+    for(auto grabbed : grabbedImages){
+            cout << to_string(min_x) << "," << to_string(min_y) << endl;
+            cout << to_string(grabbed.positionX) << "," << to_string(grabbed.positionY) << endl;
+        if(grabbed.positionX <= min_x && grabbed.positionY <= min_y){
+            min_x = grabbed.positionX;
+            min_y = grabbed.positionY;
+        }
+        if(grabbed.positionX >= max_x && grabbed.positionY >= max_y){
+            max_x = grabbed.positionX;
+            max_y = grabbed.positionY;
+            mip = { ((float)grabbed.image.rows), ((float)grabbed.image.cols), 1.0 };
+        }
+    }
+    cout << to_string(max_x) << to_string(max_y) << endl;
+    //Construct translation matrix
+    cv::Mat transmat = translationMatrix(max_x, max_y);
+
+    //Find the min and max pixel values in image with max steps
+    cv::Mat maximgpixels = cv::Mat(mip);
+
+    //Find total size of image 
+    size = transmat * maximgpixels;
 }

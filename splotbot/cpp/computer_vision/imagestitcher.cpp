@@ -23,23 +23,25 @@ void ImageStitcher::grabImage(int positionX, int positionY) {
     grabbedImage.positionY = positionY;
 
     cout << "ImageStitcher: Grapping image from camera '" << camera->name << "'" << endl;
-    cout << "ImageStitcher: Opening capture device " << camera->videoDevice << " ..." << endl;
-    cv::VideoCapture cap(camera->videoDevice);
-    cout << "ImageStitcher: Opened capture device" << endl;
-    cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+    //cout << "ImageStitcher: Opening capture device " << camera->videoDevice << " ..." << endl;
+    //cv::VideoCapture cap(camera->videoDevice);
+    //cout << "ImageStitcher: Opened capture device" << endl;
+    //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
-    cv::Mat image;
-    bool success = cap.read(image);
+    //cv::Mat image;
+    //bool success = cap.read(image);
 
-    if (!success) {
-        stringstream ss;
-        ss << "ImageStitcher failed to grab image from device " << camera->videoDevice;
-        throw runtime_error(ss.str());
-    }
+    //if (!success) {
+    //    stringstream ss;
+    //    ss << "ImageStitcher failed to grab image from device " << camera->videoDevice;
+    //    throw runtime_error(ss.str());
+    //}
 
-    cap.release();
+    //cap.release();
 
+    //grabbedImage.image = image;
+    cv::Mat image = camera->grabImage();
     grabbedImage.image = image;
 
     //cout << "ImageStitcher: grabbing image ..." << endl;

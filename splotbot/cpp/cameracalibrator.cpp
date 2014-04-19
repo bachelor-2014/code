@@ -44,17 +44,21 @@ void CameraCalibrator::calibrate(){
     cv::Mat matrix;
 
     if (calibrator->isCalibrated()) {
+        cout << "CameraCalibrator: Camera already calibrated" << endl;
         calibrator->getCalibrationFromFile(&coefs,&matrix);
+        camera->calibrate(coefs, matrix);
         return;
     }
+
+    cout << "CameraCalibrator: Camera not already calibrated" << endl;
         
     int centerX = xyaxes->positionX();
     int centerY = xyaxes->positionY();
 
     vector<cv::Mat> calibrationImages;
-    cv::VideoCapture cap(camera->videoDevice);
-    cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+    //cv::VideoCapture cap(camera->videoDevice);
+    //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
     cv::Mat image;
 
     for (int x = -1; x <= 1; x++) {
@@ -67,21 +71,24 @@ void CameraCalibrator::calibrate(){
             sleep(1);
 
             // Grab image
-            bool success = cap.read(image);
-            if (!success) {
-                stringstream ss;
-                ss << "CameraCalibrator failed to grab image from device " << camera->videoDevice;
-                throw runtime_error(ss.str());
-            }
+            //bool success = cap.read(image);
+            //if (!success) {
+            //    stringstream ss;
+            //    ss << "CameraCalibrator failed to grab image from device " << camera->videoDevice;
+            //    throw runtime_error(ss.str());
+            //}
 
-stringstream fs;
-fs << "data/images/grab" << centerX+x << "_" << centerY+y << ".jpg";
-cv::imwrite(fs.str(), image);
+            image = camera->grabImage();
+
+            stringstream fs;
+            fs << "data/images/grab" << centerX+x << "_" << centerY+y << ".jpg";
+            cv::imwrite(fs.str(), image);
+
             calibrationImages.push_back(image);
         }
     }
 
-    cap.release();
+    //cap.release();
     calibrator->calibrate(calibrationImages,&coefs,&matrix);
     cout << "Calibrated" << endl;
 
