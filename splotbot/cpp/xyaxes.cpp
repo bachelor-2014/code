@@ -122,7 +122,6 @@ void XYAxes::home() {
  */
 void XYAxes::move(int xPosition, int yPosition) {
 
-    //throw runtime_error("ok");
     xPosition = xPosition < 0 ? 0 : xPosition;
     yPosition = yPosition < 0 ? 0 : yPosition;
 
