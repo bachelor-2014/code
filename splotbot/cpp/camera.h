@@ -3,12 +3,14 @@
 
 #include <string>
 #include <mutex>
+#include <opencv2/opencv.hpp>
 #include "instructionbuffer.h"
 #include "component.h"
 #include "logging/videologger.h"
 #include "computer_vision/dropletdetector.h"
 
 using namespace std;
+using namespace cv;
 
 /**
  * Camera Component class handles a system camera
@@ -35,6 +37,7 @@ class Camera: public Component {
         void start();
         void dropletDetection();
         Mat grabImage();
+        void calibrate(cv::Mat *coefs, cv::Mat *matrix);
 
     private:
         VideoLogger *video_logger;
@@ -55,6 +58,12 @@ class Camera: public Component {
          */
         void run();
         void updateDropletDetector();
+
+        /**
+         * Calibration
+         */
+        cv::Mat *coefs;
+        cv::Mat *matrix;
 };
 
 #endif

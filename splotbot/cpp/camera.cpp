@@ -153,6 +153,10 @@ void Camera::run() {
             Mat img = image.clone();
             imagelock.unlock();
 
+            if(coefs != NULL && matrix != NULL){
+                cv::undistort(img,img,*matrix,*coefs);
+            }
+
             if(mode > 1){
                 //Droplet detection
                 Droplet droplet = dropletdetector.detectDroplet(img);
@@ -185,4 +189,9 @@ void Camera::run() {
         //free(cap);
         cout << "Camera: Released the capture device" << endl;
     });
+}
+
+void Camera::calibrate(cv::Mat *coefs, cv::Mat *matrix) {
+    this->coefs = coefs;
+    this->matrix = matrix;
 }

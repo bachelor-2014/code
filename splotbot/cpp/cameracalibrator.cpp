@@ -38,9 +38,42 @@ void CameraCalibrator::registerActions(vector<function<void(InstructionBuffer *)
 void CameraCalibrator::calibrate(){
     vector<cv::Mat> images;
 
+    camera->stop();
+
+    int centerX = xyaxes->positionX();
+    int centerY = xyaxes->positionY();
+
+    vector<cv::Mat> calibrationImages;
+    cv::VideoCapture cap(camera->videoDevice);
+    cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+    cv::Mat image;
+
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+
+            // Move to the position
+            xyaxes->move(centerX+x, centerY+y);
+
+            // Sleep before grabbing the image, allowing the camera to settle
+            usleep(1000);
+
+            // Grab image
+            bool success = cap.read(image);
+            if (!success) {
+                stringstream ss;
+                ss << "CameraCalibrator failed to grab image from device " << camera->videoDevice;
+                throw runtime_error(ss.str());
+            }
+            cap.release();
+            calibrationImages.push_back(image);
+        }
+    }
+
     cv::Mat coefs;
     cv::Mat matrix;
-    calibrator->calibrate(images,&coefs,&matrix);
+    calibrator->calibrate(calibrationImages,&coefs,&matrix);
+
 }
 
 void CameraCalibrator::recalibrate(){

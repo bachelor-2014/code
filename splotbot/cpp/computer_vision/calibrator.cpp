@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "calibrator.h"
 
@@ -19,8 +20,6 @@ Calibrator::Calibrator(string configFile):configFile(configFile) {
  */
 void Calibrator::calibrate(vector<cv::Mat> images,
         cv::Mat *distortionCoeffs, cv::Mat *intrinsicMatrix) {
-
-    cv::namedWindow( "snapshot" );
 
     int n_boards = 9;
     int board_w = 9;
