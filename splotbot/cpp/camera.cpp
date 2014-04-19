@@ -153,7 +153,7 @@ void Camera::run() {
             Mat img = image.clone();
             imagelock.unlock();
 
-            if(coefs != NULL && matrix != NULL){
+            if(coefs && matrix){
                 cv::undistort(img,img,*matrix,*coefs);
             }
 
