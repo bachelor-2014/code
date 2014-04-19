@@ -37,7 +37,7 @@ class Camera: public Component {
         void start();
         void dropletDetection();
         Mat grabImage();
-        void calibrate(cv::Mat *coefs, cv::Mat *matrix);
+        void calibrate(cv::Mat coefs, cv::Mat matrix);
 
     private:
         VideoLogger *video_logger;
@@ -62,8 +62,9 @@ class Camera: public Component {
         /**
          * Calibration
          */
-        cv::Mat *coefs;
-        cv::Mat *matrix;
+        bool isCalibrated = false;
+        cv::Mat coefs;
+        cv::Mat matrix;
 };
 
 #endif

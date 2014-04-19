@@ -154,10 +154,11 @@ void Camera::run() {
             Mat img = image.clone();
             imagelock.unlock();
 
-            //if(coefs && matrix){
-            //    Mat imgClone = image.clone();
-            //    cv::undistort(imgClone,img,*matrix,*coefs);
-            //}
+            if(isCalibrated){
+                cout << "Undistorting" << endl;
+                Mat imgClone = img.clone();
+                cv::undistort(imgClone,img,matrix,coefs);
+            }
 
             if(mode > 1){
                 //Droplet detection
@@ -193,7 +194,8 @@ void Camera::run() {
     });
 }
 
-void Camera::calibrate(cv::Mat *coefs, cv::Mat *matrix) {
+void Camera::calibrate(cv::Mat coefs, cv::Mat matrix) {
     this->coefs = coefs;
     this->matrix = matrix;
+    isCalibrated = true;
 }
