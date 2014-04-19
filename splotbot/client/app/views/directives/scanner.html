@@ -2,6 +2,7 @@
   <h1>{{elementInfo.name}}</h1>
   <form class="form" role="form" ng-submit="scannersubmit()">
       <img ng-src="{{scannedimg}}" ng-show="scannedimg"></img>
+      <div class="alert alert-success" ng-show="scanTime">Scan time: {{scanTime}}</div>
       <div class="form-group">
           <label>Step Size</label>
           <input type="text" class="form-control" ng-model="scanner.stepsize" required>
@@ -33,14 +34,21 @@
               <label>
                   <input type="radio" ng-model="scanner.algorithm"
                   value="0"></input>
-                  OpenCV Image Stitching
+                  OpenCV image stitching
               </label>
           </div>
           <div class="radio">
               <label>
                   <input type="radio" ng-model="scanner.algorithm"
                   value="1"></input>
-                  Position Based Image Stitching
+                  OpenCV image stitching with position considerations
+              </label>
+          </div>
+          <div class="radio">
+              <label>
+                  <input type="radio" ng-model="scanner.algorithm"
+                  value="2"></input>
+                  Position based image stitching
               </label>
           </div>
       </div>
