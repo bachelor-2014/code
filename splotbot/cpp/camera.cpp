@@ -8,6 +8,7 @@
 #include "utils/threading.h"
 #include "computer_vision/dropletdetector.h"
 #include "computer_vision/computervisionutils.h"
+#include <ctime>
 
 using namespace std;
 using namespace cv;
@@ -64,11 +65,12 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         int instr[2];
         (*buffer).popInstructions(2, instr);
         int x = instr[0];
-        int y = instr[0];
+        int y = instr[1];
 
         Mat image = grabImage();
         dropletdetector.colorInterval =
             computeColorIntervalFromSelection(image, tolerance,x,y);
+        cout << x;
 
         //Stop the droplet selection
     };
@@ -147,19 +149,21 @@ void Camera::run() {
         cout << "Camera caps set" << endl;
         //video_logger = new VideoLogger("exp",&cap);
 
+        DropletLog firstDropletLog;
+        DropletLog secondDropletLog;
+        clock_t timestamp;
 
         while (mode > 0) {
             imagelock.lock();
             bool success = cap.read(image); 
             Mat img = image.clone();
             imagelock.unlock();
-            if (!success){
-                cout << "Couldn't grab image" << endl;
+
+            if(isCalibrated){
+                cout << "Undistorting" << endl;
+                Mat imgClone = img.clone();
+                cv::undistort(imgClone,img,matrix,coefs);
             }
-//            if(coefs && matrix){
-//                Mat imgClone = image.clone();
-//                cv::undistort(imgClone,img,*matrix,*coefs);
-//            }
 
             if(mode > 1){
                 //Droplet detection
@@ -167,6 +171,19 @@ void Camera::run() {
             cv::rectangle(img, cv::Point(droplet.minX, droplet.minY),
                     cv::Point(droplet.maxX, droplet.maxY), cv::Scalar(0,
                         255, 0));
+                timestamp = clock();
+                firstDropletLog = secondDropletLog;
+
+                secondDropletLog.timestamp = double(timestamp) / CLOCKS_PER_SEC * 1000;
+                secondDropletLog.droplet = droplet;
+
+                if (firstDropletLog.timestamp != 0) {
+                    double movementSpeed =
+                        computeMovementSpeed(firstDropletLog,
+                                secondDropletLog);
+                    //Send the images to the event
+                    (*eventCallback)(name + "_dropletspeed", to_string(1000 * movementSpeed));
+                }
 
             }
 
@@ -195,7 +212,8 @@ void Camera::run() {
     });
 }
 
-void Camera::calibrate(cv::Mat *coefs, cv::Mat *matrix) {
+void Camera::calibrate(cv::Mat coefs, cv::Mat matrix) {
     this->coefs = coefs;
     this->matrix = matrix;
+    isCalibrated = true;
 }

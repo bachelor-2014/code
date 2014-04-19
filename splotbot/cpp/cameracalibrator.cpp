@@ -40,6 +40,14 @@ void CameraCalibrator::calibrate(){
 
     camera->stop();
 
+    cv::Mat coefs;
+    cv::Mat matrix;
+
+    if (calibrator->isCalibrated()) {
+        calibrator->getCalibrationFromFile(&coefs,&matrix);
+        return;
+    }
+        
     int centerX = xyaxes->positionX();
     int centerY = xyaxes->positionY();
 
@@ -51,12 +59,12 @@ void CameraCalibrator::calibrate(){
 
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
-
+            cout << "Moving to (x,y)=(" << centerX+x << "," << centerY+y << ")" << endl;
             // Move to the position
             xyaxes->move(centerX+x, centerY+y);
 
             // Sleep before grabbing the image, allowing the camera to settle
-            usleep(1000);
+            sleep(1);
 
             // Grab image
             bool success = cap.read(image);
@@ -65,15 +73,19 @@ void CameraCalibrator::calibrate(){
                 ss << "CameraCalibrator failed to grab image from device " << camera->videoDevice;
                 throw runtime_error(ss.str());
             }
+
+stringstream fs;
+fs << "data/images/grab" << centerX+x << "_" << centerY+y << ".jpg";
+cv::imwrite(fs.str(), image);
             calibrationImages.push_back(image);
         }
     }
 
     cap.release();
-    cv::Mat coefs;
-    cv::Mat matrix;
     calibrator->calibrate(calibrationImages,&coefs,&matrix);
+    cout << "Calibrated" << endl;
 
+    camera->calibrate(coefs, matrix);
 }
 
 void CameraCalibrator::recalibrate(){
