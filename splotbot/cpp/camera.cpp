@@ -23,7 +23,7 @@ Camera::Camera(string name, int videoDevice, string eventName): videoDevice(vide
     //cap = new VideoCapture(videoDevice);
     //cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
     //cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-    //run();
+    run();
 }
 
 /**
@@ -159,10 +159,11 @@ void Camera::run() {
             Mat img = image.clone();
             imagelock.unlock();
 
-            //if(coefs && matrix){
-            //    Mat imgClone = image.clone();
-            //    cv::undistort(imgClone,img,*matrix,*coefs);
-            //}
+            if(isCalibrated){
+                cout << "Undistorting" << endl;
+                Mat imgClone = img.clone();
+                cv::undistort(imgClone,img,matrix,coefs);
+            }
 
             if(mode > 1){
                 //Droplet detection
@@ -211,7 +212,8 @@ void Camera::run() {
     });
 }
 
-void Camera::calibrate(cv::Mat *coefs, cv::Mat *matrix) {
+void Camera::calibrate(cv::Mat coefs, cv::Mat matrix) {
     this->coefs = coefs;
     this->matrix = matrix;
+    isCalibrated = true;
 }
