@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include <stdexcept>
 
 #include "camera.h"
 #include "utils/base64.h"
@@ -121,15 +122,31 @@ void Camera::dropletDetection(){
  * Grabs the current camera image
  */
 Mat Camera::grabImage() {
-    //cout << "Camera: Entering function 'grabImage()'" << endl;
     Mat newimage;
-    //cout << "Camera: Acquiring lock ..." << endl;
+
     imagelock.lock();
-    //cout << "Camera: Acquired lock ..." << endl;
+    
+    VideoCapture cap(videoDevice);
+    cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+
+    bool success = cap.read(image); 
+
+    cap.release();
+
+    if (!success) {
+        throw runtime_error("Camera: Failed to grab image");
+    }
+
+    if(isCalibrated){
+        Mat imageClone = image.clone();
+        cv::undistort(imageClone, image, matrix, coefs);
+    }
+
     newimage = image.clone();
-    //cout << "Camera: Releasing lock ..." << endl;
+
     imagelock.unlock();
-    //cout << "Camera: Released lock ..." << endl;
+
     return newimage;
 }
 
@@ -140,13 +157,13 @@ Mat Camera::grabImage() {
 void Camera::run() {
     runAsThread( [&] () {
 
-        cout << "Camera: Thread opening capture device ..." << endl;
-        VideoCapture cap(videoDevice);
-        cout << "Camera: Thread opened capture device" << endl;
-        cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-        cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+        //cout << "Camera: Thread opening capture device ..." << endl;
+        //VideoCapture cap(videoDevice);
+        //cout << "Camera: Thread opened capture device" << endl;
+        //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+        //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
-        cout << "Camera caps set" << endl;
+        //cout << "Camera caps set" << endl;
         //video_logger = new VideoLogger("exp",&cap);
 
         DropletLog firstDropletLog;
@@ -154,16 +171,18 @@ void Camera::run() {
         clock_t timestamp;
 
         while (mode > 0) {
-            imagelock.lock();
-            bool success = cap.read(image); 
-            Mat img = image.clone();
-            imagelock.unlock();
+            //imagelock.lock();
+            //bool success = cap.read(image); 
+            //Mat img = image.clone();
+            //imagelock.unlock();
+            
+            Mat img = grabImage();
 
-            if(isCalibrated){
-                cout << "Undistorting" << endl;
-                Mat imgClone = img.clone();
-                cv::undistort(imgClone,img,matrix,coefs);
-            }
+            //if(isCalibrated){
+            //    cout << "Undistorting" << endl;
+            //    Mat imgClone = img.clone();
+            //    cv::undistort(imgClone,img,matrix,coefs);
+            //}
 
             if(mode > 1){
                 //Droplet detection
@@ -205,10 +224,10 @@ void Camera::run() {
             (*eventCallback)(eventName, base64);
         }
 
-        cout << "Camera: Releasing the capture device ..." << endl;
-        cap.release();
-        //free(cap);
-        cout << "Camera: Released the capture device" << endl;
+        //cout << "Camera: Releasing the capture device ..." << endl;
+        //cap.release();
+        ////free(cap);
+        //cout << "Camera: Released the capture device" << endl;
     });
 }
 
