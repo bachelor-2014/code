@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "../camera.h"
 #include "calibrator.h"
 
 using namespace std;
