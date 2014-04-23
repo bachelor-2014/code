@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "../camera.h"
+#include "computervisionutils.h"
 #include "calibrator.h"
 
 using namespace std;
@@ -91,21 +91,52 @@ bool Calibrator::calibrate(vector<cv::Mat> images,
     *distortionCoeffs = distortion_coeffs;
     *intrinsicMatrix = intrinsic_Matrix;
 
-    cv::FileStorage fs(configFile,FileStorage::WRITE);
-    fs << "distortion_coefficients" << distortion_coeffs;
-    fs << "intrinsic_matrix" << intrinsic_Matrix;
+    this->writeToConfig("distortion_coefficients",distortion_coeffs);
+    this->writeToConfig("intrinsic_matrix",intrinsic_Matrix);
 }
 
 void Calibrator::getCalibrationFromFile(cv::Mat *distortionCoeffs,
-        cv::Mat *intrinsicMatrix){
+        cv::Mat *intrinsicMatrix,vector<double> *xStep, vector<double> *yStep){
 
-    FileStorage fs(configFile,FileStorage::READ);
-
-    fs["distortion_coefficients"] >> *distortionCoeffs;
-    fs["intrinsic_matrix"] >> *intrinsicMatrix;
+    *distortionCoeffs = this->readFromConfig("distortion_coefficients");
+    *intrinsicMatrix = this->readFromConfig("intrinsic_matrix");
+    cv::Mat xStepMat = this->readFromConfig("xStep");
+    cv::Mat yStepMat = this->readFromConfig("yStep");
+    *xStep = { xStepMat.at<double>(0), xStepMat.at<double>(1) };
+    *yStep = { yStepMat.at<double>(0), yStepMat.at<double>(1) };
 
 }
 
+void Calibrator::writeToConfig(string key, cv::Mat data){
+    cv::FileStorage fs(configFile,FileStorage::WRITE);
+    fs << key << data;
+}
+
+cv::Mat Calibrator::readFromConfig(string key){
+    FileStorage fs(configFile,FileStorage::READ);
+    cv::Mat data;
+    fs[key] >> data;
+    return data;
+}
+
+void Calibrator::stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, vector<double> *yStep){
+    double xTranslationX;
+    double yTranslationX;
+    computeTranslation(images[0], images[1], &xTranslationX, &yTranslationX);
+
+    double xTranslationY;
+    double yTranslationY;
+    computeTranslation(images[0], images[2], &xTranslationY, &yTranslationY);
+
+    *xStep = {xTranslationX, yTranslationX};
+    *yStep = {xTranslationY, yTranslationY};
+
+    cv::Mat xStepMat = cv::Mat(*xStep);
+    cv::Mat yStepMat = cv::Mat(*yStep);
+
+    this->writeToConfig("xStep",xStepMat);
+    this->writeToConfig("yStep",yStepMat);
+}
 bool Calibrator::isCalibrated(){
     return access(configFile.c_str(), F_OK) != -1;
 }
