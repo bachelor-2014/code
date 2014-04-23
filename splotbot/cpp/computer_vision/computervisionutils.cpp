@@ -80,43 +80,11 @@ void computeTranslation(cv::Mat image1, cv::Mat image2, double *xTranslation, do
     if (!found2 || !found2) {
         throw runtime_error("Computer vision utils: Failed to detect chessboard corners when computing translation");
     }
-
-    cv::Point2f points1[3];
-    cv::Point2f points2[3];
-
-    points1[0] = corners1[0];
-    points1[1] = corners1[1];
-    points1[2] = corners1[2];
-
-    points2[0] = corners2[0];
-    points2[1] = corners2[1];
-    points2[2] = corners2[2];
-
-    cv::Mat affineTransformation(2, 3, CV_32FC1);
-    affineTransformation = getAffineTransform(points1, points2);
+    
+    cv::Mat affineTransformation = findHomography(corners1, corners2, CV_RANSAC);
 
     cout << "Affine transformation computed: " << affineTransformation << endl;
 
     *xTranslation = affineTransformation.at<double>(0, 2);
     *yTranslation = affineTransformation.at<double>(1, 2);
-
-    //TODO DEBUG: save the images
-    stringstream fs11;
-    fs11 << "data/images/clean_translation_image1_" << (*xTranslation) << ".jpg";
-    cv::imwrite(fs11.str(), image1);
-
-    stringstream fs21;
-    fs21 << "data/images/clean_translation_image2_" << (*xTranslation) << ".jpg";
-    cv::imwrite(fs21.str(), image2);
-    
-    drawChessboardCorners(image1, board_size, cv::Mat(corners1), found1);
-    drawChessboardCorners(image2, board_size, cv::Mat(corners2), found2);
-
-    stringstream fs1;
-    fs1 << "data/images/translation_image1_" << (*xTranslation) << ".jpg";
-    cv::imwrite(fs1.str(), image1);
-
-    stringstream fs2;
-    fs2 << "data/images/translation_image2_" << (*xTranslation) << ".jpg";
-    cv::imwrite(fs2.str(), image2);
 }
