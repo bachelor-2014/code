@@ -14,17 +14,6 @@ CPPFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp \
 	computer_vision/computervisionutils.cpp computer_vision/calibrator.cpp \
 	computer_vision/featuresandpositionimagestitcher.cpp \
 	utils/errors.cpp
-HFILES = libraries/cJSON/cJSON.h computer_vision/imagestitcher.h \
-	computer_vision/featuresimagestitcher.h component.h \
-	computer_vision/positionimagestitcher.h \
-	instructionbuffer.h camera.h singlesteppermotor.h \
-	rcservomotor.h scanner.h cameracalibrator.h mendel.h xyaxes.h \
-	componentinitializer.h splotbot.h utils/base64.h utils/threading.h \
-	logging/logger.h logging/filelogger.h logging/videologger.h \
-	computer_vision/dropletdetector.h \
-	computer_vision/computervisionutils.h computer_vision/calibrator.h \
-	computer_vision/featuresandpositionimagestitcher.h \
-	utils/errors.h
 
 OBJFILES = $(CPPFILES:.cpp=.o)
 PROGRAM = test.out
@@ -34,6 +23,8 @@ default: depend all
 depend: .depend
 
 all: $(CPPFILES) $(PROGRAM)
+
+tests: test/calibrator_test/calibrator_test.out
 
 .depend: $(CPPFILES)
 	rm -f ./.depend
@@ -53,5 +44,9 @@ $(PROGRAM): $(OBJFILES) data/experiments.db data/images
 
 .cpp.o:
 	$(COMPILER) -c $(CPPFLAGS) $< -o $@
+
+test/calibrator_test/calibrator_test.out: $(OBJFILES)
+	$(COMPILER) -c $(CPPFLAGS) $*.cpp -o $@
+
 clean:
 	rm $(OBJFILES) $(PROGRAM)
