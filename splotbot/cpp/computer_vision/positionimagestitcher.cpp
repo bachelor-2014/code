@@ -17,14 +17,15 @@ PositionImageStitcher::PositionImageStitcher(Camera *camera): ImageStitcher(came
 
 PositionImageStitcher::PositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera): ImageStitcher(camera){
     this->grabbedImages = grabbedImages;
-    this->xStep = camera->xStep;
-    this->yStep = camera->yStep;
 }
 
 /*
  * Stitch together the images grabbed by the PositionImageStitcher
  */
 cv::Mat PositionImageStitcher::stitch() {
+    //Get step values
+    xStep = camera->xStep;
+    yStep = camera->yStep;
     //Find the max values
     findMaxValues();
     //Finally warp the images
