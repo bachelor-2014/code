@@ -110,18 +110,6 @@ void Calibrator::getCalibrationFromFile(cv::Mat *distortionCoeffs,
 
 }
 
-void Calibrator::writeToConfig(string key, cv::Mat data){
-    cv::FileStorage fs(configFile,FileStorage::WRITE);
-    fs << key << data;
-}
-
-cv::Mat Calibrator::readFromConfig(string key){
-    FileStorage fs(configFile,FileStorage::READ);
-    cv::Mat data;
-    fs[key] >> data;
-    return data;
-}
-
 void Calibrator::stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, vector<double> *yStep){
     double xTranslationX;
     double yTranslationX;
@@ -144,12 +132,24 @@ void Calibrator::stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, ve
 }
 
 void Calibrator::writeConfig(){
-    this->writeToConfig("distortion_coefficients",this->distortionCoefficients);
-    this->writeToConfig("intrinsic_matrix",this->intrinsicMatrix);
-
-    this->writeToConfig("xStep",this->xStepMat);
-    this->writeToConfig("yStep",this->yStepMat);
+    cv::FileStorage fs(configFile,FileStorage::WRITE);
+    this->writeToConfig(fs,"distortion_coefficients",this->distortionCoefficients);
+    this->writeToConfig(fs,"intrinsic_matrix",this->intrinsicMatrix);
+    this->writeToConfig(fs,"xStep",this->xStepMat);
+    this->writeToConfig(fs,"yStep",this->yStepMat);
 }
+
+void Calibrator::writeToConfig(cv::FileStorage fs,string key, cv::Mat data){
+    fs << key << data;
+}
+
+cv::Mat Calibrator::readFromConfig(string key){
+    FileStorage fs(configFile,FileStorage::READ);
+    cv::Mat data;
+    fs[key] >> data;
+    return data;
+}
+
 bool Calibrator::isCalibrated(){
     return access(configFile.c_str(), F_OK) != -1;
 }

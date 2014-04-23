@@ -50,7 +50,7 @@ $(PROGRAM): $(OBJFILES) data/experiments.db data/images $(PROGRAMSRC)
 .cpp.o:
 	$(COMPILER) -c $(CPPFLAGS) $< -o $@
 
-.cpp.out: $(TESTOBJ) data/experiments.db data/images $*.cpp
+.cpp.out: $(SRCFILES) $(OBJFILES) $(TESTOBJ) data/experiments.db data/images $*.cpp
 	$(COMPILER) $(CPPFLAGS) $(OBJFILES) $*.cpp -o $@ $(LIBS)
 
 clean:
