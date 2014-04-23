@@ -20,7 +20,7 @@ class PositionImageStitcher: public ImageStitcher {
         cv::Mat stitch();
     private:
         cv::Mat warp();
-        cv::Mat translationMatrix(int x, int y);
+        cv::Mat translationMatrix(double x, double y);
         void findMaxValues();
         int min_x;
         int min_y;
@@ -30,8 +30,8 @@ class PositionImageStitcher: public ImageStitcher {
         //Size of 
         cv::Mat size;
 
-        vector<int> xStep;
-        vector<int> yStep;
+        vector<double> xStep;
+        vector<double> yStep;
 };
 
 #endif

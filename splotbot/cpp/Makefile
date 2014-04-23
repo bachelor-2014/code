@@ -4,6 +4,7 @@ LIBS = -lm -pthread `pkg-config --libs --cflags opencv cvblob` -lopencv_stitchin
 CPPFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp \
 	computer_vision/imagestitcher.cpp \
 	computer_vision/featuresimagestitcher.cpp component.cpp \
+	computer_vision/positionimagestitcher.cpp \
 	instructionbuffer.cpp camera.cpp singlesteppermotor.cpp \
 	rcservomotor.cpp scanner.cpp  mendel.cpp xyaxes.cpp \
 	cameracalibrator.cpp \
@@ -14,7 +15,8 @@ CPPFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp \
 	computer_vision/featuresandpositionimagestitcher.cpp \
 	utils/errors.cpp
 HFILES = libraries/cJSON/cJSON.h computer_vision/imagestitcher.h \
-	computer_vision/featuresimagestitcher.cpp component.h \
+	computer_vision/featuresimagestitcher.h component.h \
+	computer_vision/positionimagestitcher.h \
 	instructionbuffer.h camera.h singlesteppermotor.h \
 	rcservomotor.h scanner.h cameracalibrator.h mendel.h xyaxes.h \
 	componentinitializer.h splotbot.h utils/base64.h utils/threading.h \
@@ -27,7 +29,17 @@ HFILES = libraries/cJSON/cJSON.h computer_vision/imagestitcher.h \
 OBJFILES = $(CPPFILES:.cpp=.o)
 PROGRAM = test.out
 
+default: depend all
+
+depend: .depend
+
 all: $(CPPFILES) $(PROGRAM)
+
+.depend: $(CPPFILES)
+	rm -f ./.depend
+	$(COMPILER) $(CPPFLAGS) -MM $^>>./.depend;
+
+include .depend
 
 data/experiments.db:
 	-@mkdir data 2>/dev/null || true
