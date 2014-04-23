@@ -20,3 +20,4 @@ rucola.tab.c
 lex.yy.c
 lex.yy.h
 data
+.depend

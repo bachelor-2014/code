@@ -21,12 +21,18 @@ class Calibrator {
 
         bool isCalibrated();
         bool unCalibrate(Camera *camera);
-        void writeToConfig(string key, cv::Mat data);
-        cv::Mat readFromConfig(string key);
         void stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, vector<double> *yStep);
+        cv::Mat readFromConfig(string key);
 
     private:
         string configFile;
+        cv::Mat xStepMat;
+        cv::Mat yStepMat;
+        cv::Mat distortionCoefficients;
+        cv::Mat intrinsicMatrix;
+
+        void writeToConfig(cv::FileStorage fs,string key, cv::Mat data);
+        void writeConfig();
 };
 
 #endif

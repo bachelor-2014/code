@@ -90,8 +90,10 @@ bool Calibrator::calibrate(vector<cv::Mat> images,
     *distortionCoeffs = distortion_coeffs;
     *intrinsicMatrix = intrinsic_Matrix;
 
-    this->writeToConfig("distortion_coefficients",distortion_coeffs);
-    this->writeToConfig("intrinsic_matrix",intrinsic_Matrix);
+    this->distortionCoefficients = distortion_coeffs;
+    this->intrinsicMatrix = intrinsic_Matrix;
+
+    this->writeConfig();
 
     return hits==runs;
 }
@@ -106,18 +108,6 @@ void Calibrator::getCalibrationFromFile(cv::Mat *distortionCoeffs,
     *xStep = { xStepMat.at<double>(0), xStepMat.at<double>(1) };
     *yStep = { yStepMat.at<double>(0), yStepMat.at<double>(1) };
 
-}
-
-void Calibrator::writeToConfig(string key, cv::Mat data){
-    cv::FileStorage fs(configFile,FileStorage::WRITE);
-    fs << key << data;
-}
-
-cv::Mat Calibrator::readFromConfig(string key){
-    FileStorage fs(configFile,FileStorage::READ);
-    cv::Mat data;
-    fs[key] >> data;
-    return data;
 }
 
 void Calibrator::stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, vector<double> *yStep){
@@ -135,9 +125,31 @@ void Calibrator::stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, ve
     cv::Mat xStepMat = cv::Mat(*xStep);
     cv::Mat yStepMat = cv::Mat(*yStep);
 
-    this->writeToConfig("xStep",xStepMat);
-    this->writeToConfig("yStep",yStepMat);
+    this->xStepMat = xStepMat;
+    this->yStepMat = yStepMat;
+
+    this->writeConfig();
 }
+
+void Calibrator::writeConfig(){
+    cv::FileStorage fs(configFile,FileStorage::WRITE);
+    this->writeToConfig(fs,"distortion_coefficients",this->distortionCoefficients);
+    this->writeToConfig(fs,"intrinsic_matrix",this->intrinsicMatrix);
+    this->writeToConfig(fs,"xStep",this->xStepMat);
+    this->writeToConfig(fs,"yStep",this->yStepMat);
+}
+
+void Calibrator::writeToConfig(cv::FileStorage fs,string key, cv::Mat data){
+    fs << key << data;
+}
+
+cv::Mat Calibrator::readFromConfig(string key){
+    FileStorage fs(configFile,FileStorage::READ);
+    cv::Mat data;
+    fs[key] >> data;
+    return data;
+}
+
 bool Calibrator::isCalibrated(){
     return access(configFile.c_str(), F_OK) != -1;
 }

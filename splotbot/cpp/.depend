@@ -77,10 +77,6 @@ splotbot.o: splotbot.cpp splotbot.h instructionbuffer.h component.h \
  logging/filelogger.h logging/logger.h componentinitializer.h \
  libraries/cJSON/cJSON.h utils/threading.h utils/errors.h \
  utils/../component.h
-test.o: test.cpp splotbot.h instructionbuffer.h component.h \
- logging/filelogger.h logging/logger.h componentinitializer.h \
- libraries/cJSON/cJSON.h singlesteppermotor.h rcservomotor.h xyaxes.h \
- mendel.h utils/threading.h
 logger.o: logging/logger.cpp logging/logger.h
 filelogger.o: logging/filelogger.cpp logging/filelogger.h \
  logging/logger.h
