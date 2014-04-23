@@ -17,14 +17,14 @@ PositionImageStitcher::PositionImageStitcher(Camera *camera): ImageStitcher(came
 
 PositionImageStitcher::PositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera): ImageStitcher(camera){
     this->grabbedImages = grabbedImages;
+    this->xStep = camera->xStep;
+    this->yStep = camera->yStep;
 }
 
 /*
  * Stitch together the images grabbed by the PositionImageStitcher
  */
 cv::Mat PositionImageStitcher::stitch() {
-    xStep = { 100, 0 }; 
-    yStep = { 0, 100 }; 
     //Find the max values
     findMaxValues();
     //Finally warp the images
@@ -50,8 +50,8 @@ cv::Mat PositionImageStitcher::warp() {
     return result;
 }
 
-cv::Mat PositionImageStitcher::translationMatrix(int x, int y){
-    vector<int> transvec = {
+cv::Mat PositionImageStitcher::translationMatrix(double x, double y){
+    vector<double> transvec = {
         ((xStep[0] * (x-min_x)) + (yStep[0] * (y-min_y))),
         ((xStep[1] * (x-min_x)) + (yStep[1] * (y-min_y)))
     };

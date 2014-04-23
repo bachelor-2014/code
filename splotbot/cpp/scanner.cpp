@@ -11,6 +11,7 @@
 #include "computer_vision/imagestitcher.h"
 #include "computer_vision/featuresimagestitcher.h"
 #include "computer_vision/featuresandpositionimagestitcher.h"
+#include "computer_vision/positionimagestitcher.h"
 
 #include "scanner.h"
 
@@ -47,6 +48,9 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             break;
         case 1: 
             stitcher = new FeaturesandPositionImageStitcher(camera);
+            break;
+        case 2:
+            stitcher = new PositionImageStitcher(camera);
             break;
         default: 
             stitcher = new FeaturesImageStitcher(camera);
@@ -98,6 +102,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     if (FeaturesImageStitcher *i = dynamic_cast<FeaturesImageStitcher*>(stitcher)) {
         stitchedImage = i->stitch();
     } else if (FeaturesandPositionImageStitcher *i = dynamic_cast<FeaturesandPositionImageStitcher*>(stitcher)) {
+        stitchedImage = i->stitch();
+    } else if (PositionImageStitcher *i = dynamic_cast<PositionImageStitcher*>(stitcher)){
         stitchedImage = i->stitch();
     } else {
        throw runtime_error("Unknown image stitcher type detected");

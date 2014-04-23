@@ -38,7 +38,11 @@ class Camera: public Component {
         void dropletDetection();
         Mat grabImage();
         void calibrate(cv::Mat coefs, cv::Mat matrix);
+        void translation(double xTranslationX, double yTranslationX, double
+                xTranslationY, double yTranslationY);
 
+        vector<double> xStep;
+        vector<double> yStep;
     private:
         VideoLogger *video_logger;
         //VideoCapture *cap;
