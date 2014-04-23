@@ -122,18 +122,23 @@ cv::Mat Calibrator::readFromConfig(string key){
 void Calibrator::stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, vector<double> *yStep){
     double xTranslationX;
     double yTranslationX;
+    cout << "Compute translation 1" << endl;
     computeTranslation(images[0], images[1], &xTranslationX, &yTranslationX);
 
     double xTranslationY;
     double yTranslationY;
+    cout << "Compute translation 1" << endl;
     computeTranslation(images[0], images[2], &xTranslationY, &yTranslationY);
 
+    cout << "Assigning Steps" << endl;
     *xStep = {xTranslationX, yTranslationX};
     *yStep = {xTranslationY, yTranslationY};
 
+    cout << "Computing Matrix Steps" << endl;
     cv::Mat xStepMat = cv::Mat(*xStep);
     cv::Mat yStepMat = cv::Mat(*yStep);
 
+    cout << "Saving Matrix Steps" << endl;
     this->writeToConfig("xStep",xStepMat);
     this->writeToConfig("yStep",yStepMat);
 }
