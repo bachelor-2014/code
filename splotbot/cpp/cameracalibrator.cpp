@@ -10,10 +10,11 @@ using namespace cv;
 /**
  * Camera constructor
  */
-CameraCalibrator::CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes):camera(camera),xyaxes(xyaxes) {
+CameraCalibrator::CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes): camera(camera), xyaxes(xyaxes) {
     cout    << "Instantiating calibrator " << name << " With camera "
             << camera->name << " and xyaxes " << xyaxes->name << endl;
 
+    this->name = name;
     calibrator = new Calibrator("data/calibration.xml");
 }
 
@@ -39,8 +40,6 @@ void CameraCalibrator::registerActions(vector<function<void(InstructionBuffer *)
 void CameraCalibrator::calibrate(){
     vector<cv::Mat> images;
 
-    camera->stop();
-
     cv::Mat coefs;
     cv::Mat matrix;
 
@@ -48,10 +47,13 @@ void CameraCalibrator::calibrate(){
         cout << "CameraCalibrator: Camera already calibrated" << endl;
         calibrator->getCalibrationFromFile(&coefs,&matrix);
         camera->calibrate(coefs, matrix);
+        (*eventCallback)(name, "success");
         return;
     }
 
     cout << "CameraCalibrator: Camera not already calibrated" << endl;
+
+    camera->stop();
         
     int centerX = xyaxes->positionX();
     int centerY = xyaxes->positionY();
@@ -117,6 +119,7 @@ void CameraCalibrator::calibrate(){
     cout << "Calibrated" << endl;
 
     camera->calibrate(coefs, matrix);
+    (*eventCallback)(name, "success");
 }
 
 void CameraCalibrator::recalibrate(){
