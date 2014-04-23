@@ -46,7 +46,7 @@ void CameraCalibrator::calibrate(){
 
     if (calibrator->isCalibrated()) {
         cout << "CameraCalibrator: Camera already calibrated" << endl;
-        calibrator->getCalibrationFromFile(&coefs,&matrix,&camera->xStep, &camera->yStep);
+        calibrator->getCalibrationFromFile(&coefs,&matrix,&(camera->xStep), &(camera->yStep));
         camera->calibrate(coefs, matrix);
         (*eventCallback)(name, "success");
         return;
@@ -84,11 +84,14 @@ void CameraCalibrator::calibrate(){
     if(!success){
         throw ComponentException(this,"Could not calibrate");
     }
-    cout << "Calibrated" << endl;
-
     camera->calibrate(coefs, matrix);
 
+    cout << "Calibrated" << endl;
+
+
     //Step calibration
+
+    cout << "Initiate Step calibration" << endl;
     vector<cv::Mat> stepImages;
 
     xyaxes->move(centerX,centerY);
@@ -103,7 +106,8 @@ void CameraCalibrator::calibrate(){
     sleep(1);
     stepImages.push_back(camera->grabImage());
 
-    calibrator->stepCalibrate(stepImages, &camera->xStep, &camera->yStep);
+    calibrator->stepCalibrate(stepImages, &(camera->xStep), &(camera->yStep));
+    cout << "Step calibration done" << endl;
 
     (*eventCallback)(name, "success");
 }
