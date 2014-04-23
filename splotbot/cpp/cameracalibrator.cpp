@@ -78,6 +78,16 @@ void CameraCalibrator::calibrate(){
             calibrationImages.push_back(image);
         }
     }
+
+
+
+    //cap.release();
+    calibrator->calibrate(calibrationImages,&coefs,&matrix);
+    cout << "Calibrated" << endl;
+
+    camera->calibrate(coefs, matrix);
+    
+    //Step calibration
     xyaxes->move(centerX,centerY);
     sleep(1);
     Mat image1 = camera->grabImage();
@@ -97,15 +107,9 @@ void CameraCalibrator::calibrate(){
     double xTranslationY;
     double yTranslationY;
     computeTranslation(image1, image3, &xTranslationY, &yTranslationY);
-
     camera->translation(xTranslationX, yTranslationX, xTranslationY,
             yTranslationY);
 
-
-    calibrator->calibrate(calibrationImages,&coefs,&matrix);
-    cout << "Calibrated" << endl;
-
-    camera->calibrate(coefs, matrix);
     (*eventCallback)(name, "success");
 }
 

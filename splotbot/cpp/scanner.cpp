@@ -90,29 +90,6 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     sem_t stitcherSemaphore;
     sem_init(&stitcherSemaphore, 0, 0);
     
-<<<<<<< HEAD
-    // Stitch the images together
-    cv::Mat stitchedImage;
-    cout << "Scanner: Stitching grabbed images ..." << endl;
-    //stitchedImage = stitcher->stitch();
-    
-    // Timing variable
-    clock_t timestamp;
-
-    // Get time for timing
-    timestamp = clock();
-    const double startTime = double(timestamp) / CLOCKS_PER_SEC;
-
-    if (FeaturesImageStitcher *i = dynamic_cast<FeaturesImageStitcher*>(stitcher)) {
-        stitchedImage = i->stitch();
-    } else if (FeaturesandPositionImageStitcher *i = dynamic_cast<FeaturesandPositionImageStitcher*>(stitcher)) {
-        stitchedImage = i->stitch();
-    } else if (PositionImageStitcher *i = dynamic_cast<PositionImageStitcher*>(stitcher)){
-        stitchedImage = i->stitch();
-    } else {
-       throw ComponentException(this,"Unknown image stitcher type detected");
-    }
-=======
     runAsThread( [&] () {
         cout << "Scanner: Stitching thread started" << endl;
 
@@ -147,7 +124,6 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
         // Get time for timing
         timestamp = clock();
         const double endTime = double(timestamp) / CLOCKS_PER_SEC;
->>>>>>> c2d2ac81e7822382b3abf4c8c1c0a9376b5f39aa
 
         // Send the stitching time as an event
         double runTime = endTime - startTime;
