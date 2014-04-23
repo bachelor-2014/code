@@ -79,8 +79,6 @@ void CameraCalibrator::calibrate(){
         }
     }
 
-
-
     //cap.release();
     bool success = calibrator->calibrate(calibrationImages,&coefs,&matrix);
     if(!success){
