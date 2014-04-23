@@ -27,7 +27,17 @@ HFILES = libraries/cJSON/cJSON.h computer_vision/imagestitcher.h \
 OBJFILES = $(CPPFILES:.cpp=.o)
 PROGRAM = test.out
 
+default: depend all
+
+depend: .depend
+
 all: $(CPPFILES) $(PROGRAM)
+
+.depend: $(CPPFILES)
+	rm -f ./.depend
+	$(COMPILER) $(CPPFLAGS) -MM $^>>./.depend;
+
+include .depend
 
 data/experiments.db:
 	-@mkdir data 2>/dev/null || true
