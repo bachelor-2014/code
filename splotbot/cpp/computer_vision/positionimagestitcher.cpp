@@ -41,11 +41,33 @@ cv::Mat PositionImageStitcher::warp() {
 
     //Warp images
     for (auto grabbed : grabbedImages){
+
         cv::Mat t = translationMatrix(grabbed.positionX, grabbed.positionY);
         cv::Mat temp = cv::Mat::zeros(size_y,size_x,CV_8UC3);
-        cout << t << endl;
         cv::warpPerspective(grabbed.image, temp, t, temp.size());
-        cv::addWeighted(result,1.0,temp,1.0,0,result);
+
+        cv::namedWindow("temp");
+        cv::namedWindow("mask");
+        cv::namedWindow("result1");
+        cv::namedWindow("result2");
+        cv::namedWindow("result3");
+
+
+        cv::Mat mask;
+        cv::threshold(temp,mask,1.0,255.0,THRESH_BINARY_INV);
+
+        cv::imshow("temp",temp);
+        cv::imshow("mask",mask);
+        cv::imshow("result1",result);
+
+        bitwise_and(result,mask,result);
+
+        cv::imshow("result3",result);
+        result = result + temp;
+
+        cv::imshow("result2",result);
+        cv::waitKey(0);
+
     }
 
     return result;
@@ -94,3 +116,4 @@ void PositionImageStitcher::findMaxValues(){
     //Find total size of image 
     size = transmat * maximgpixels;
 }
+
