@@ -109,6 +109,7 @@ bool Calibrator::isCalibrated(){
     return access(configFile.c_str(), F_OK) != -1;
 }
 
-bool Calibrator::unCalibrate(){
+bool Calibrator::unCalibrate(Camera *camera){
+    camera->uncalibrate();
     return remove(configFile.c_str()) != -1;
 }

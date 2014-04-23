@@ -20,7 +20,7 @@ class Calibrator {
                 cv::Mat *intrinsicMatrix);
 
         bool isCalibrated();
-        bool unCalibrate();
+        bool unCalibrate(Camera *camera);
 
     private:
         string configFile;

@@ -89,7 +89,7 @@ void CameraCalibrator::calibrate(){
     cout << "Calibrated" << endl;
 
     camera->calibrate(coefs, matrix);
-    
+
     //Step calibration
     xyaxes->move(centerX,centerY);
     sleep(1);
@@ -117,6 +117,6 @@ void CameraCalibrator::calibrate(){
 }
 
 void CameraCalibrator::recalibrate(){
-    calibrator->unCalibrate();
+    calibrator->unCalibrate(camera);
     this->calibrate();
 }
