@@ -58,14 +58,6 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             stitcher = new FeaturesImageStitcher(camera);
             break;
     }
-    
-    //FeaturesImageStitcher stitcher(camera);
-
-    // Stop the camera
-    //TODO is this needed?
-    cout << "Scanner: Stopping the camera ..." << endl;
-    camera->stop();
-    cout << "Scanner: Stopped the camera" << endl;
 
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
