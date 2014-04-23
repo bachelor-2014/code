@@ -78,7 +78,6 @@ bool Calibrator::calibrate(vector<cv::Mat> images,
             imagePoints.push_back(v_tImgPT);
             objectPoints.push_back(v_tObjPT);
         }
-        return hits==runs;
     }
 
     vector<cv::Mat> rvecs, tvecs;
@@ -93,6 +92,8 @@ bool Calibrator::calibrate(vector<cv::Mat> images,
 
     this->writeToConfig("distortion_coefficients",distortion_coeffs);
     this->writeToConfig("intrinsic_matrix",intrinsic_Matrix);
+
+    return hits==runs;
 }
 
 void Calibrator::getCalibrationFromFile(cv::Mat *distortionCoeffs,
