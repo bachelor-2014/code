@@ -6,9 +6,12 @@
 #include <unistd.h>
 #include <termios.h>
 #include <ctime>
+#include <semaphore.h>
 
 #include "utils/base64.h"
 #include "utils/errors.h"
+#include "utils/threading.h"
+
 #include "computer_vision/imagestitcher.h"
 #include "computer_vision/featuresimagestitcher.h"
 #include "computer_vision/featuresandpositionimagestitcher.h"
@@ -87,7 +90,15 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     //cout << "Scanner: Starting the camera ..." << endl;
     //camera->start();
     //cout << "Scanner: Started the camera" << endl;
+
+    // Run stitching in a separate thread
+    // In order to aboid the image stitcher local variable
+    // going out of scope, us a sempahore to make sure it is
+    // copied in the thread before continuing afterwards
+    sem_t stitcherSemaphore;
+    sem_init(&stitcherSemaphore, 0, 0);
     
+<<<<<<< HEAD
     // Stitch the images together
     cv::Mat stitchedImage;
     cout << "Scanner: Stitching grabbed images ..." << endl;
@@ -109,30 +120,68 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     } else {
        throw ComponentException(this,"Unknown image stitcher type detected");
     }
+=======
+    runAsThread( [&] () {
+        cout << "Scanner: Stitching thread started" << endl;
 
-    // Get time for timing
-    timestamp = clock();
-    const double endTime = double(timestamp) / CLOCKS_PER_SEC;
+        // Stitch the images together
+        cv::Mat stitchedImage;
+        cout << "Scanner: Stitching grabbed images ..." << endl;
+        //stitchedImage = stitcher->stitch();
+        
+        // Timing variable
+        clock_t timestamp;
 
-    // Send the stitching time as an event
-    double runTime = endTime - startTime;
+        // Get time for timing
+        timestamp = clock();
+        const double startTime = double(timestamp) / CLOCKS_PER_SEC;
 
-    (*eventCallback)(name + "_time", to_string(runTime));
+        if (FeaturesImageStitcher *i = dynamic_cast<FeaturesImageStitcher*>(stitcher)) {
+            FeaturesImageStitcher ii = *i;
+            sem_post(&stitcherSemaphore);
+            stitchedImage = ii.stitch();
+        } else if (FeaturesandPositionImageStitcher *i = dynamic_cast<FeaturesandPositionImageStitcher*>(stitcher)) {
+            FeaturesandPositionImageStitcher ii = *i;
+            sem_post(&stitcherSemaphore);
+            stitchedImage = ii.stitch();
+        } else if (PositionImageStitcher *i = dynamic_cast<PositionImageStitcher*>(stitcher)) {
+            PositionImageStitcher ii = *i;
+            sem_post(&stitcherSemaphore);
+            stitchedImage = ii.stitch();
+        } else {
+           throw runtime_error("Unknown image stitcher type detected");
+        }
 
-    cout << "startTime = " << startTime << endl;
-    cout << "endTime = " << endTime << endl;
-    cout << "runTime = " << runTime << endl;
+        // Get time for timing
+        timestamp = clock();
+        const double endTime = double(timestamp) / CLOCKS_PER_SEC;
+>>>>>>> c2d2ac81e7822382b3abf4c8c1c0a9376b5f39aa
 
-    cout << "Scanner: Stitched grabbed images" << endl;
+        // Send the stitching time as an event
+        double runTime = endTime - startTime;
 
-    // Convert the image to base64
-    vector<uchar> buff;
-    vector<int> param = vector<int>(0);
-    imencode(".png", stitchedImage, buff, param);
-    string base64 = base64_encode(&buff[0],buff.size());
+        (*eventCallback)(name + "_time", to_string(runTime));
 
-    // Send the image as an event
-    (*eventCallback)(name, base64);
+        cout << "startTime = " << startTime << endl;
+        cout << "endTime = " << endTime << endl;
+        cout << "runTime = " << runTime << endl;
+
+        cout << "Scanner: Stitched grabbed images" << endl;
+
+        // Convert the image to base64
+        vector<uchar> buff;
+        vector<int> param = vector<int>(0);
+        imencode(".png", stitchedImage, buff, param);
+        string base64 = base64_encode(&buff[0],buff.size());
+
+        // Send the image as an event
+        (*eventCallback)(name, base64);
+            
+            });
+
+    cout << "Scanner: Waiting for stitching thread ..." << endl;
+    sem_wait(&stitcherSemaphore);
+    cout << "Scanner: Continuing while stitching thread does its thing" << endl;
 }
 
 /**
