@@ -3,6 +3,7 @@
 
 #include "cameracalibrator.h"
 #include "computer_vision/computervisionutils.h"
+#include "utils/errors.h"
 
 using namespace std;
 using namespace cv;

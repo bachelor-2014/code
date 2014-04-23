@@ -8,6 +8,7 @@
 #include <math.h>
 
 #include "rcservomotor.h"
+#include "utils/errors.h"
 
 using namespace std;
 
@@ -50,7 +51,7 @@ int RCServoMotor::getPosition() {
         stringstream ss;
         ss << "RCServoMotor (" << name << ") failed to write to device " << device << endl;
         string s = ss.str();
-        throw std::runtime_error(s.c_str());
+        throw ComponentException(this,s.c_str());
     }
    
     unsigned char response[2];
@@ -58,7 +59,7 @@ int RCServoMotor::getPosition() {
         stringstream ss;
         ss << "RCServoMotor (" << name << ") failed to read from device " << device << endl;
         string s = ss.str();
-        throw std::runtime_error(s.c_str());
+        throw ComponentException(this,s.c_str());
     }
 
     close(fd);
@@ -80,7 +81,7 @@ int RCServoMotor::setPosition(unsigned short target) {
         stringstream ss;
         ss << "RCServoMotor (" << name << ") failed to write to device " << device << endl;
         string s = ss.str();
-        throw std::runtime_error(s.c_str());
+        throw ComponentException(this,s.c_str());
     }
 
     close(fd);
@@ -102,7 +103,7 @@ int RCServoMotor::openDeviceFile() {
         stringstream ss;
         ss << "RCServoMotor (" << name << ") failed to open device " << device << endl;
         string s = ss.str();
-        throw std::runtime_error(s.c_str());
+        throw ComponentException(this,s.c_str());
     }
 
     return fd;
