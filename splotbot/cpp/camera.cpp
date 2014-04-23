@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "camera.h"
+#include "utils/errors.h"
 #include "utils/base64.h"
 #include <opencv2/opencv.hpp>
 #include <thread>
@@ -126,7 +127,7 @@ Mat Camera::grabImage() {
     Mat newimage;
 
     imagelock.lock();
-    
+
     VideoCapture cap(videoDevice);
     cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
     cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
@@ -136,7 +137,7 @@ Mat Camera::grabImage() {
     cap.release();
 
     if (!success) {
-        throw runtime_error("Camera: Failed to grab image");
+        throw ComponentException(this,"Camera: Failed to grab image");
     }
 
     if(isCalibrated){

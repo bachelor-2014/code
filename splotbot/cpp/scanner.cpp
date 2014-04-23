@@ -8,6 +8,7 @@
 #include <ctime>
 
 #include "utils/base64.h"
+#include "utils/errors.h"
 #include "computer_vision/imagestitcher.h"
 #include "computer_vision/featuresimagestitcher.h"
 #include "computer_vision/featuresandpositionimagestitcher.h"
@@ -106,7 +107,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     } else if (PositionImageStitcher *i = dynamic_cast<PositionImageStitcher*>(stitcher)){
         stitchedImage = i->stitch();
     } else {
-       throw runtime_error("Unknown image stitcher type detected");
+       throw ComponentException(this,"Unknown image stitcher type detected");
     }
 
     // Get time for timing
