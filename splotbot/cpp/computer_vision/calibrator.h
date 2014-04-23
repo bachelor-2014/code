@@ -14,13 +14,13 @@ using namespace std;
 class Calibrator {
     public:
         Calibrator(string configFile);
-        void calibrate(vector<cv::Mat> images,
+        bool calibrate(vector<cv::Mat> images,
                 cv::Mat *distortionCoeffs, cv::Mat *intrinsicMatrix);
         void getCalibrationFromFile(cv::Mat *distortionCoeffs,
                 cv::Mat *intrinsicMatrix, vector<double> *xStep, vector<double> *yStep);
 
         bool isCalibrated();
-        bool unCalibrate();
+        bool unCalibrate(Camera *camera);
         void writeToConfig(string key, cv::Mat data);
         cv::Mat readFromConfig(string key);
         void stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, vector<double> *yStep);

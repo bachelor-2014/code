@@ -53,16 +53,11 @@ void CameraCalibrator::calibrate(){
     }
 
     cout << "CameraCalibrator: Camera not already calibrated" << endl;
-
-    camera->stop();
         
     int centerX = xyaxes->positionX();
     int centerY = xyaxes->positionY();
 
     vector<cv::Mat> calibrationImages;
-    //cv::VideoCapture cap(camera->videoDevice);
-    //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
     cv::Mat image;
 
     for (int x = -1; x <= 1; x++) {
@@ -73,14 +68,6 @@ void CameraCalibrator::calibrate(){
 
             // Sleep before grabbing the image, allowing the camera to settle
             sleep(1);
-
-            // Grab image
-            //bool success = cap.read(image);
-            //if (!success) {
-            //    stringstream ss;
-            //    ss << "CameraCalibrator failed to grab image from device " << camera->videoDevice;
-            //    throw runtime_error(ss.str());
-            //}
 
             image = camera->grabImage();
 
@@ -95,11 +82,14 @@ void CameraCalibrator::calibrate(){
 
 
     //cap.release();
-    calibrator->calibrate(calibrationImages,&coefs,&matrix);
+    bool success = calibrator->calibrate(calibrationImages,&coefs,&matrix);
+    if(!success){
+        throw ComponentException(this,"Could not calibrate");
+    }
     cout << "Calibrated" << endl;
 
     camera->calibrate(coefs, matrix);
-    
+
     //Step calibration
     vector<cv::Mat> stepImages;
 
@@ -121,6 +111,6 @@ void CameraCalibrator::calibrate(){
 }
 
 void CameraCalibrator::recalibrate(){
-    calibrator->unCalibrate();
+    calibrator->unCalibrate(camera);
     this->calibrate();
 }

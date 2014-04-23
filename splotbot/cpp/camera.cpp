@@ -239,6 +239,10 @@ void Camera::calibrate(cv::Mat coefs, cv::Mat matrix) {
     isCalibrated = true;
 }
 
+void Camera::uncalibrate(){
+    isCalibrated = false;
+}
+
 void Camera::translation(double xTranslationX, double yTranslationX, double xTranslationY, double yTranslationY){
     vector<double> x = {xTranslationX, yTranslationX};
     vector<double> y = {xTranslationY, yTranslationY};

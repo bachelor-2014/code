@@ -18,8 +18,10 @@ Calibrator::Calibrator(string configFile):configFile(configFile) {
 }
 
 /**
+ * Create camera calibration matrices for the given images.
+ * Returns whether calibration is successful
  */
-void Calibrator::calibrate(vector<cv::Mat> images,
+bool Calibrator::calibrate(vector<cv::Mat> images,
         cv::Mat *distortionCoeffs, cv::Mat *intrinsicMatrix) {
 
     cout << "GOT IMAGES?? \n\n" << images.size() << "\n\n" << endl;
@@ -33,8 +35,9 @@ void Calibrator::calibrate(vector<cv::Mat> images,
     vector< vector< Point3f> > objectPoints;
  
     cv::Mat image;
+    int hits = 0, runs = 0;
     for (auto it = images.begin(); it != images.end(); ++it) {
-
+        runs++;
         image = (cv::Mat) (*it);
 
         cv::Mat gray;
@@ -46,7 +49,7 @@ void Calibrator::calibrate(vector<cv::Mat> images,
 
         if(sCorner && corners.size() == board_total)
         {
-            cout << "INIF" << endl;
+            hits++;
             //cornerSubPix(gray, corners, Size(11,11),
             //Size(-1,-1), TermCriteria(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER,
             //30, 0.1));
@@ -75,7 +78,7 @@ void Calibrator::calibrate(vector<cv::Mat> images,
             imagePoints.push_back(v_tImgPT);
             objectPoints.push_back(v_tObjPT);
         }
-        cout << "AfterIF" << endl;
+        return hits==runs;
     }
 
     vector<cv::Mat> rvecs, tvecs;
@@ -138,6 +141,7 @@ bool Calibrator::isCalibrated(){
     return access(configFile.c_str(), F_OK) != -1;
 }
 
-bool Calibrator::unCalibrate(){
+bool Calibrator::unCalibrate(Camera *camera){
+    camera->uncalibrate();
     return remove(configFile.c_str()) != -1;
 }

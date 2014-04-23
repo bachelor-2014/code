@@ -43,6 +43,7 @@ class Camera: public Component {
 
         vector<double> xStep;
         vector<double> yStep;
+        void uncalibrate();
     private:
         VideoLogger *video_logger;
         //VideoCapture *cap;
