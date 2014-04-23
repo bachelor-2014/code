@@ -17,6 +17,8 @@ Calibrator::Calibrator(string configFile):configFile(configFile) {
 }
 
 /**
+ * Create camera calibration matrices for the given images.
+ * Returns whether calibration is successful
  */
 bool Calibrator::calibrate(vector<cv::Mat> images,
         cv::Mat *distortionCoeffs, cv::Mat *intrinsicMatrix) {
@@ -32,8 +34,9 @@ bool Calibrator::calibrate(vector<cv::Mat> images,
     vector< vector< Point3f> > objectPoints;
  
     cv::Mat image;
+    int hits = 0, runs = 0;
     for (auto it = images.begin(); it != images.end(); ++it) {
-
+        runs++;
         image = (cv::Mat) (*it);
 
         cv::Mat gray;
@@ -42,11 +45,10 @@ bool Calibrator::calibrate(vector<cv::Mat> images,
         vector< Point2f> corners;
 
         bool sCorner = findChessboardCorners(gray,board_size,corners);
-        bool success = false;
 
         if(sCorner && corners.size() == board_total)
         {
-            success = true;
+            hits++;
             //cornerSubPix(gray, corners, Size(11,11),
             //Size(-1,-1), TermCriteria(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER,
             //30, 0.1));
@@ -75,7 +77,7 @@ bool Calibrator::calibrate(vector<cv::Mat> images,
             imagePoints.push_back(v_tImgPT);
             objectPoints.push_back(v_tObjPT);
         }
-        return success;
+        return hits==runs;
     }
 
     vector<cv::Mat> rvecs, tvecs;
