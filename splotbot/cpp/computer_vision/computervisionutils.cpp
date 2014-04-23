@@ -95,6 +95,28 @@ void computeTranslation(cv::Mat image1, cv::Mat image2, double *xTranslation, do
     cv::Mat affineTransformation(2, 3, CV_32FC1);
     affineTransformation = getAffineTransform(points1, points2);
 
+    cout << "Affine transformation computed: " << affineTransformation << endl;
+
     *xTranslation = affineTransformation.at<double>(0, 2);
     *yTranslation = affineTransformation.at<double>(1, 2);
+
+    //TODO DEBUG: save the images
+    stringstream fs11;
+    fs11 << "data/images/clean_translation_image1_" << (*xTranslation) << ".jpg";
+    cv::imwrite(fs11.str(), image1);
+
+    stringstream fs21;
+    fs21 << "data/images/clean_translation_image2_" << (*xTranslation) << ".jpg";
+    cv::imwrite(fs21.str(), image2);
+    
+    drawChessboardCorners(image1, board_size, cv::Mat(corners1), found1);
+    drawChessboardCorners(image2, board_size, cv::Mat(corners2), found2);
+
+    stringstream fs1;
+    fs1 << "data/images/translation_image1_" << (*xTranslation) << ".jpg";
+    cv::imwrite(fs1.str(), image1);
+
+    stringstream fs2;
+    fs2 << "data/images/translation_image2_" << (*xTranslation) << ".jpg";
+    cv::imwrite(fs2.str(), image2);
 }
