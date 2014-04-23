@@ -1,7 +1,9 @@
 #include <iostream>
 #include <thread>
+
 #include "splotbot.h"
 #include "utils/threading.h"
+#include "utils/errors.h"
 
 using namespace std;
 
@@ -54,7 +56,13 @@ void Splotbot::run() {
             buffer.popInstructions(1, popped);
             int action = popped[0];
 
-            actions[action](&buffer);
+            try {
+                actions[action](&buffer);
+            } catch(ComponentException& e){
+                e.component->raiseError(e.what());
+            } catch(exception& e) {
+                cout << "TOO GENERAL AN EXCEPTION." << endl;
+            }
         }
     });
 }

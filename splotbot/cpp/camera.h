@@ -62,7 +62,7 @@ class Camera: public Component {
         /**
          * Calibration
          */
-        bool isCalibrated = false;
+        bool isCalibrated;
         cv::Mat coefs;
         cv::Mat matrix;
 };

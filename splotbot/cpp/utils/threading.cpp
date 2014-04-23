@@ -3,6 +3,9 @@
 #include "threading.h"
 #include <unistd.h>
 #include <semaphore.h>
+#include <exception>
+
+using namespace std;
 
 // Struct containing the necessary parameters to the thread runner function
 typedef struct {

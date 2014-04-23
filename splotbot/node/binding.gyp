@@ -19,7 +19,9 @@
 "../cpp/logging/logger.cpp","../cpp/logging/filelogger.cpp",
 "../cpp/logging/videologger.cpp",
 "../cpp/computer_vision/dropletdetector.cpp",
-"../cpp/computer_vision/computervisionutils.cpp"],
+"../cpp/computer_vision/computervisionutils.cpp",
+"../cpp/utils/errors.cpp"
+],
       "libraries": [
         "<!@(pkg-config --libs --cflags opencv cvblob)",
       ],
