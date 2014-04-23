@@ -6,7 +6,6 @@
 #include "../../logging/logger.h"
 #include "../../logging/filelogger.h"
 #include "../../logging/videologger.h"
-#include "../../logging/dblogger.h"
 
 #define SH_FG_RED            "\033[0;31m"
 #define SH_FG_GREEN          "\033[0;32m"
@@ -86,31 +85,31 @@ bool test_video_read_write(){
 bool test_db_read_write(){
     clog << __func__ << endl;
 
-    DBLogger *dblogger = new DBLogger("john");
+    //DBLogger *dblogger = new DBLogger("john");
 
-    (*dblogger).Clear();
+    //(*dblogger).Clear();
 
-    bool w =    (*dblogger).Write(string("data1")) &&
-                (*dblogger).Write(string("data2")) &&
-                (*dblogger).Write(string("data3"));
-    if(!w){
-        return false;
-    }
+    //bool w =    (*dblogger).Write(string("data1")) &&
+    //            (*dblogger).Write(string("data2")) &&
+    //            (*dblogger).Write(string("data3"));
+    //if(!w){
+    //    return false;
+    //}
 
-    vector<string> res = (*dblogger).Read();
-    if(res.size() != 3){
-        clog << "Write didn't work. Size: " << res.size() << endl;
-        return false;
-    }
+    //vector<string> res = (*dblogger).Read();
+    //if(res.size() != 3){
+    //    clog << "Write didn't work. Size: " << res.size() << endl;
+    //    return false;
+    //}
 
-    (*dblogger).Clear();
-    res = (*dblogger).Read();
-    if(res.size() != 0){
-        clog << "Clear didn't work. Remaining: " << res.size() << endl;
-        return false;
-    }
+    //(*dblogger).Clear();
+    //res = (*dblogger).Read();
+    //if(res.size() != 0){
+    //    clog << "Clear didn't work. Remaining: " << res.size() << endl;
+    //    return false;
+    //}
 
-    return true;
+    //return true;
 }
 
 bool test(function<bool()> f, string message){

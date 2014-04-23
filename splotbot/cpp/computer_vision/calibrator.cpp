@@ -91,8 +91,10 @@ bool Calibrator::calibrate(vector<cv::Mat> images,
     *distortionCoeffs = distortion_coeffs;
     *intrinsicMatrix = intrinsic_Matrix;
 
-    this->writeToConfig("distortion_coefficients",distortion_coeffs);
-    this->writeToConfig("intrinsic_matrix",intrinsic_Matrix);
+    this->distortionCoefficients = distortion_coeffs;
+    this->intrinsicMatrix = intrinsic_Matrix;
+
+    this->writeConfig();
 }
 
 void Calibrator::getCalibrationFromFile(cv::Mat *distortionCoeffs,
@@ -134,8 +136,18 @@ void Calibrator::stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, ve
     cv::Mat xStepMat = cv::Mat(*xStep);
     cv::Mat yStepMat = cv::Mat(*yStep);
 
-    this->writeToConfig("xStep",xStepMat);
-    this->writeToConfig("yStep",yStepMat);
+    this->xStepMat = xStepMat;
+    this->yStepMat = yStepMat;
+
+    this->writeConfig();
+}
+
+void Calibrator::writeConfig(){
+    this->writeToConfig("distortion_coefficients",this->distortionCoefficients);
+    this->writeToConfig("intrinsic_matrix",this->intrinsicMatrix);
+
+    this->writeToConfig("xStep",this->xStepMat);
+    this->writeToConfig("yStep",this->yStepMat);
 }
 bool Calibrator::isCalibrated(){
     return access(configFile.c_str(), F_OK) != -1;
