@@ -80,20 +80,10 @@ void computeTranslation(cv::Mat image1, cv::Mat image2, double *xTranslation, do
     if (!found2 || !found2) {
         throw runtime_error("Computer vision utils: Failed to detect chessboard corners when computing translation");
     }
+    
+    cv::Mat affineTransformation = findHomography(corners1, corners2, CV_RANSAC);
 
-    cv::Point2f points1[3];
-    cv::Point2f points2[3];
-
-    points1[0] = corners1[0];
-    points1[1] = corners1[1];
-    points1[2] = corners1[2];
-
-    points2[0] = corners2[0];
-    points2[1] = corners2[1];
-    points2[2] = corners2[2];
-
-    cv::Mat affineTransformation(2, 3, CV_32FC1);
-    affineTransformation = getAffineTransform(points1, points2);
+    cout << "Affine transformation computed: " << affineTransformation << endl;
 
     *xTranslation = affineTransformation.at<double>(0, 2);
     *yTranslation = affineTransformation.at<double>(1, 2);
