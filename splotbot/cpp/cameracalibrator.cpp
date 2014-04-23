@@ -53,7 +53,7 @@ void CameraCalibrator::calibrate(){
     }
 
     cout << "CameraCalibrator: Camera not already calibrated" << endl;
-        
+
     int centerX = xyaxes->positionX();
     int centerY = xyaxes->positionY();
 
