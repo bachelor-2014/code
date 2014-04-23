@@ -14,7 +14,7 @@ using namespace std;
 class Calibrator {
     public:
         Calibrator(string configFile);
-        void calibrate(vector<cv::Mat> images,
+        bool calibrate(vector<cv::Mat> images,
                 cv::Mat *distortionCoeffs, cv::Mat *intrinsicMatrix);
         void getCalibrationFromFile(cv::Mat *distortionCoeffs,
                 cv::Mat *intrinsicMatrix);

@@ -18,7 +18,7 @@ Calibrator::Calibrator(string configFile):configFile(configFile) {
 
 /**
  */
-void Calibrator::calibrate(vector<cv::Mat> images,
+bool Calibrator::calibrate(vector<cv::Mat> images,
         cv::Mat *distortionCoeffs, cv::Mat *intrinsicMatrix) {
 
     cout << "GOT IMAGES?? \n\n" << images.size() << "\n\n" << endl;
@@ -42,10 +42,11 @@ void Calibrator::calibrate(vector<cv::Mat> images,
         vector< Point2f> corners;
 
         bool sCorner = findChessboardCorners(gray,board_size,corners);
+        bool success = false;
 
         if(sCorner && corners.size() == board_total)
         {
-            cout << "INIF" << endl;
+            success = true;
             //cornerSubPix(gray, corners, Size(11,11),
             //Size(-1,-1), TermCriteria(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER,
             //30, 0.1));
@@ -74,7 +75,7 @@ void Calibrator::calibrate(vector<cv::Mat> images,
             imagePoints.push_back(v_tImgPT);
             objectPoints.push_back(v_tObjPT);
         }
-        cout << "AfterIF" << endl;
+        return success;
     }
 
     vector<cv::Mat> rvecs, tvecs;

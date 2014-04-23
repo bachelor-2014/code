@@ -82,7 +82,10 @@ void CameraCalibrator::calibrate(){
 
 
     //cap.release();
-    calibrator->calibrate(calibrationImages,&coefs,&matrix);
+    bool success = calibrator->calibrate(calibrationImages,&coefs,&matrix);
+    if(!success){
+        throw ComponentException(this,"Could not calibrate");
+    }
     cout << "Calibrated" << endl;
 
     camera->calibrate(coefs, matrix);
