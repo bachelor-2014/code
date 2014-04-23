@@ -2,6 +2,7 @@
 #include <unistd.h>
 
 #include "cameracalibrator.h"
+#include "computer_vision/computervisionutils.h"
 
 using namespace std;
 using namespace cv;
@@ -87,6 +88,29 @@ void CameraCalibrator::calibrate(){
             calibrationImages.push_back(image);
         }
     }
+    xyaxes->move(centerX,centerY);
+    sleep(1);
+    Mat image1 = camera->grabImage();
+
+    xyaxes->move(centerX+1,centerY);
+    sleep(1);
+    Mat image2 = camera->grabImage();
+
+    xyaxes->move(centerX,centerY+1);
+    sleep(1);
+    Mat image3 = camera->grabImage();
+
+    double xTranslationX;
+    double yTranslationX;
+    computeTranslation(image1, image2, &xTranslationX, &yTranslationX);
+
+    double xTranslationY;
+    double yTranslationY;
+    computeTranslation(image1, image3, &xTranslationY, &yTranslationY);
+
+    camera->translation(xTranslationX, yTranslationX, xTranslationY,
+            yTranslationY);
+
 
     //cap.release();
     calibrator->calibrate(calibrationImages,&coefs,&matrix);
