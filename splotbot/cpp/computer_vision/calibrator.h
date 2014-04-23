@@ -31,7 +31,7 @@ class Calibrator {
         cv::Mat distortionCoefficients;
         cv::Mat intrinsicMatrix;
 
-        void writeToConfig(string key, cv::Mat data);
+        void writeToConfig(cv::FileStorage fs,string key, cv::Mat data);
         void writeConfig();
 };
 

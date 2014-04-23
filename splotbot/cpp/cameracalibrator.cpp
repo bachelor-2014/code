@@ -109,6 +109,11 @@ void CameraCalibrator::calibrate(){
     calibrator->stepCalibrate(stepImages, &(camera->xStep), &(camera->yStep));
     cout << "Step calibration done" << endl;
 
+    cout << "coefs: " << coefs << endl;
+    cout << "matrix: " << matrix << endl;
+    cout << "camera->xStep: [" << (camera->xStep)[0] << ", " << (camera->xStep)[1] << "]" << endl;
+    cout << "camera->yStep: [" << (camera->yStep)[0] << ", " << (camera->yStep)[1] << "]" << endl;
+
     (*eventCallback)(name, "success");
 }
 
