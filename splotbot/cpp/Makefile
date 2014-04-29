@@ -29,7 +29,7 @@ depend: .depend
 
 all: $(SRCFILES) $(PROGRAM)
 
-tests: $(TESTOBJ)
+tests: $(TESTFILES) $(TESTOBJ)
 
 .depend: $(SRCFILES)
 	rm -f ./.depend
