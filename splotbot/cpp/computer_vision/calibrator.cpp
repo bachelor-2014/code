@@ -110,17 +110,28 @@ void Calibrator::getCalibrationFromFile(cv::Mat *distortionCoeffs,
 
 }
 
-void Calibrator::stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, vector<double> *yStep){
-    double xTranslationX;
-    double yTranslationX;
-    computeTranslation(images[0], images[1], &xTranslationX, &yTranslationX);
+void Calibrator::stepCalibrate(vector<vector<cv::Mat>> allImages, vector<double> *xStep, vector<double> *yStep){
 
-    double xTranslationY;
-    double yTranslationY;
-    computeTranslation(images[0], images[2], &xTranslationY, &yTranslationY);
+    double xTransXSum, yTransXSum, xTransYSum, yTransYSum;
+    int imagesLength = 0;
+    for (auto it = allImages.begin(); it != allImages.end(); ++it) {
+        vector<cv::Mat> images = (vector<cv::Mat>) (*it);
+        double xTranslationX, yTranslationX;
+        double xTranslationY, yTranslationY;
 
-    *xStep = {xTranslationX, yTranslationX};
-    *yStep = {xTranslationY, yTranslationY};
+        computeTranslation(images[0], images[1], &xTranslationX, &yTranslationX);
+
+        computeTranslation(images[0], images[2], &xTranslationY, &yTranslationY);
+
+        xTransXSum += xTranslationX;
+        yTransXSum += yTranslationX;
+        xTransYSum += xTranslationY;
+        yTransYSum += yTranslationY;
+    }
+
+    // Use the average values
+    *xStep = {xTransXSum/imagesLength, yTransXSum/imagesLength};
+    *yStep = {xTransYSum/imagesLength, yTransYSum/imagesLength};
 
     cv::Mat xStepMat = cv::Mat(*xStep);
     cv::Mat yStepMat = cv::Mat(*yStep);
