@@ -58,3 +58,104 @@ cv::Mat FeaturesandPositionImageStitcher::stitchImg(cv::Mat *image1, cv::Mat *im
 
    
 }
+
+/*
+
+double rect_x, rect_y, rect_w, rect_h;
+vector<cv::Rect> new_roi;
+vector<cv::Rect> result_roi;
+
+// Add ROI in the x direction
+if (x != min_x) {
+
+    // Positive shift
+    if (x_shift >= 0) {
+        // Add ROI for the new image
+        rect_x = 0.0;
+        rect_y = 0.0;
+        rect_w = x_shift * step_size;
+        rect_h = height;
+
+        new_roi.push_back(cv::Rect(rect_x, rect_y, rect_w, rect_h));
+
+        // Add ROI for the result image
+        rect_x = result.size().width - x_shift * step_size;
+        if (y_shift >= 0) (
+            rect_y = (y - min_y) * y_shift;
+        } else {
+            rect_y = (max_y - y) * abs(y_shift);
+        }
+        // Use same width and height as above
+
+        result_roi.push_back(cv::Rect(rect_x, rect_y, rect_w, rect_h));
+
+    // Negative shift
+    } else {
+        // Add ROI for the new image
+        rect_x = width - abs(x_shift);
+        rect_y = 0.0;
+        rect_w = abs(x_shift) * step_size;
+        rect_h = height;
+
+        new_roi.push_back(cv::Rect(rect_x, rect_y, rect_w, rect_h));
+
+        // Add ROI for the result image
+        rect_x = 0;
+        if (y_shift >= 0) (
+            rect_y = (y - min_y) * y_shift;
+        } else {
+            rect_y = (max_y - y) * abs(y_shift);
+        }
+        // Use same width and height as above
+
+        result_roi.push_back(cv::Rect(rect_x, rect_y, rect_w, rect_h));
+    }
+}
+
+// Add ROI in the y direction
+if (y != min_y) {
+
+    // Positive shift
+    if (y_shift >= 0) {
+        // Add ROI for the new image
+        rect_x = 0.0;
+        rect_y = 0.0;
+        rect_w = width;
+        rect_h = y_shift * step_size;
+
+        new_roi.push_back(cv::Rect(rect_x, rect_y, rect_w, rect_h));
+
+        // Add ROI for the result image
+        rect_y = result.size().height - y_shift * step_size;
+        if (x_shift >= 0) (
+            rect_x = (x - min_x) * x_shift;
+        } else {
+            rect_x = (max_x - x) * abs(x_shift);
+        }
+        // Use same width and height as above
+
+        result_roi.push_back(cv::Rect(rect_x, rect_y, rect_w, rect_h));
+
+    // Negative shift
+    } else {
+        // Add ROI for the new image
+        rect_x = 0.0;
+        rect_y = height - abs(y_shift);
+        rect_w = width;
+        rect_h = abs(y_shift) * step_size;
+
+        new_roi.push_back(cv::Rect(rect_x, rect_y, rect_w, rect_h));
+
+        // Add ROI for the result image
+        rect_y = 0;
+        if (x_shift >= 0) (
+            rect_x = (x - min_x) * x_shift;
+        } else {
+            rect_x = (max_x - x) * abs(x_shift);
+        }
+        // Use same width and height as above
+
+        result_roi.push_back(cv::Rect(rect_x, rect_y, rect_w, rect_h));
+    }
+}
+*/
