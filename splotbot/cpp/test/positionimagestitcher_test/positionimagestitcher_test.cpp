@@ -43,10 +43,14 @@ int main() {
     camera.xStep = {24.915325033641395, 5.7030984481543534};
     camera.yStep = {15.704089269213707, -2.6978784794984407};
 
+    //camera.yStep = {-0.4,18.6};
+    //camera.xStep = {-18.2, 0.0};
+
     PositionImageStitcher pis(gv, &camera);
     cout << "Testing stitching" << endl;
     cv::Mat stitched_image = pis.stitch();
     cv::namedWindow( "stitched", WINDOW_AUTOSIZE );
     cv::imshow( "stitched",  stitched_image);
+
     cv::waitKey(0);
 }
