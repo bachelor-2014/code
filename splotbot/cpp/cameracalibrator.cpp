@@ -90,23 +90,31 @@ void CameraCalibrator::calibrate(){
 
 
     //Step calibration
-
     cout << "Initiate Step calibration" << endl;
-    vector<cv::Mat> stepImages;
+    vector<vector<cv::Mat>> allStepImages;
+    int stepTimes = 3;
+    for(int i = 0; i < stepTimes; i++){
+        vector<cv::Mat> stepImages;
 
-    xyaxes->move(centerX,centerY);
-    sleep(1);
-    stepImages.push_back(camera->grabImage());
+        xyaxes->move(centerX,centerY);
+        sleep(1);
+        stepImages.push_back(camera->grabImage());
 
-    xyaxes->move(centerX+1,centerY);
-    sleep(1);
-    stepImages.push_back(camera->grabImage());
+        xyaxes->move(centerX+1,centerY);
+        sleep(1);
+        stepImages.push_back(camera->grabImage());
 
-    xyaxes->move(centerX,centerY+1);
-    sleep(1);
-    stepImages.push_back(camera->grabImage());
+        xyaxes->move(centerX,centerY+1);
+        sleep(1);
+        stepImages.push_back(camera->grabImage());
 
-    calibrator->stepCalibrate(stepImages, &(camera->xStep), &(camera->yStep));
+        xyaxes->move(centerX,centerY);
+        sleep(1);
+
+        allStepImages.push_back(stepImages);
+    }
+
+    calibrator->stepCalibrate(allStepImages, &(camera->xStep), &(camera->yStep));
     cout << "Step calibration done" << endl;
 
     cout << "coefs: " << coefs << endl;

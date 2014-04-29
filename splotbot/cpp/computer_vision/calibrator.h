@@ -21,7 +21,7 @@ class Calibrator {
 
         bool isCalibrated();
         bool unCalibrate(Camera *camera);
-        void stepCalibrate(vector<cv::Mat> images, vector<double> *xStep, vector<double> *yStep);
+        void stepCalibrate(vector<vector<cv::Mat>> images, vector<double> *xStep, vector<double> *yStep);
         cv::Mat readFromConfig(string key);
 
     private:
