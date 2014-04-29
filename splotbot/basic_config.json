@@ -13,8 +13,8 @@
         "parameters": {
             "x_port": "X",
             "y_port": "Y",
-            "x_limit_switch_port": "J11",
-            "y_limit_switch_port": "J9",
+            "x_limit_switch_port": "J9",
+            "y_limit_switch_port": "J11",
             "x_step_limit": 79,
             "y_step_limit": 58
         }
@@ -34,6 +34,22 @@
             "xyaxes_name": "BottomAxes",
             "camera_name": "Camera",
             "config_file":"data/camera_calibration.xml"
+        }
+    },
+    {
+        "type": "RCServoMotor",
+        "name": "Servo1",
+        "parameters": {
+            "device": "/dev/ttyACM0",
+            "channel": 0
+        }
+    },
+    {
+        "type": "RCServoMotor",
+        "name": "Servo2",
+        "parameters": {
+            "device": "/dev/ttyACM0",
+            "channel": 1
         }
     }
 ]
