@@ -25,19 +25,15 @@ PositionImageStitcher::PositionImageStitcher(vector<GrabbedImage> grabbedImages,
  */
 cv::Mat PositionImageStitcher::stitch() {
     //Get step values
-    xStep = camera->xStep;
-    yStep = camera->yStep;
+    vector<double> xStep = camera->xStep;
+    vector<double> yStep = camera->yStep;
 
     double left = xStep[0] + (-1.0)*xStep[1];
     double down = yStep[0] + (-1.0)*yStep[1];
-    xStep[0] = -left;
-    xStep[1] = 0;
 
-    yStep[1] = down;
-    yStep[0] = 0;
+    x_shift = -left;
+    y_shift = down;
 
-    minvector = {0.0, 0.0};
-    minpixelvector = {0.0, 0.0};
     cout << "xStep" << cv::Mat(xStep) << endl;
     cout << "yStep" << cv::Mat(yStep) << endl;
 
@@ -50,15 +46,13 @@ cv::Mat PositionImageStitcher::stitch() {
 
 cv::Mat PositionImageStitcher::warp() {
     //Result image to warp to
-    int size_x = (int) size.at<float>(0);
-    int size_y = (int) size.at<float>(1);
-    cv::Mat result = cv::Mat::zeros(size_y,size_x,CV_8UC3);
+    cv::Mat result = cv::Mat::zeros(total_height,total_width,CV_8UC3);
 
     //Warp images
     for (auto grabbed : grabbedImages){
 
         cv::Mat t = translationMatrix(grabbed.positionX, grabbed.positionY);
-        cv::Mat temp = cv::Mat::zeros(size_y,size_x,CV_8UC3);
+        cv::Mat temp = cv::Mat::zeros(total_height,total_width,CV_8UC3);
         cv::warpPerspective(grabbed.image, temp, t, temp.size());
 
 
@@ -75,15 +69,24 @@ cv::Mat PositionImageStitcher::warp() {
 }
 
 cv::Mat PositionImageStitcher::translationMatrix(int x, int y){
-    vector<double> transvec = {
-        ((xStep[0] * (x-min_x)) + (yStep[0] * (y-min_y))) - minvector[0],
-        ((xStep[1] * (x-min_x)) + (yStep[1] * (y-min_y))) - minvector[1] 
-    };
+    double x_trans;
+    double y_trans;
+
+    if(x_shift >= 0){
+        x_trans = (x-min_x)*x_shift;
+    }else{
+        x_trans = (max_x-x)*abs(x_shift);
+    }
+
+    if(y_shift >= 0){
+        y_trans = (y-min_y)*y_shift;
+    }else{
+        y_trans = (max_y-y)*abs(y_shift);
+    }
 
     cv::Mat tmat = cv::Mat::eye(3, 3, CV_32FC1);
-    tmat.at<float>(0,2) = (float)transvec[0];
-    tmat.at<float>(1,2) = (float)transvec[1];
-    cout << "tmat: " << tmat << endl;
+    tmat.at<float>(0,2) = (float)x_trans;
+    tmat.at<float>(1,2) = (float)y_trans;
 
     return tmat;
 }
@@ -93,58 +96,30 @@ void PositionImageStitcher::findMaxValues(){
     min_y = INT_MAX;
     max_x = 0;
     max_y = 0;
-    vector<float> max_pixel_values(3);
-    max_pixel_values[2] = 1.0;
 
     for(auto grabbed : grabbedImages){
-            cout << to_string(min_x) << "," << to_string(min_y) << endl;
-            cout << to_string(grabbed.positionX) << "," << to_string(grabbed.positionY) << endl;
-        if(grabbed.positionX <= min_x ){
+        if(grabbed.positionX < min_x ){
             min_x = grabbed.positionX;
         }
-        if(grabbed.positionY <= min_y){
+        if(grabbed.positionY < min_y){
             min_y = grabbed.positionY;
         }
-        if(grabbed.positionX >= max_x){
+        if(grabbed.positionX > max_x){
             max_x = grabbed.positionX;
-            max_pixel_values[0] = (float) grabbed.image.size().width;
         }
 
-        if(grabbed.positionY >= max_y){
+        if(grabbed.positionY > max_y){
             max_y = grabbed.positionY;
-            max_pixel_values[1] = (float) grabbed.image.size().height;
         }
     }
+    double width = grabbedImages[0].image.size().width;
+    double height = grabbedImages[0].image.size().height;
 
-    for(auto grabbed : grabbedImages){
-        cv::Mat t = translationMatrix(grabbed.positionX, grabbed.positionY); 
-        cout << "Possibly min vector" << t << endl;
-        if(t.at<float>(0,2) < minvector[0]){
-            minvector[0] = t.at<float>(0,2);
-        }
-
-        if(t.at<float>(1,2) < minvector[1]){
-            minvector[1] = t.at<float>(1,2);
-        }
-    }
-
-    minvector[0] = minvector[0];
-    minvector[1] = minvector[1];
-    cout << "Min vector" << cv::Mat(minvector) << endl;
-
-    cv::Mat mintranslation = translationMatrix(min_x, min_y);
-    cout << "Mintranslation" << mintranslation << endl;
-    
-
-    //Find the min and max pixel values in image with max steps
-    cv::Mat max_pixel_values_matrix = cv::Mat(max_pixel_values);
-
-    //Find total size of image 
-    cv::Mat transmat = translationMatrix(max_x, max_y);
-    cout << "Transmat for size" << transmat << endl;
-    size = transmat * max_pixel_values_matrix;
-    cout << "Max pixel values matrix: " << max_pixel_values_matrix << endl;
-    cout << "Size: " << size << endl;
-
+    total_width = width+(max_x-min_x)*abs(x_shift);
+    total_height = height+(max_y-min_y)*abs(y_shift);
+    cout << "width,height" << to_string(width) << "," << to_string(height) << endl;
+    cout << "total width,height" << to_string(total_width) << "," << to_string(total_height) << endl;
+    cout << "min_x, max_x" << to_string(min_x) << "," << to_string(max_x) << endl;
+    cout << "min_y, max_y" << to_string(min_y) << "," << to_string(max_y) << endl;
 }
 

@@ -28,13 +28,12 @@ class PositionImageStitcher: public ImageStitcher {
         int max_x;
         int max_y;
 
-        //Size of 
-        cv::Mat size;
+        double x_shift;
+        double y_shift;
 
-        vector<double> xStep;
-        vector<double> yStep;
-        vector<double> minvector;
-        vector<double> minpixelvector;
+        double total_width;
+        double total_height;
+
 };
 
 #endif
