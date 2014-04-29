@@ -76,8 +76,8 @@ cv::Mat PositionImageStitcher::warp() {
 
 cv::Mat PositionImageStitcher::translationMatrix(int x, int y){
     vector<double> transvec = {
-        ((xStep[0] * (x-min_x)) + (yStep[0] * (y-min_y))) + minvector[0] - minpixelvector[0],
-        ((xStep[1] * (x-min_x)) + (yStep[1] * (y-min_y))) + minvector[1] - minpixelvector[1]
+        ((xStep[0] * (x-min_x)) + (yStep[0] * (y-min_y))) - minvector[0],
+        ((xStep[1] * (x-min_x)) + (yStep[1] * (y-min_y))) - minvector[1] 
     };
 
     cv::Mat tmat = cv::Mat::eye(3, 3, CV_32FC1);
@@ -107,12 +107,12 @@ void PositionImageStitcher::findMaxValues(){
         }
         if(grabbed.positionX >= max_x){
             max_x = grabbed.positionX;
-            max_pixel_values[0] = (float) grabbed.image.cols;
+            max_pixel_values[0] = (float) grabbed.image.size().width;
         }
 
         if(grabbed.positionY >= max_y){
             max_y = grabbed.positionY;
-            max_pixel_values[1] = (float) grabbed.image.rows;
+            max_pixel_values[1] = (float) grabbed.image.size().height;
         }
     }
 
@@ -128,9 +128,12 @@ void PositionImageStitcher::findMaxValues(){
         }
     }
 
-    minvector[0] = abs(minvector[0]);
-    minvector[1] = abs(minvector[1]);
+    minvector[0] = minvector[0];
+    minvector[1] = minvector[1];
     cout << "Min vector" << cv::Mat(minvector) << endl;
+
+    cv::Mat mintranslation = translationMatrix(min_x, min_y);
+    cout << "Mintranslation" << mintranslation << endl;
     
 
     //Find the min and max pixel values in image with max steps
@@ -142,5 +145,6 @@ void PositionImageStitcher::findMaxValues(){
     size = transmat * max_pixel_values_matrix;
     cout << "Max pixel values matrix: " << max_pixel_values_matrix << endl;
     cout << "Size: " << size << endl;
+
 }
 
