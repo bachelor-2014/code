@@ -9,6 +9,7 @@
 
 #include "rcservomotor.h"
 #include "utils/errors.h"
+#include "../rucolang/compileargs.h"
 
 using namespace std;
 
@@ -40,6 +41,14 @@ void RCServoMotor::registerActions(vector<function<void(InstructionBuffer *)>> *
     };
 
     (*actions).push_back(setTarget);
+}
+
+void RCServoMotor::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    Rucola::CompileArgs setPos;
+    setPos.Action = start+1;
+    setPos.NumberofArguments = 1;
+
+    (*componentCalls)[name]["setPosition"] = setPos; 
 }
 
 // Gets the position of the RC servo motor
