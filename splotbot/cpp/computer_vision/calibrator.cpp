@@ -114,7 +114,6 @@ void Calibrator::stepCalibrate(vector<vector<cv::Mat>> allImages, vector<double>
     cout << "Computing step calibration:" << endl;
 
     double xTransXSum, yTransXSum, xTransYSum, yTransYSum;
-    double imagesLength = 0.0;
     for (auto images : allImages) {
         double xTranslationX, yTranslationX;
         double xTranslationY, yTranslationY;
@@ -130,7 +129,13 @@ void Calibrator::stepCalibrate(vector<vector<cv::Mat>> allImages, vector<double>
 
         cout << "-> xTranslation: (" << xTranslationX << ", " << yTranslationX << ")" << endl;
         cout << "-> yTranslation: (" << xTranslationY << ", " << yTranslationY << ")" << endl;
+
+        cout << "-> xSum: (" << xTransXSum << ", " << yTransXSum << ")" << endl;
+        cout << "-> ySum: (" << xTransYSum << ", " << yTransYSum << ")" << endl;
     }
+
+    double imagesLength = (double) allImages.size();
+    cout << "-> imagesLength: " << imagesLength << endl;
 
     // Use the average values
     *xStep = {xTransXSum/imagesLength, yTransXSum/imagesLength};
