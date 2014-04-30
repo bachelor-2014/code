@@ -9,7 +9,7 @@
 
 #include "rcservomotor.h"
 #include "utils/errors.h"
-#include "../rucolang/compileargs.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 
