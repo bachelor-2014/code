@@ -1,7 +1,7 @@
 #ifndef RUCOLA_H
 #define RUCOLA_H
 #include "Absyn.h"
-#include "rucola.h"
+#include "compileargs.h"
 #include <map>
 using namespace std;
 
@@ -10,10 +10,11 @@ namespace Rucola{
     class Rucolang {
         public:
             Rucolang();
-            void RegisterComponentCalls(map<string,map<string,int>> componentCalls);
+            void RegisterComponentCalls(map<string,map<string, CompileArgs>> componentCalls);
             vector<int> Compile(string code);
         private:
-            map<string,map<string,int>> componentCalls;
+            map<string,map<string,CompileArgs>> componentCalls;
     };
+
 }
 #endif

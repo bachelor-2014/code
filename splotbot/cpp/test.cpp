@@ -21,6 +21,9 @@ int main() {
     Splotbot splotbot("../basic_config.json","/tmp/mendel.sock");
     splotbot.run();
 
+    cout << "Rucolang" << endl;
+    splotbot.executeRucolaCode("Camera.mode(0)");
+
     //Register a test callback to print
     splotbot.registerCallback([] (string name, string data) -> void {
         if(name != "image_data"){
@@ -33,6 +36,7 @@ int main() {
     int instruction;
 
     scanf("%d", &numberOfInstructions);
+
 
     int instructions[numberOfInstructions];
     for (int i = 0; i < numberOfInstructions; i++) {

@@ -14,6 +14,7 @@ class SplotbotWrapper : public node::ObjectWrap {
 
   static v8::Handle<v8::Value> New(const v8::Arguments& args);
   static v8::Handle<v8::Value> runCode(const v8::Arguments& args);
+  static v8::Handle<v8::Value> runRucolaCode(const v8::Arguments& args);
   static v8::Handle<v8::Value> registerCallback(const v8::Arguments& args);
   static void eventCallback(std::string name, std::string data);
   static v8::Persistent<v8::Function> constructor;

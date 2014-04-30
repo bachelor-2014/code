@@ -5,10 +5,13 @@
 #include <mutex>
 #include <vector>
 #include <string>
+#include <map>
 
 #include "instructionbuffer.h"
 #include "component.h"
 #include "componentinitializer.h"
+#include "../rucolang/rucola.h"
+#include "../rucolang/compileargs.h"
 
 using namespace std;
 
@@ -31,6 +34,7 @@ class Splotbot {
     public:
         Splotbot(string configFile, string mendelSocket);
         void executeInstructions(int numberOfInstructions, int instructions[]);
+        void executeRucolaCode(string code);
         void registerCallback(function<void(string,string)> callback);
         void run();
 
@@ -39,6 +43,8 @@ class Splotbot {
         vector<Component *> components;
         vector<function<void(InstructionBuffer *)>> actions;
         function<void(string,string)> eventCallback;
+        Rucola::Rucolang rucolang;
+        map<string,map<string,Rucola::CompileArgs>> componentCalls;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #include "lex.yy.h"
 #include "rucola.tab.h"
 #include "rucola.h"
+#include "compileargs.h"
 #include <string>
 using namespace std;
 using namespace Rucola;
@@ -24,7 +25,7 @@ Rucola::Rucolang::Rucolang(){
     //Empty constructor
 }
 
-void Rucola::Rucolang::RegisterComponentCalls(map<string,map<string,int>> componentCalls){
+void Rucola::Rucolang::RegisterComponentCalls(map<string,map<string,CompileArgs>> componentCalls){
     this->componentCalls = componentCalls;
 }
 
