@@ -32,6 +32,8 @@ void RCServoMotor::registerActions(vector<function<void(InstructionBuffer *)>> *
         (*buffer).popInstructions(1, instr);
         int target = instr[0];
 
+        cout << "RCServoMotor (" << name << ") setting target to " << target << endl;
+
         setPosition((unsigned short) target);
 
         stringstream ss;
