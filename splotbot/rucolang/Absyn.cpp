@@ -67,7 +67,21 @@ namespace Rucola{
 
     void ComponentCall::Compile(map<string,map<string,CompileArgs>>
             componentCalls, vector<int> *result){
-        result->push_back(componentCalls[(*component)][(*action)].Action);
-        result->insert(result->end(),args->begin(),args->end());
+
+        if(componentCalls.count(*component)){
+            return;
+        }
+
+        if(componentCalls[(*component)].count((*action))){
+            return;
+        }
+
+        CompileArgs ca = componentCalls[(*component)][(*action)];
+        if((*result).size() == ca.NumberofArguments){
+            result->push_back(ca.Action);
+            result->insert(result->end(),args->begin(),args->end());
+        }else{
+            return;
+        }
     }
 }
