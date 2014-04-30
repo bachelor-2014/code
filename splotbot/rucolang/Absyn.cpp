@@ -1,8 +1,10 @@
 #include <string>
 #include <iostream>
 #include "Absyn.h"
+#include "compileargs.h"
 
 using namespace std;
+using namespace Rucola;
 
 namespace Rucola{
     /**
@@ -41,8 +43,8 @@ namespace Rucola{
         return s;
     }
 
-    void Block::Compile(map<string,map<string,int>> componentCalls, vector<int>
-            *result){
+    void Block::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            vector<int> *result){
         for(Statement* s: statements){
             s->Compile(componentCalls, result);
         }
@@ -63,10 +65,9 @@ namespace Rucola{
         return "Component: " + *component + " Action: " + *action + " Args: " + a;
     }
 
-    void ComponentCall::Compile(map<string,map<string,int>> componentCalls,
-            vector<int> *result){
-        int actioninst = componentCalls[(*component)][(*action)];
-        result->push_back(actioninst);
+    void ComponentCall::Compile(map<string,map<string,CompileArgs>>
+            componentCalls, vector<int> *result){
+        result->push_back(componentCalls[(*component)][(*action)].Action);
         result->insert(result->end(),args->begin(),args->end());
     }
 }

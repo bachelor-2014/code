@@ -21,14 +21,23 @@
 "../cpp/logging/videologger.cpp",
 "../cpp/computer_vision/dropletdetector.cpp",
 "../cpp/computer_vision/computervisionutils.cpp",
-"../cpp/utils/errors.cpp"
+"../cpp/utils/errors.cpp",
+"../rucolang/Absyn.cpp",
+"../rucolang/rucola.tab.cpp",
+"../rucolang/lex.yy.cpp",
+"../rucolang/rucola.cpp"
 ],
       "libraries": [
         "<!@(pkg-config --libs --cflags opencv cvblob)",
       ],
       "ldflags":[
-        "-lm", "-pthread", "-ggdb", "-lcurl"
+         "-lfl","-lm", "-pthread", "-ggdb", "-lcurl"
       ],
+      'link_settings': {
+          'libraries': [
+              '-lfl'
+          ]
+      },
       'cflags!': [ '-fno-exceptions' ],
       'cflags_cc!': [ '-fno-exceptions','-fno-rtti'],
       "defines": [ "DEBUG", "_DEBUG" ]

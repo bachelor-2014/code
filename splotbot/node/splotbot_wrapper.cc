@@ -38,6 +38,9 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("runCode"),
       FunctionTemplate::New(runCode)->GetFunction());
 
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("runRucolaCode"),
+      FunctionTemplate::New(runRucolaCode)->GetFunction());
+
   tpl->PrototypeTemplate()->Set(String::NewSymbol("registerCallback"),
       FunctionTemplate::New(registerCallback)->GetFunction());
 
@@ -50,7 +53,6 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
 
   module = Persistent<Object>::New(exports);
 
-  cout << "IN INTI!!!" << endl;
 }
 
 Handle<Value> SplotbotWrapper::New(const Arguments& args) {
@@ -110,6 +112,24 @@ Handle<Value> SplotbotWrapper::runCode(const Arguments& args) {
     // Return 0
     return scope.Close(Number::New(0));
 }
+
+/**
+ * Run Rucolang Code
+ */
+Handle<Value> SplotbotWrapper::runRucolaCode(const Arguments& args) {
+    HandleScope scope;
+
+    v8::String::Utf8Value param1(args[0]->ToString());
+
+    std::string code = std::string(*param1);
+
+    //execute the rucolangcode
+    splotbot->executeRucolaCode(code);
+
+    // Return 0
+    return scope.Close(Number::New(0));
+}
+
 
 /**
  * Handle callbacks in c
