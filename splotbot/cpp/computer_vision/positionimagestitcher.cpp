@@ -56,13 +56,30 @@ cv::Mat PositionImageStitcher::warp() {
         cv::warpPerspective(grabbed.image, temp, t, temp.size());
 
 
+        // Create a mask
         cv::Mat mask;
         cv::threshold(temp,mask,1.0,255.0,THRESH_BINARY_INV);
 
+        // Reduce the size of the mask a bit
+        int structuringElementSize = 5;
+        int elementType = cv::MORPH_RECT;
+
+        cv::Mat element = getStructuringElement(
+            elementType,
+            cv::Size( 2*structuringElementSize + 1, 2*structuringElementSize+1 ),
+            cv::Point( structuringElementSize, structuringElementSize )
+        );
+
+        dilate(mask, mask, element);
+
+        // Remove the mask part of the result image
         bitwise_and(result,mask,result);
 
-        result = result + temp;
+        // Remove the non-mask part of the temporary image
+        bitwise_not(mask, mask);
+        bitwise_and(temp, mask, temp);
 
+        result = result + temp;
     }
 
     return result;
