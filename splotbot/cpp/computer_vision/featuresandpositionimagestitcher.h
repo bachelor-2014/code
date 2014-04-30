@@ -30,9 +30,6 @@ class FeaturesAndPositionImageStitcher: public ImageStitcher {
 
         double x_shift;
         double y_shift;
-
-        double total_width;
-        double total_height;
 };
 
 #endif
