@@ -40,6 +40,13 @@ namespace Rucola{
         s += "}\n";
         return s;
     }
+
+    void Block::Compile(map<string,map<string,int>> componentCalls, vector<int>
+            *result){
+        for(Statement* s: statements){
+            s->Compile(componentCalls, result);
+        }
+    }
     /**
      * ComponentCall Implementations
      */
@@ -54,5 +61,12 @@ namespace Rucola{
             a += to_string(arg) + " ";
         }
         return "Component: " + *component + " Action: " + *action + " Args: " + a;
+    }
+
+    void ComponentCall::Compile(map<string,map<string,int>> componentCalls,
+            vector<int> *result){
+        int actioninst = componentCalls[(*component)][(*action)];
+        result->push_back(actioninst);
+        result->insert(result->end(),args->begin(),args->end());
     }
 }
