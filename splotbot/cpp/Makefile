@@ -3,6 +3,7 @@ CPPFLAGS = -ggdb -std=c++0x
 LIBS = -lm -pthread `pkg-config --libs --cflags opencv cvblob` -lopencv_stitching -lfl
 
 SRCFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp \
+	computer_vision/customstitcher.cpp \
 	computer_vision/imagestitcher.cpp \
 	computer_vision/featuresimagestitcher.cpp component.cpp \
 	computer_vision/positionimagestitcher.cpp \
