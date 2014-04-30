@@ -8,7 +8,7 @@ using namespace std;
 /**
  * Constructs a new image stitcher
  */
-ImageStitcher::ImageStitcher(Camera *camera): camera(camera) {
+ImageStitcher::ImageStitcher(Camera *camera, int stepSize): camera(camera), stepSize(stepSize) {
     // Empty constructor
     // All fields are initialized at this point
 }
