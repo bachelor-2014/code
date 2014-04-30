@@ -16,3 +16,21 @@ Block *Rucola::ParseString(string s){
     yyparse(); 
     return programBlock; 
 }
+
+/**
+ * Rucolang
+ */
+Rucola::Rucolang::Rucolang(){
+    //Empty constructor
+}
+
+void Rucola::Rucolang::RegisterComponentCalls(map<string,map<string,int>> componentCalls){
+    this->componentCalls = componentCalls;
+}
+
+vector<int> Rucola::Rucolang::Compile(string code){
+    vector<int> result;
+    Block *ast = ParseString(code);
+    ast->Compile(componentCalls, &result);
+    return result;
+}
