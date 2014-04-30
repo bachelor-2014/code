@@ -61,6 +61,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             break;
     }
 
+    cout << "Scanner -> sleepBetweenImages: " << sleepBetweenImages << endl;
+
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
     // TODO currently the camera might move a bit further than the to-destination. Should this be changed?
@@ -70,7 +72,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             xyaxes->move(x, y);
 
             // Sleep before grabbing the image, allowing the camera to settle
-            usleep(sleepBetweenImages);
+            usleep(sleepBetweenImages * 1000);
 
             // Grab the image
             stitcher->grabImage(x, y);
