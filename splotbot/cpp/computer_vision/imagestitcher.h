@@ -24,12 +24,13 @@ typedef struct {
  */
 class ImageStitcher {
     public:
-        ImageStitcher(Camera *camera);
+        ImageStitcher(Camera *camera, int stepSize);
         void grabImage(int positionX, int positionY);
         virtual cv::Mat stitch() {};
 
     protected:
         Camera *camera;
+        int stepSize;
         vector<GrabbedImage> grabbedImages;
 };
 

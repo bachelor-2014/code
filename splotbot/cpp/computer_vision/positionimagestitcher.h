@@ -15,8 +15,8 @@ using namespace std;
  */
 class PositionImageStitcher: public ImageStitcher {
     public:
-        PositionImageStitcher(Camera *camera);
-        PositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera);
+        PositionImageStitcher(Camera *camera, int stepSize);
+        PositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera, int stepSize);
         cv::Mat stitch();
     private:
         cv::Mat warp();

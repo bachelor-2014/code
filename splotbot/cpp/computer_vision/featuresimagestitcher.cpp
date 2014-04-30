@@ -8,7 +8,7 @@ using namespace std;
 /**
  * Constructs a new FeaturesImageStitcher
  */
-FeaturesImageStitcher::FeaturesImageStitcher(Camera *camera): ImageStitcher(camera) {
+FeaturesImageStitcher::FeaturesImageStitcher(Camera *camera, int stepSize): ImageStitcher(camera, stepSize) {
     // Empty constructor
     // The initialization is done in the base class
 }

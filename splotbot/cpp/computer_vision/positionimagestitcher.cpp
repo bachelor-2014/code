@@ -11,12 +11,12 @@ using namespace std;
 /**
  * Constructs a new PositionImageStitcher
  */
-PositionImageStitcher::PositionImageStitcher(Camera *camera): ImageStitcher(camera) {
+PositionImageStitcher::PositionImageStitcher(Camera *camera, int stepSize): ImageStitcher(camera, stepSize) {
     // Empty constructor
     // The initialization is done in the base class
 }
 
-PositionImageStitcher::PositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera): ImageStitcher(camera){
+PositionImageStitcher::PositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera, int stepSize): ImageStitcher(camera, stepSize){
     this->grabbedImages = grabbedImages;
 }
 

@@ -13,12 +13,26 @@ using namespace std;
 /**
  *
  */
-class FeaturesandPositionImageStitcher: public ImageStitcher {
+class FeaturesAndPositionImageStitcher: public ImageStitcher {
     public:
-        FeaturesandPositionImageStitcher(Camera *camera);
+        FeaturesAndPositionImageStitcher(Camera *camera, int stepSize);
+        FeaturesAndPositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera, int stepSize);
         cv::Mat stitch();
     private:
-        cv::Mat stitchImg(cv::Mat *image1, cv::Mat *image2);
+        cv::Mat warp();
+        cv::Mat translationMatrix(int x, int y);
+        void fixmin(cv::Mat minTranslation);
+        void findMaxValues();
+        int min_x;
+        int min_y;
+        int max_x;
+        int max_y;
+
+        double x_shift;
+        double y_shift;
+
+        double total_width;
+        double total_height;
 };
 
 #endif
