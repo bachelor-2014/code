@@ -4,8 +4,8 @@
 #include "splotbot.h"
 #include "utils/threading.h"
 #include "utils/errors.h"
-#include "../rucolang/rucola.h"
-#include "../rucolang/compileargs.h"
+#include "rucolang/rucola.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 
@@ -46,8 +46,15 @@ void Splotbot::executeInstructions(int numberOfInstructions, int instructions[])
 }
 
 void Splotbot::executeRucolaCode(string code){
-    vector<int> instrs = rucolang.Compile(code);
-    executeInstructions(instrs.size(), &instrs[0]);
+    try{
+        vector<int> instrs = rucolang.Compile(code);
+        executeInstructions(instrs.size(), &instrs[0]);
+    } catch(RucolaException& e){
+        cout << "RucolaException" << endl;
+        runAsThread( [&] () {
+            eventCallback("error",e.what());
+        });
+    }
 }
 
 /**

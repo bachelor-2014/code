@@ -2,7 +2,10 @@ COMPILER = g++
 CPPFLAGS = -ggdb -std=c++0x
 LIBS = -lm -pthread `pkg-config --libs --cflags opencv cvblob` -lopencv_stitching -lfl
 
-SRCFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp \
+SRCFILES = \
+	rucolang/Absyn.cpp rucolang/rucola.tab.cpp rucolang/lex.yy.cpp \
+	rucolang/rucola.cpp \
+	libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp \
 	computer_vision/customstitcher.cpp \
 	computer_vision/imagestitcher.cpp \
 	computer_vision/featuresimagestitcher.cpp component.cpp \
@@ -15,9 +18,7 @@ SRCFILES = libraries/cJSON/cJSON.cpp utils/base64.cpp utils/threading.cpp \
 	computer_vision/dropletdetector.cpp \
 	computer_vision/computervisionutils.cpp computer_vision/calibrator.cpp \
 	computer_vision/featuresandpositionimagestitcher.cpp \
-	utils/errors.cpp \
-	../rucolang/Absyn.cpp ../rucolang/rucola.tab.cpp ../rucolang/lex.yy.cpp \
-	../rucolang/rucola.cpp
+	utils/errors.cpp 
 OBJFILES = $(SRCFILES:.cpp=.o)
 
 TESTFILES = $(shell find -name "*test.cpp")

@@ -10,8 +10,8 @@
 #include "instructionbuffer.h"
 #include "component.h"
 #include "componentinitializer.h"
-#include "../rucolang/rucola.h"
-#include "../rucolang/compileargs.h"
+#include "rucolang/rucola.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 

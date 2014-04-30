@@ -22,10 +22,10 @@
 "../cpp/computer_vision/dropletdetector.cpp",
 "../cpp/computer_vision/computervisionutils.cpp",
 "../cpp/utils/errors.cpp",
-"../rucolang/Absyn.cpp",
-"../rucolang/rucola.tab.cpp",
-"../rucolang/lex.yy.cpp",
-"../rucolang/rucola.cpp"
+"../cpp/rucolang/Absyn.cpp",
+"../cpp/rucolang/rucola.tab.cpp",
+"../cpp/rucolang/lex.yy.cpp",
+"../cpp/rucolang/rucola.cpp"
 ],
       "libraries": [
         "<!@(pkg-config --libs --cflags opencv cvblob)",

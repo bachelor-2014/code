@@ -10,3 +10,10 @@ class ComponentException: public exception {
         Component *component; // This is self
         const char* message;
 };
+
+class RucolaException: public exception {
+    public:
+        RucolaException(const char* error);
+        virtual const char* what() const throw();
+        const char* error;
+};

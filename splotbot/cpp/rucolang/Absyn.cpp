@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Absyn.h"
 #include "compileargs.h"
+#include "../utils/errors.h"
 
 using namespace std;
 using namespace Rucola;
@@ -68,20 +69,24 @@ namespace Rucola{
     void ComponentCall::Compile(map<string,map<string,CompileArgs>>
             componentCalls, vector<int> *result){
 
-        if(componentCalls.count(*component)){
-            return;
+        if(!componentCalls.count((*component))){
+            string err = "Component does not exist: " + (*component);
+            throw RucolaException(err.c_str());
         }
 
-        if(componentCalls[(*component)].count((*action))){
-            return;
+        if(!componentCalls[(*component)].count((*action))){
+            string err = (*component) + " does not have action: " + (*action);
+            throw RucolaException(err.c_str());
         }
+
 
         CompileArgs ca = componentCalls[(*component)][(*action)];
-        if((*result).size() == ca.NumberofArguments){
+        if((*args).size() == ca.NumberofArguments){
             result->push_back(ca.Action);
             result->insert(result->end(),args->begin(),args->end());
         }else{
-            return;
+            string err = (*component) + " with action '" + (*action) + "' takes " + to_string(ca.NumberofArguments) + " arguments, you supplied " + to_string((*args).size());
+            throw RucolaException(err.c_str());
         }
     }
 }

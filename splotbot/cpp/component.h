@@ -8,7 +8,7 @@
 #include "instructionbuffer.h"
 
 #include "logging/filelogger.h"
-#include "../rucolang/compileargs.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 

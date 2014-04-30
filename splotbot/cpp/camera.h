@@ -8,6 +8,7 @@
 #include "component.h"
 #include "logging/videologger.h"
 #include "computer_vision/dropletdetector.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 using namespace cv;

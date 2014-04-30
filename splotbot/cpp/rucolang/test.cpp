@@ -10,11 +10,11 @@ main() {
     auto m = map<string,map<string,CompileArgs>>();
     CompileArgs module1;
     module1.Action = 1;
-    module1.NumberofArguments = 1;
+    module1.NumberofArguments = 2;
 
     CompileArgs module2;
     module2.Action = 1;
-    module2.NumberofArguments = 1;
+    module2.NumberofArguments = 2;
 
     m["module1"]["do"] = module1;
     m["module2"]["do"] = module2;

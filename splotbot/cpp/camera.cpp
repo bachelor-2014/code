@@ -1,7 +1,6 @@
 #include <iostream>
 #include <unistd.h>
 #include <stdexcept>
-#include <tuple>
 
 #include "camera.h"
 #include "utils/errors.h"
@@ -12,7 +11,6 @@
 #include "computer_vision/dropletdetector.h"
 #include "computer_vision/computervisionutils.h"
 #include <ctime>
-#include "../rucolang/compileargs.h"
 
 using namespace std;
 using namespace cv;

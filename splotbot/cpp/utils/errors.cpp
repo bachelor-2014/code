@@ -7,3 +7,10 @@ ComponentException::ComponentException(Component *component, const char* message
 const char* ComponentException::what() const throw(){
     return this->message;
 }
+
+RucolaException::RucolaException(const char* error): error(error){
+}
+
+const char* RucolaException::what() const throw(){
+    return error;
+}
