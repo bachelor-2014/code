@@ -101,6 +101,9 @@ namespace Rucola {
             void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
                     vector<int> *result);
+            void Call(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
+                    vector<int> *result);
         private:
             string *eventName;
             Block *block;

@@ -31,14 +31,22 @@ void Rucola::Rucolang::RegisterComponentCalls(map<string,map<string,CompileArgs>
 
 vector<int> Rucola::Rucolang::Compile(string code){
     vector<int> result;
-    map<string, int> env;
     Block *ast = ParseString(code);
     ast->Compile(componentCalls, &env, &events, &result);
     return result;
 }
 
 vector<int> Rucola::Rucolang::Event(string event){
-    //TODO: Handle Event
+    vector<int> result;
+    if(events.count(event)){
+        Statement *s = events[event];
+        if(Rucola::Event *e = dynamic_cast<Rucola::Event*>(s)){
+            e->Call(componentCalls, &env, &events, &result);
+        } else {
+            //TODO: Error handling
+        }
+    }
+    return result;
 }
 
 string Rucola::Rucolang::CodeToString(string code){

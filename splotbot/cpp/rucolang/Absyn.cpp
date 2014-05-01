@@ -126,6 +126,13 @@ namespace Rucola{
             map<string, int> *env, map<string, Statement*> *events, vector<int>
             *result){
         //TODO: Event Mapping
+        (*events)[(*eventName)] = this;
+    }
+
+    void Event::Call(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, map<string, Statement*> *events, vector<int>
+            *result){
+        block->Compile(componentCalls, env, events, result);
     }
 
     /**
