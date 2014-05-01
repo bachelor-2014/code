@@ -63,7 +63,7 @@ bool FileLogger::Data(string data){
 };
 
 string FileLogger::identifier(Entry<string> entry){
-	return to_string(entry.Timestamp)+","+entry.ComponentType+","+","+entry.ComponentName+","+entry.ActivityType;
+	return to_string(entry.Timestamp)+","+entry.ComponentType+","+entry.ComponentName+","+entry.ActivityType+","+entry.Data;
 }
 
 Entry<string> FileLogger::entry(){

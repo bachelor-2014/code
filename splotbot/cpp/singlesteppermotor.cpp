@@ -10,6 +10,8 @@ using namespace std;
  */
 SingleStepperMotor::SingleStepperMotor(string name, string gpioMode1, string gpioMode2, string gpioStep, string gpioSleep): gpioMode1(gpioMode1), gpioMode2(gpioMode2), gpioStep(gpioStep), gpioSleep(gpioSleep) {
     this->name = name;
+
+    this->fileLogger = new FileLogger("SingleStepperMotor",name);
 }
 
 /**
@@ -27,7 +29,7 @@ void SingleStepperMotor::registerActions(vector<function<void(InstructionBuffer 
         stringstream ss;
         ss << "SingleStepperMotor (" << name << ") moving " << steps << " steps" << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
     };
 
     (*actions).push_back(move);

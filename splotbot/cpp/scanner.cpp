@@ -15,9 +15,9 @@
 #include "rucolang/compileargs.h"
 
 #include "computer_vision/imagestitcher.h"
+#include "computer_vision/positionimagestitcher.h"
 #include "computer_vision/featuresimagestitcher.h"
 #include "computer_vision/featuresandpositionimagestitcher.h"
-#include "computer_vision/positionimagestitcher.h"
 
 #include "scanner.h"
 
@@ -28,6 +28,8 @@ using namespace std;
  */
 Scanner::Scanner(string name, Camera *camera, XYAxes *xyaxes): camera(camera), xyaxes(xyaxes) {
     this->name = name;
+    this->fileLogger = new FileLogger("Scanner",name);
+    this->imageLogger = new ImageLogger("Scanner",name);
 }
 
 /*
@@ -95,11 +97,11 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     sem_init(&stitcherSemaphore, 0, 0);
     
     runAsThread( [&] () {
-        cout << "Scanner: Stitching thread started" << endl;
+	fileLogger->Info("Scanner: Stitching thread started");
 
         // Stitch the images together
         cv::Mat stitchedImage;
-        cout << "Scanner: Stitching grabbed images ..." << endl;
+        fileLogger->Info("Scanner: Stitching grabbed images ...");
         //stitchedImage = stitcher->stitch();
         
         // Timing variable
@@ -134,16 +136,18 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
 
         (*eventCallback)(name + "_time", to_string(runTime));
 
-        cout << "startTime = " << startTime << endl;
-        cout << "endTime = " << endTime << endl;
-        cout << "runTime = " << runTime << endl;
+        fileLogger->Info("startTime = " + to_string(startTime));
+        fileLogger->Info("endTime = " + to_string(endTime));
+        fileLogger->Info("runTime = " + to_string(runTime));
 
-        cout << "Scanner: Stitched grabbed images" << endl;
+        fileLogger->Info("Scanner: Stitched grabbed images");
 
         // Convert the image to base64
         vector<uchar> buff;
         vector<int> param = vector<int>(0);
         imencode(".png", stitchedImage, buff, param);
+	imageLogger->Data(&stitchedImage);
+
         string base64 = base64_encode(&buff[0],buff.size());
 
         // Send the image as an event
@@ -180,7 +184,7 @@ void Scanner::registerActions(vector<function<void(InstructionBuffer *)>> *actio
         stringstream ss;
         ss << "Scanner (" << name << ") scanning area (" << fromX << ", " << fromY << ") -> (" << toX << ", " << toY << ") with " << stepsBetweenImages << " steps and " << sleepBetweenImages << " miliseconds of sleep time between each image, stitching with algorithm " << stitchingAlgorithm << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
     };
 
     (*actions).push_back(scanAction);

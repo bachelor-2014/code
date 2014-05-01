@@ -25,6 +25,8 @@ XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort,
 
     mendel = new Mendel(mendelSocket);
     mendel->runGCode("G91");
+
+    this->fileLogger = new FileLogger("XYAxes",name);
 }
 
 /*
@@ -154,7 +156,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
         stringstream ss;
         ss << "XYAxes (" << name << ") homing" << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
         cout << s << endl;
 
         //Do the homing
@@ -173,7 +175,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
         stringstream ss;
         ss << "XYAxes (" << name << ") moving to position (x,y)=(" << xPosition << "," << yPosition << ")" << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
 
         // Do the move
         move(xPosition, yPosition);

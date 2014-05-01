@@ -18,6 +18,8 @@ using namespace std;
  */
 RCServoMotor::RCServoMotor(string name, string device, unsigned char channel): device(device), channel(channel) {
     this->name = name;
+
+    this->fileLogger = new FileLogger("RCServoMotor",name);
 }
 
 /**
@@ -39,7 +41,7 @@ void RCServoMotor::registerActions(vector<function<void(InstructionBuffer *)>> *
         stringstream ss;
         ss << "RCServoMotor (" << name << ") setting target to " << target << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
     };
 
     (*actions).push_back(setTarget);
