@@ -31,7 +31,17 @@ void Rucola::Rucolang::RegisterComponentCalls(map<string,map<string,CompileArgs>
 
 vector<int> Rucola::Rucolang::Compile(string code){
     vector<int> result;
+    map<string, int> env;
     Block *ast = ParseString(code);
-    ast->Compile(componentCalls, &result);
+    ast->Compile(componentCalls, &env, &events, &result);
     return result;
+}
+
+vector<int> Rucola::Rucolang::Event(string event){
+    //TODO: Handle Event
+}
+
+string Rucola::Rucolang::CodeToString(string code){
+    Block *ast = ParseString(code);
+    return ast->toString();
 }

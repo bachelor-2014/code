@@ -23,12 +23,16 @@ main() {
     r.RegisterComponentCalls(m);
 
     string s = 
-        "module1.do(1,2)"
+        "module1.do(-1,2)"
         " hej = 3 "
-        "module2.do(1,hej)";
+        "module2.do(1,hej)"
+        "(event) -> { module1.do(1,2) }";
 
     auto result = r.Compile(s);
+    
+    cout << r.CodeToString(s);
 
+    cout << "Result:" << endl;
     cout << "[";
     for(int i :result){
         cout << to_string(i) << ",";
