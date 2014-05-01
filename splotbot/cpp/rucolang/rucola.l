@@ -20,10 +20,12 @@ using namespace Rucola;
 %               { return MOD; }
 ==              { return EQ; }
 !=              { return NEQ; }
-\<               { return LT; }
-\<=              { return LTEQ; }
-\>               { return GT; }
-\>=              { return GTEQ; }
+\<              { return LT; }
+\<=             { return LTEQ; }
+\>              { return GT; }
+\>=             { return GTEQ; }
+&&              { return AND; }
+\|\|              { return OR; }
 ->              { return ARROW; }
 \{              { return LBRACE; }
 \}              { return RBRACE; }

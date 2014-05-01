@@ -33,10 +33,12 @@ void yyerror(const char *s);
 
 // Constant-string tokens
 %token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE
-%token PLUS MINUS TIMES DIV MOD EQ NEQ LT LTEQ GT GTEQ
+%token PLUS MINUS TIMES DIV MOD EQ NEQ LT LTEQ GT GTEQ AND OR
 
 // Precedence
 %right ASSIGN
+%left OR
+%left AND
 %left EQ NEQ
 %nonassoc LT LTEQ GT GTEQ
 %left PLUS MINUS
@@ -98,6 +100,8 @@ expr : LPAR expr RPAR { $$ = $2; }
      | expr LTEQ expr { $$ = new AExpr(new string("<="), $1, $3); }
      | expr GT expr { $$ = new AExpr(new string(">"), $1, $3); }
      | expr GTEQ expr { $$ = new AExpr(new string(">="), $1, $3); }
+     | expr AND expr { $$ = new AExpr(new string("&&"), $1, $3); }
+     | expr OR expr { $$ = new AExpr(new string("||"), $1, $3); }
 ;
 
 %%
