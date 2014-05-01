@@ -117,7 +117,7 @@ namespace Rucola {
 
     class Event: public Statement {
         public:
-            Event(string *eventName, Block *block);
+            Event(string *eventName, vector<string*> *argNames, Block *block);
             string toString(); 
             void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,

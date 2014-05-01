@@ -36,7 +36,7 @@ main() {
         " a = 5 + x * 3 "
         " b = x * (3 + 5) "
         "module2.do(a,b)"
-        "(event) -> { module1.do(x, 5 != 3) }";
+        "(event: a, b) -> { module1.do(a,b+x) }";
 
     auto result = r.Compile(s);
     
