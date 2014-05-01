@@ -35,7 +35,7 @@ class Component {
         function<void(string,string,vector<int>)> *eventCallback;
         ImageLogger *imageLogger;
         VideoLogger *videoLogger;
-        FileLogger *file_logger;
+        FileLogger *fileLogger;
 };
 
 #endif
