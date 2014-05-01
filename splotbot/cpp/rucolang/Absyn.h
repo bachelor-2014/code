@@ -17,8 +17,8 @@ namespace Rucola {
     class Expr {
         public:
            virtual string toString() {};
-           virtual void Compile(map<string,map<string,CompileArgs>> componentCalls,
-                   vector<int> *result){};
+           virtual void Compile(map<string,map<string,CompileArgs>>
+                   componentCalls, map<string, int> *env, vector<int> *result){};
     };
 
     /**
@@ -28,7 +28,9 @@ namespace Rucola {
         public:
            IExpr(int value);
            string toString() override;
-           void Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result) override;
+           void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, 
+                    vector<int> *result);
 
         private:
            int value;
@@ -41,7 +43,9 @@ namespace Rucola {
         public:
            VExpr(string *value);
            string toString();
-           void Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result);
+           void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, 
+                    vector<int> *result);
 
         private:
            string *value;
@@ -116,7 +120,9 @@ namespace Rucola {
         public:
            Assignment(string *varName, Expr * expr); 
            string toString();
-           void Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result);
+           void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
+                   vector<int> *result);
 
         private:
            string *varName;
