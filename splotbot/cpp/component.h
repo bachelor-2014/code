@@ -9,6 +9,8 @@
 
 #include "logging/filelogger.h"
 #include "logging/imagelogger.h"
+#include "logging/videologger.h"
+
 #include "rucolang/compileargs.h"
 
 using namespace std;
@@ -33,6 +35,7 @@ class Component {
         function<void(string,string)> *eventCallback;
         FileLogger *fileLogger;
         ImageLogger *imageLogger;
+        VideoLogger *videoLogger;
 
 };
 

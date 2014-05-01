@@ -8,8 +8,10 @@ using namespace std;
 using namespace cv;
 
 Size frameSize;
-VideoLogger::VideoLogger(string identifier, VideoCapture *cap) : Logger<Mat*>(){
-    filename = "data/"+identifier+".avi";
+VideoLogger::VideoLogger(string componentType, string componentName,
+		VideoCapture *cap) : Logger<Mat*>(){
+
+    filename = "data/logs/"+this->identifier(this->entry())+".avi";
 
     double dWidth = (*cap).get(CV_CAP_PROP_FRAME_WIDTH);
     double dHeight = (*cap).get(CV_CAP_PROP_FRAME_HEIGHT);
@@ -19,14 +21,41 @@ VideoLogger::VideoLogger(string identifier, VideoCapture *cap) : Logger<Mat*>(){
     videoWriter = new VideoWriter(  filename,
                                     CV_FOURCC('M','P','E','G'),
                                     20,frameSize);
+
+    this->componentType = componentType;
+    this->componentName = componentName;
 }
 
 VideoLogger::~VideoLogger(){
 }
 
-bool VideoLogger::Write(Mat *image){
+bool VideoLogger::Data(cv::Mat* data){
 
-    (*videoWriter).write(*image);
+	Entry<cv::Mat*> e = this->entry();
+	e.ActivityType = "data";
+	e.Data = data;
+
+	this->Write(e);
+};
+
+bool VideoLogger::Clear(){};
+
+string VideoLogger::identifier(Entry<cv::Mat*> entry){
+	return to_string(entry.Timestamp)+"_"+entry.ComponentType+"_"+entry.ComponentName+"_"+entry.ActivityType;
+}
+
+Entry<cv::Mat*> VideoLogger::entry(){
+	const double timestamp = double(clock()) / CLOCKS_PER_SEC;
+
+	Entry<cv::Mat*> entry(timestamp,this->componentType,
+		this->componentName,"",NULL);
+
+	return entry;
+}
+
+bool VideoLogger::Write(Entry<cv::Mat*> entry){
+
+    (*videoWriter).write(*(entry.Data));
 
     return true;
 }

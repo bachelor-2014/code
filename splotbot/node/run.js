@@ -7,6 +7,7 @@ var addon = require('./build/Debug/addon');
 var express = require('express'), // Web server
     app = express(), // App object to hold the server
     http = require('http'),
+	fs = require('fs'),
     server = http.createServer(app), // Start the server
     // Bind socket.io. Logging is disabled because it's very verbose
     io = require('socket.io').listen(server, { log: false });
@@ -91,6 +92,24 @@ app.post('/rucola', getdata, function(req, res){
 app.post('/event/:name', getdata, function(req, res){
     eventCallback(req.params.name, req.data);
     res.send();
+});
+
+app.get('/logs',function(req,res){
+	fs.readdir('data/logs', function (err, files) {
+		console.log(files);
+		res.send(files);
+	})
+});
+
+app.get('/logs/:filename', function(req,res){
+	console.log(req.params.filename);
+	res.sendfile("data/logs/"+req.params.filename);
+});
+
+app.delete('/logs/:filename', function(req,res){
+	fs.unlink("data/logs/"+req.params.filename,function(err){
+		res.send("OK");
+	})
 });
 
 app.get('/',function(req,res){

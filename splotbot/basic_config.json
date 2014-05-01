@@ -35,21 +35,5 @@
             "camera_name": "Camera",
             "config_file":"data/camera_calibration.xml"
         }
-    },
-    {
-        "type": "RCServoMotor",
-        "name": "Servo1",
-        "parameters": {
-            "device": "/dev/ttyACM0",
-            "channel": 0
-        }
-    },
-    {
-        "type": "RCServoMotor",
-        "name": "Servo2",
-        "parameters": {
-            "device": "/dev/ttyACM0",
-            "channel": 1
-        }
     }
 ]
