@@ -24,7 +24,8 @@ main() {
 
     string s = 
         "module1.do(1,2)"
-        "module2.do(1,2)";
+        " hej = 3 "
+        "module2.do(1,hej)";
 
     auto result = r.Compile(s);
 

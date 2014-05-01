@@ -93,6 +93,18 @@ namespace Rucola{
         }
     }
 
+    Assignment::Assignment(string *varName, Expr *expr): varName(varName), expr(expr) {
+        // Empty constructor
+    }
+
+    string Assignment::toString() {
+        return "Assignment(" + *varName + ", " + expr->toString() + ")";
+    }
+
+    void Assignment::Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result) {
+        //TODO
+    }
+
     IExpr::IExpr(int value): value(value) {
         // Empty constructor
     }

@@ -322,7 +322,7 @@ extern int yylex (void);
 #undef YY_DECL
 #endif
 
-#line 22 "rucola.l"
+#line 23 "rucola.l"
 
 
 #line 329 "lex.yy.h"

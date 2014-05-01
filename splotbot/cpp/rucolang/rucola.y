@@ -20,6 +20,7 @@ void yyerror(const char *s);
     Rucola::Statement *stmt;
     Rucola::Block *block;
     Rucola::ComponentCall *ccall;
+    Rucola::Assignment *assignment;
     Rucola::Expr *expr;
     Rucola::IExpr *iexpr;
     Rucola::VExpr *vexpr;
@@ -30,7 +31,7 @@ void yyerror(const char *s);
 }
 
 // Constant-string tokens
-%token LPAR RPAR DOT COMMA
+%token LPAR RPAR DOT COMMA EQ
 
 //Terminal symbols
 %token <ival> INT
@@ -51,8 +52,10 @@ program : stmts { programBlock = $1; }
 
 //Statements
 stmt:
-    //Call to a component
-    STRING DOT STRING LPAR args RPAR{$$ = new ComponentCall($1, $3, $5);}
+      //Call to a component
+      STRING DOT STRING LPAR args RPAR{$$ = new ComponentCall($1, $3, $5);}
+      //Variable assignment
+    | STRING EQ expr { $$ = new Assignment($1, $3); }
 ;
 
 //A block (multiple statements)

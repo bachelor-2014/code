@@ -91,6 +91,20 @@ namespace Rucola {
                    *result);
     };
 
+    /**
+     * Assignment of a value to a variable
+     */
+    class Assignment: public Statement {
+        public:
+           Assignment(string *varName, Expr * expr); 
+           string toString();
+           void Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result);
+
+        private:
+           string *varName;
+           Expr *expr;
+    };
+
 }
 
 #endif
