@@ -5,6 +5,7 @@
 #include "Absyn.h"
 #include "rucola.tab.h"
 #include "lex.yy.h"
+#include "../utils/errors.h"
 using namespace std;
 using namespace Rucola;
 
@@ -19,14 +20,19 @@ void yyerror(const char *s);
     Rucola::Statement *stmt;
     Rucola::Block *block;
     Rucola::ComponentCall *ccall;
+    Rucola::Assignment *assignment;
+    Rucola::Event *event;
+    Rucola::Expr *expr;
+    Rucola::IExpr *iexpr;
+    Rucola::VExpr *vexpr;
     int ival;
     float fval;
     string *sval;
-    vector<int> *veci;
+    vector<Rucola::Expr*> *vece;
 }
 
 // Constant-string tokens
-%token LPAR RPAR DOT COMMA
+%token LPAR RPAR DOT COMMA EQ ARROW LBRACE RBRACE
 
 //Terminal symbols
 %token <ival> INT
@@ -36,7 +42,8 @@ void yyerror(const char *s);
 //Types
 %type <block> program stmts
 %type <stmt> stmt
-%type <veci> args
+%type <vece> args
+%type <expr> expr
 
 %%
 
@@ -46,8 +53,13 @@ program : stmts { programBlock = $1; }
 
 //Statements
 stmt:
-    //Call to a component
-    STRING DOT STRING LPAR args RPAR{$$ = new ComponentCall($1, $3, $5);}
+      //Call to a component
+      STRING DOT STRING LPAR args RPAR{$$ = new ComponentCall($1, $3, $5);}
+      //Variable assignment
+    | STRING EQ expr { $$ = new Assignment($1, $3); }
+
+      //Event binding
+    | LPAR STRING RPAR ARROW LBRACE stmts RBRACE {$$ = new Event($2, $6);}
 ;
 
 //A block (multiple statements)
@@ -56,9 +68,14 @@ stmts : stmt { $$ = new Block(); $$->AddStatement($1); }
 ;
 
 //Interger list of comma seperated arguments
-args :     { $$ = new vector<int>();}  
-     | INT { $$ = new vector<int>(); $$->push_back($1);} 
-     | args COMMA INT { $1->push_back($3);}
+args :     { $$ = new vector<Expr*>();}  
+     | expr { $$ = new vector<Expr*>(); $$->push_back($1);} 
+     | args COMMA expr { $1->push_back($3);}
+;
+
+//An expression, either a constant int or a variable
+expr : INT { $$ = new IExpr($1); }  
+     | STRING { $$ = new VExpr($1); } 
 ;
 
 %%
@@ -67,7 +84,6 @@ args :     { $$ = new vector<int>();}
  * Print parsing error
  */
 void yyerror(const char *s) {
-    cout << "Parse error!  Message: " << s << endl;
-    // might as well halt now:
-    exit(-1);
+    string error = "Could not parse, is this valid Rucolang code?";
+    throw RucolaException(error.c_str());
 }

@@ -4,6 +4,7 @@
 #include "cameracalibrator.h"
 #include "computer_vision/computervisionutils.h"
 #include "utils/errors.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 using namespace cv;
@@ -123,6 +124,19 @@ void CameraCalibrator::calibrate(){
     cout << "camera->yStep: [" << (camera->yStep)[0] << ", " << (camera->yStep)[1] << "]" << endl;
 
     (*eventCallback)(name, "success");
+}
+
+void CameraCalibrator::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    Rucola::CompileArgs calibrateCall;
+    calibrateCall.Action = start+1;
+    calibrateCall.NumberofArguments = 0;
+
+    Rucola::CompileArgs recalibrateCall;
+    recalibrateCall.Action = start+2;
+    recalibrateCall.NumberofArguments = 0;
+
+    (*componentCalls)[name]["calibrate"] = calibrateCall; 
+    (*componentCalls)[name]["recalibrate"] = recalibrateCall; 
 }
 
 void CameraCalibrator::recalibrate(){

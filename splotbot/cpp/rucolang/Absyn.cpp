@@ -45,29 +45,31 @@ namespace Rucola{
     }
 
     void Block::Compile(map<string,map<string,CompileArgs>> componentCalls,
-            vector<int> *result){
+            map<string, int> *env, map<string, Statement*> *events, vector<int>
+            *result){
         for(Statement* s: statements){
-            s->Compile(componentCalls, result);
+            s->Compile(componentCalls, env, events, result);
         }
     }
     /**
      * ComponentCall Implementations
      */
-    ComponentCall::ComponentCall(string *component, string *action, vector<int>
+    ComponentCall::ComponentCall(string *component, string *action, vector<Expr*>
             *args): component(component), action(action), args(args) {
         //Empty
     }
 
     string ComponentCall::toString() {
         string a;
-        for(int arg : *args){
-            a += to_string(arg) + " ";
+        for(auto arg : *args){
+            a += arg->toString() + " ";
         }
         return "Component: " + *component + " Action: " + *action + " Args: " + a;
     }
 
     void ComponentCall::Compile(map<string,map<string,CompileArgs>>
-            componentCalls, vector<int> *result){
+            componentCalls, map<string,int> *env, map<string, Statement*>
+            *events, vector<int> *result){
 
         if(!componentCalls.count((*component))){
             string err = "Component does not exist: " + (*component);
@@ -83,10 +85,84 @@ namespace Rucola{
         CompileArgs ca = componentCalls[(*component)][(*action)];
         if((*args).size() == ca.NumberofArguments){
             result->push_back(ca.Action);
-            result->insert(result->end(),args->begin(),args->end());
+
+            for (auto e : *args) {
+                e->Compile(componentCalls, env, result);
+            }
         }else{
             string err = (*component) + " with action '" + (*action) + "' takes " + to_string(ca.NumberofArguments) + " arguments, you supplied " + to_string((*args).size());
             throw RucolaException(err.c_str());
+        }
+    }
+
+    Assignment::Assignment(string *varName, Expr *expr): varName(varName), expr(expr) {
+        // Empty constructor
+    }
+
+    string Assignment::toString() {
+        return "Assignment(" + *varName + ", " + expr->toString() + ")";
+    }
+
+    void Assignment::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, map<string, Statement*> *events,
+            vector<int> *result) {
+        expr->Compile(componentCalls, env, result);
+        int val = result->back();
+        result->pop_back();
+        (*env)[(*varName)] = val;
+    }
+
+    /**
+     * Event
+     */
+    Event::Event(string *eventName, Block *block): eventName(eventName),
+    block(block) {
+        //Empty
+    }
+
+    string Event::toString(){
+        string s;
+        s += "Event: " + *eventName + "-> \n";
+        s += block->toString();
+        return s;
+    }
+
+    void Event::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, map<string, Statement*> *events, vector<int>
+            *result){
+        //TODO: Event Mapping
+    }
+
+    /**
+     * Expre
+     */
+    
+    IExpr::IExpr(int value): value(value) {
+        // Empty constructor
+    }
+
+    string IExpr::toString() {
+        return "IExpr(" + to_string(value) + ")";
+    }
+
+    void IExpr::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, vector<int> *result) {
+        result->push_back(value);
+    }
+
+    VExpr::VExpr(string *value): value(value) {
+        // Empty constructor
+    }
+
+    string VExpr::toString() {
+        return "VExpr(" + *value + ")";
+    }
+
+    void VExpr::Compile(map<string,map<string,CompileArgs>> componentCalls, map<string, int> *env, vector<int> *result) {
+        if (env->count(*value)) {
+            result->push_back((*env)[(*value)]);
+        } else {
+            throw RucolaException(("Can not get value of unassigned variable '" + (*value) + "'").c_str());
         }
     }
 }
