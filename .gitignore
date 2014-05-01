@@ -17,3 +17,7 @@ build/
 node_modules
 data
 .depend
+lex.yy.cpp
+lex.yy.h
+rucola.tab.cpp
+rucola.tab.h

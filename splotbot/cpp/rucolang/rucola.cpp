@@ -3,6 +3,7 @@
 #include "rucola.tab.h"
 #include "rucola.h"
 #include "compileargs.h"
+#include "../utils/errors.h"
 #include <string>
 using namespace std;
 using namespace Rucola;
@@ -43,7 +44,8 @@ vector<int> Rucola::Rucolang::Event(string event){
         if(Rucola::Event *e = dynamic_cast<Rucola::Event*>(s)){
             e->Call(componentCalls, &env, &events, &result);
         } else {
-            //TODO: Error handling
+            string err = "Error in compiler: event " + event + " not an Event";
+            throw RucolaException(err.c_str());
         }
     }
     return result;
