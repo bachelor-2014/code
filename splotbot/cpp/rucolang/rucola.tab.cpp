@@ -70,6 +70,7 @@
 #include "Absyn.h"
 #include "rucola.tab.h"
 #include "lex.yy.h"
+#include "../utils/errors.h"
 using namespace std;
 using namespace Rucola;
 
@@ -78,7 +79,7 @@ Block *programBlock;
 
 void yyerror(const char *s);
 
-#line 82 "rucola.tab.c" /* yacc.c:339  */
+#line 83 "rucola.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -128,7 +129,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 18 "rucola.y" /* yacc.c:355  */
+#line 19 "rucola.y" /* yacc.c:355  */
 
     Rucola::Statement *stmt;
     Rucola::Block *block;
@@ -138,7 +139,7 @@ union YYSTYPE
     string *sval;
     vector<int> *veci;
 
-#line 142 "rucola.tab.c" /* yacc.c:355  */
+#line 143 "rucola.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -153,7 +154,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 157 "rucola.tab.c" /* yacc.c:358  */
+#line 158 "rucola.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -451,7 +452,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    44,    44,    50,    54,    55,    59,    60,    61
+       0,    45,    45,    51,    55,    56,    60,    61,    62
 };
 #endif
 
@@ -1220,49 +1221,49 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 44 "rucola.y" /* yacc.c:1646  */
+#line 45 "rucola.y" /* yacc.c:1646  */
     { programBlock = (yyvsp[0].block); }
-#line 1226 "rucola.tab.c" /* yacc.c:1646  */
+#line 1227 "rucola.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 50 "rucola.y" /* yacc.c:1646  */
+#line 51 "rucola.y" /* yacc.c:1646  */
     {(yyval.stmt) = new ComponentCall((yyvsp[-5].sval), (yyvsp[-3].sval), (yyvsp[-1].veci));}
-#line 1232 "rucola.tab.c" /* yacc.c:1646  */
+#line 1233 "rucola.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 54 "rucola.y" /* yacc.c:1646  */
+#line 55 "rucola.y" /* yacc.c:1646  */
     { (yyval.block) = new Block(); (yyval.block)->AddStatement((yyvsp[0].stmt)); }
-#line 1238 "rucola.tab.c" /* yacc.c:1646  */
+#line 1239 "rucola.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 55 "rucola.y" /* yacc.c:1646  */
+#line 56 "rucola.y" /* yacc.c:1646  */
     { (yyvsp[-1].block)->AddStatement((yyvsp[0].stmt));}
-#line 1244 "rucola.tab.c" /* yacc.c:1646  */
+#line 1245 "rucola.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 59 "rucola.y" /* yacc.c:1646  */
+#line 60 "rucola.y" /* yacc.c:1646  */
     { (yyval.veci) = new vector<int>();}
-#line 1250 "rucola.tab.c" /* yacc.c:1646  */
+#line 1251 "rucola.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 60 "rucola.y" /* yacc.c:1646  */
+#line 61 "rucola.y" /* yacc.c:1646  */
     { (yyval.veci) = new vector<int>(); (yyval.veci)->push_back((yyvsp[0].ival));}
-#line 1256 "rucola.tab.c" /* yacc.c:1646  */
+#line 1257 "rucola.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 61 "rucola.y" /* yacc.c:1646  */
+#line 62 "rucola.y" /* yacc.c:1646  */
     { (yyvsp[-2].veci)->push_back((yyvsp[0].ival));}
-#line 1262 "rucola.tab.c" /* yacc.c:1646  */
+#line 1263 "rucola.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1266 "rucola.tab.c" /* yacc.c:1646  */
+#line 1267 "rucola.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1490,14 +1491,13 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 64 "rucola.y" /* yacc.c:1906  */
+#line 65 "rucola.y" /* yacc.c:1906  */
 
 
 /**
  * Print parsing error
  */
 void yyerror(const char *s) {
-    cout << "Parse error!  Message: " << s << endl;
-    // might as well halt now:
-    exit(-1);
+    string error = "Could not parse, is this valid Rucolang code?";
+    throw RucolaException(error.c_str());
 }

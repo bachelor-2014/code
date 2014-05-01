@@ -5,6 +5,7 @@
 #include "Absyn.h"
 #include "rucola.tab.h"
 #include "lex.yy.h"
+#include "../utils/errors.h"
 using namespace std;
 using namespace Rucola;
 
@@ -67,7 +68,6 @@ args :     { $$ = new vector<int>();}
  * Print parsing error
  */
 void yyerror(const char *s) {
-    cout << "Parse error!  Message: " << s << endl;
-    // might as well halt now:
-    exit(-1);
+    string error = "Could not parse, is this valid Rucolang code?";
+    throw RucolaException(error.c_str());
 }
