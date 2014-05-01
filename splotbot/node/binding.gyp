@@ -19,6 +19,7 @@
 "../cpp/componentinitializer.cpp","../cpp/splotbot.cpp",
 "../cpp/logging/logger.cpp","../cpp/logging/filelogger.cpp",
 "../cpp/logging/videologger.cpp",
+"../cpp/logging/imagelogger.cpp",
 "../cpp/computer_vision/dropletdetector.cpp",
 "../cpp/computer_vision/computervisionutils.cpp",
 "../cpp/utils/errors.cpp",
