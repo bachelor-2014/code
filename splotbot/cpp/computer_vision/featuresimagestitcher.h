@@ -15,7 +15,7 @@ using namespace std;
  */
 class FeaturesImageStitcher: public ImageStitcher {
     public:
-        FeaturesImageStitcher(Camera *camera);
+        FeaturesImageStitcher(Camera *camera, int stepSize);
         cv::Mat stitch();
 };
 

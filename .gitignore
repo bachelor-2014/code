@@ -15,9 +15,5 @@
 *.dSYM
 build/
 node_modules
-rucola.tab.h
-rucola.tab.c
-lex.yy.c
-lex.yy.h
 data
 .depend

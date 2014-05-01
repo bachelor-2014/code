@@ -83,6 +83,22 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
     (*actions).push_back(setDropletVariables);
 }
 
+void Camera::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    Rucola::CompileArgs mode;
+    mode.Action = start+1;
+    mode.NumberofArguments = 1;
+    Rucola::CompileArgs dropletselect;
+    dropletselect.Action = start+2;
+    dropletselect.NumberofArguments = 2;
+    Rucola::CompileArgs dropletvariables;
+    dropletvariables.Action = start+3;
+    dropletvariables.NumberofArguments = 4;
+
+    (*componentCalls)[name]["mode"] = mode; 
+    (*componentCalls)[name]["dropletselect"] = dropletselect; 
+    (*componentCalls)[name]["dropletvariables"] = dropletvariables; 
+}
+
 /**
  * Sets the current camera mode
  */

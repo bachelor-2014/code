@@ -63,6 +63,12 @@ io.sockets.on('connection', function (socket) {
     socket.on('runcode', function(code){
         splotbot.runCode(code);
     }); 
+
+    // Socket request for runnig rucola code on splotbot
+    socket.on('rucola', function(code){
+        splotbot.runCode(code.code);
+    });
+
 });
 
 // Post request for running code on splotbot
@@ -72,6 +78,14 @@ app.post('/runcode', getdata, function(req, res){
     splotbot.runCode(code);
     res.send();
 });
+
+// Post request for running rucola code on splotbot
+app.post('/rucola', getdata, function(req, res){
+    var code = JSON.parse(req.data);
+    console.log("Code was:",code);
+    splotbot.runRucolaCode(code.code);
+    res.send();
+}); 
 
 // Event callback endpoint
 app.post('/event/:name', getdata, function(req, res){

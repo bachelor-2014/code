@@ -4,6 +4,8 @@
 #include "splotbot.h"
 #include "utils/threading.h"
 #include "utils/errors.h"
+#include "rucolang/rucola.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 
@@ -26,10 +28,14 @@ Splotbot::Splotbot(string configFile, string mendelSocket) {
 
     for (auto it = components.begin(); it != components.end(); ++it) {
         Component *c = *it;
+        (*c).registerCalls(&componentCalls, (actions.size()-1));
         (*c).registerActions(&actions);
     }
 
     cout << "Number of actions registered: " << actions.size() << endl;
+
+    cout << "Registerings Component Calls with Rucolang" << endl;
+    rucolang.RegisterComponentCalls(componentCalls);
 }
 
 /**
@@ -37,6 +43,18 @@ Splotbot::Splotbot(string configFile, string mendelSocket) {
  */
 void Splotbot::executeInstructions(int numberOfInstructions, int instructions[]) {
     buffer.pushInstructions(numberOfInstructions, instructions);
+}
+
+void Splotbot::executeRucolaCode(string code){
+    try{
+        vector<int> instrs = rucolang.Compile(code);
+        executeInstructions(instrs.size(), &instrs[0]);
+    } catch(RucolaException& e){
+        cout << "RucolaException" << endl;
+        runAsThread( [&] () {
+            eventCallback("error",e.what());
+        });
+    }
 }
 
 /**

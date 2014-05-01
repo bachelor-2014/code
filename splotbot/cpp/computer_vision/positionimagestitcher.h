@@ -15,8 +15,8 @@ using namespace std;
  */
 class PositionImageStitcher: public ImageStitcher {
     public:
-        PositionImageStitcher(Camera *camera);
-        PositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera);
+        PositionImageStitcher(Camera *camera, int stepSize);
+        PositionImageStitcher(vector<GrabbedImage> grabbedImages, Camera *camera, int stepSize);
         cv::Mat stitch();
     private:
         cv::Mat warp();
@@ -28,13 +28,12 @@ class PositionImageStitcher: public ImageStitcher {
         int max_x;
         int max_y;
 
-        //Size of 
-        cv::Mat size;
+        double x_shift;
+        double y_shift;
 
-        vector<double> xStep;
-        vector<double> yStep;
-        vector<double> minvector;
-        vector<double> minpixelvector;
+        double total_width;
+        double total_height;
+
 };
 
 #endif

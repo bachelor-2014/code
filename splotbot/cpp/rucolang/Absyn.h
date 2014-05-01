@@ -3,6 +3,8 @@
 
 #include<vector>
 #include<string>
+#include<map>
+#include "compileargs.h"
 
 using namespace std;
 
@@ -14,6 +16,8 @@ namespace Rucola {
     class Statement {
         public:
             virtual string toString() {};
+            virtual void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    vector<int> *result){};
             //virtual vector<int> compile() {};
     };
 
@@ -28,6 +32,8 @@ namespace Rucola {
             void AddBlock(Block *b);
             vector<Statement*> GetStatements();
             string toString();
+            void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    vector<int> *result);
         private:
             vector<Statement*> statements;
     }; 
@@ -44,6 +50,8 @@ namespace Rucola {
            string *component;
            string *action;
            vector<int> *args;
+           void Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int>
+                   *result);
     };
 }
 

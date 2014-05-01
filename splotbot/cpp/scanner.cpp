@@ -48,18 +48,20 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     ImageStitcher *stitcher;
     switch (stitchingAlgorithm) {
         case 0:
-            stitcher = new FeaturesImageStitcher(camera);
+            stitcher = new FeaturesImageStitcher(camera, stepsBetweenImages);
             break;
         case 1: 
-            stitcher = new FeaturesandPositionImageStitcher(camera);
+            stitcher = new FeaturesAndPositionImageStitcher(camera, stepsBetweenImages);
             break;
         case 2:
-            stitcher = new PositionImageStitcher(camera);
+            stitcher = new PositionImageStitcher(camera, stepsBetweenImages);
             break;
         default: 
-            stitcher = new FeaturesImageStitcher(camera);
+            stitcher = new FeaturesImageStitcher(camera, stepsBetweenImages);
             break;
     }
+
+    cout << "Scanner -> sleepBetweenImages: " << sleepBetweenImages << endl;
 
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
@@ -70,7 +72,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             xyaxes->move(x, y);
 
             // Sleep before grabbing the image, allowing the camera to settle
-            usleep(sleepBetweenImages);
+            usleep(sleepBetweenImages * 1000);
 
             // Grab the image
             stitcher->grabImage(x, y);
@@ -109,8 +111,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             FeaturesImageStitcher ii = *i;
             sem_post(&stitcherSemaphore);
             stitchedImage = ii.stitch();
-        } else if (FeaturesandPositionImageStitcher *i = dynamic_cast<FeaturesandPositionImageStitcher*>(stitcher)) {
-            FeaturesandPositionImageStitcher ii = *i;
+        } else if (FeaturesAndPositionImageStitcher *i = dynamic_cast<FeaturesAndPositionImageStitcher*>(stitcher)) {
+            FeaturesAndPositionImageStitcher ii = *i;
             sem_post(&stitcherSemaphore);
             stitchedImage = ii.stitch();
         } else if (PositionImageStitcher *i = dynamic_cast<PositionImageStitcher*>(stitcher)) {

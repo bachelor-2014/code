@@ -21,6 +21,8 @@ class RCServoMotor: public Component {
     public:
         RCServoMotor(string name, string device, unsigned char channel);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
+        void registerCalls(map<string,map<string,Rucola::CompileArgs>>
+                *componentCalls, int start);
         int getPosition();
         int setPosition(unsigned short target);
 
