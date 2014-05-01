@@ -51,7 +51,8 @@ void Splotbot::executeRucolaCode(string code){
             executeInstructions(instrs.size(), &instrs[0]);
         } catch(RucolaException& e){
             runAsThread( [=] () {
-                eventCallback("error", e.what());
+                vector<int> args;
+                eventCallback("error", e.what(), args);
             });
         }
 }
@@ -60,8 +61,7 @@ void Splotbot::executeRucolaCode(string code){
  * registerCallback registeres an event callback
  */
 void Splotbot::registerCallback(function<void(string,string)> callback) {
-    eventCallback = [=](string event, string data){
-        vector<int> args;
+    eventCallback = [=](string event, string data, vector<int> args){
         vector<int> instrs = rucolang.Event(event, args);
         executeInstructions(instrs.size(), &instrs[0]);
         callback(event, data);
