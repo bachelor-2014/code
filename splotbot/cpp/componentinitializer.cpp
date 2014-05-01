@@ -177,7 +177,7 @@ string getStringParam(cJSON *parameters,string key){
 /**
  * initilizeComponents initilizes the components from the config file
  */
-vector<Component *> initializeComponents(function<void(string,string)> *callback, string configFilename, string mendelSocket) {
+vector<Component *> initializeComponents(function<void(string,string,vector<int>)> *callback, string configFilename, string mendelSocket) {
     //Load components
     vector<Component *> components;
 

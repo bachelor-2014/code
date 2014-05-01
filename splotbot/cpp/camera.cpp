@@ -219,7 +219,8 @@ void Camera::run() {
                         computeMovementSpeed(firstDropletLog,
                                 secondDropletLog);
                     //Send the images to the event
-                    (*eventCallback)(name + "_dropletspeed", to_string(1000 * movementSpeed));
+                    vector<int> args = { movementSpeed * 1000 };
+                    (*eventCallback)(name + "_dropletspeed", to_string(1000 * movementSpeed), args);
                 }
 
             }
@@ -239,7 +240,8 @@ void Camera::run() {
             string base64 = base64_encode(&buff[0],buff.size());
 
             //Send the images to the event
-            (*eventCallback)(eventName, base64);
+            vector<int> args;
+            (*eventCallback)(eventName, base64, args);
         }
 
         //cout << "Camera: Releasing the capture device ..." << endl;

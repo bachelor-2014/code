@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <iostream>
 #include <vector>
+#include <string>
 #include "Absyn.h"
 #include "rucola.tab.h"
 #include "lex.yy.h"
@@ -30,10 +31,11 @@ void yyerror(const char *s);
     float fval;
     string *sval;
     vector<Rucola::Expr*> *vece;
+    vector<string*> *strings;
 }
 
 // Constant-string tokens
-%token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE
+%token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE COLON
 %token PLUS MINUS TIMES DIV MOD EQ NEQ LT LTEQ GT GTEQ AND OR
 %token IF ELSE
 
@@ -58,6 +60,7 @@ void yyerror(const char *s);
 %type <stmt> stmt
 %type <vece> args
 %type <expr> expr
+%type <strings> argnames
 
 %%
 
@@ -73,7 +76,7 @@ stmt:
     | STRING ASSIGN expr { $$ = new Assignment($1, $3); }
 
       //Event binding
-    | LPAR STRING RPAR ARROW LBRACE stmts RBRACE {$$ = new Event($2, $6);}
+    | LPAR STRING argnames RPAR ARROW LBRACE stmts RBRACE {$$ = new Event($2, $3, $7);}
 
       //Conditional statement
     | IF LPAR expr RPAR LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE { $$ = new Conditional($3, $6, $10); }
@@ -89,6 +92,11 @@ args :     { $$ = new vector<Expr*>();}
      | expr { $$ = new vector<Expr*>(); $$->push_back($1);} 
      | args COMMA expr { $1->push_back($3);}
 ;
+
+//String list of comma seperated argument names
+argnames : { $$ = new vector<string*>(); }
+         | COLON STRING { $$ = new vector<string*>(); $$->push_back($2);}
+         | argnames COMMA STRING { $1->push_back($3);}
 
 //An expression, either a constant int or a variable
 expr : LPAR expr RPAR { $$ = $2; }

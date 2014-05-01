@@ -29,6 +29,7 @@ using namespace Rucola;
 ->              { return ARROW; }
 \{              { return LBRACE; }
 \}              { return RBRACE; }
+\:              { return COLON; }
 if              { return IF; }
 else            { return ELSE; }
 [0-9]+\.[0-9]+  { yylval.fval = atof(yytext); return FLOAT; }
