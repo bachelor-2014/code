@@ -32,15 +32,10 @@ class Component {
         void raiseError(string message);
 
     protected:
-<<<<<<< HEAD
-        function<void(string,string)> *eventCallback;
-        FileLogger *fileLogger;
+        function<void(string,string,vector<int>)> *eventCallback;
         ImageLogger *imageLogger;
         VideoLogger *videoLogger;
-=======
-        function<void(string,string,vector<int>)> *eventCallback;
         FileLogger *file_logger;
->>>>>>> 66b842a402c7c46daab824baa2e813f060424cb6
 
 };
 
