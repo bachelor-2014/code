@@ -130,13 +130,21 @@ namespace Rucola{
     void Event::Compile(map<string,map<string,CompileArgs>> componentCalls,
             map<string, int> *env, map<string, Statement*> *events, vector<int>
             *result){
-        //TODO: Event Mapping
         (*events)[(*eventName)] = this;
     }
 
-    void Event::Call(map<string,map<string,CompileArgs>> componentCalls,
-            map<string, int> *env, map<string, Statement*> *events, vector<int>
-            *result){
+    void Event::Call(vector<int> args, map<string,map<string,CompileArgs>>
+            componentCalls, map<string, int> *env, map<string, Statement*>
+            *events, vector<int> *result){
+        //if(args.size() < argNames->size()){
+        //    string err = (*eventName) + " takes at most " +
+        //        to_string(args.size()) + " arguments, you defined it as" +
+        //        argNames->size();
+        //    throw RucolaException(err.c_str());
+        //}
+        //for(string argName : *argNames){
+        //    
+        //}
         block->Compile(componentCalls, env, events, result);
     }
 

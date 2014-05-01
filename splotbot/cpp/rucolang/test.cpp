@@ -45,7 +45,8 @@ main() {
     cout << "Result:" << endl;
     prettyPrint(result);
 
-    auto event = r.Event("event");
+    vector<int> args = {1,2};
+    auto event = r.Event("event", args);
     cout << "Event:" << endl;
     prettyPrint(event);
 }

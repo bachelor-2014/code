@@ -61,7 +61,8 @@ void Splotbot::executeRucolaCode(string code){
  */
 void Splotbot::registerCallback(function<void(string,string)> callback) {
     eventCallback = [=](string event, string data){
-        vector<int> instrs = rucolang.Event(event);
+        vector<int> args;
+        vector<int> instrs = rucolang.Event(event, args);
         executeInstructions(instrs.size(), &instrs[0]);
         callback(event, data);
     };
