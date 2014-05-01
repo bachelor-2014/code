@@ -7,7 +7,7 @@ Component::Component(){}
 /**
  * registerCallback registeres the event callback
  */
-void Component::registerCallback(function<void(string,string)> *callback) {
+void Component::registerCallback(function<void(string,string,vector<int>)> *callback) {
     eventCallback = callback;
 }
 
@@ -16,5 +16,6 @@ void Component::registerCallback(function<void(string,string)> *callback) {
  */
 void Component::raiseError(string message){
     cout << "THROWING UP" << endl;
-    (*eventCallback) ("error",this->name + ": " + message);
+    vector<int> args;
+    (*eventCallback) ("error",this->name + ": " + message, args);
 }

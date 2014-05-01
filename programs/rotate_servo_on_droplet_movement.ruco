@@ -1,0 +1,15 @@
+servoPos = 0
+Servo1.setPosition(0)
+Servo2.setPosition(90)
+
+BottomAxes.setPosition(10, 10)
+
+(Camera_dropletspeed: speed) {
+    if (speed > 100) {
+        servoPos = (servoPos % 90) + 10;
+        Servo1.setPosition(servoPos);
+        Servo2.setPosition(90 - servoPos);
+    } else { }
+}
+
+Camera.mode(2)

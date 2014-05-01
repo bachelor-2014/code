@@ -112,11 +112,33 @@ namespace Rucola{
         (*env)[(*varName)] = val;
     }
 
+    Conditional::Conditional(Expr *condition, Block *block1, Block *block2): condition(condition), block1(block1), block2(block2) {
+        // Empty constructor
+    }
+
+    string Conditional::toString() {
+        return "Conditional(" + condition->toString() + ", " + block1->toString() + ", " + block2->toString() + ")";
+    }
+
+    void Conditional::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, map<string, Statement*> *events,
+            vector<int> *result) {
+        condition->Compile(componentCalls, env, result);
+        int val = result->back();
+        result->pop_back();
+
+        if (val) {
+            block1->Compile(componentCalls, env, events, result);
+        } else {
+            block2->Compile(componentCalls, env, events, result);
+        }
+    }
+
     /**
      * Event
      */
-    Event::Event(string *eventName, Block *block): eventName(eventName),
-    block(block) {
+    Event::Event(string *eventName, vector<string*> *argNames, Block *block):
+        eventName(eventName), argNames(argNames), block(block) {
         //Empty
     }
 
@@ -130,7 +152,24 @@ namespace Rucola{
     void Event::Compile(map<string,map<string,CompileArgs>> componentCalls,
             map<string, int> *env, map<string, Statement*> *events, vector<int>
             *result){
-        //TODO: Event Mapping
+        (*events)[(*eventName)] = this;
+    }
+
+    void Event::Call(vector<int> args, map<string,map<string,CompileArgs>>
+            componentCalls, map<string, int> *env, map<string, Statement*>
+            *events, vector<int> *result){
+        if(args.size() < argNames->size()){
+            string err = (*eventName) + " takes at most " +
+                to_string(args.size()) + " arguments, you defined it as" +
+                to_string(argNames->size());
+            throw RucolaException(err.c_str());
+        }
+        int i = 0;
+        for(string *argName : (*argNames)){
+           (*env)[(*argName)] = args[i];
+           i++;
+        }
+        block->Compile(componentCalls, env, events, result);
     }
 
     /**
@@ -164,5 +203,58 @@ namespace Rucola{
         } else {
             throw RucolaException(("Can not get value of unassigned variable '" + (*value) + "'").c_str());
         }
+    }
+
+    AExpr::AExpr(string *op, Expr *expr1, Expr *expr2): op(op), expr1(expr1), expr2(expr2) {
+        // Empty constructor
+    }
+
+    string AExpr::toString() {
+        return "AExpr(" + (*op) + ", " + expr1->toString() + ", " + expr2->toString() + ")";
+    }
+
+    void AExpr::Compile(map<string,map<string,CompileArgs>> componentCalls, map<string, int> *env, vector<int> *result) {
+        expr1->Compile(componentCalls, env, result);
+        int val1 = result->back();
+        result->pop_back();
+
+        expr2->Compile(componentCalls, env, result);
+        int val2 = result->back();
+        result->pop_back();
+
+        int resultVal;
+        
+        // Determine the operator type
+        if (op->compare("+") == 0) {
+            resultVal = val1 + val2;
+        } else if (op->compare("-") == 0) {
+            resultVal = val1 - val2;
+        } else if (op->compare("*") == 0) {
+            resultVal = val1 * val2;
+        } else if (op->compare("/") == 0) {
+            resultVal = val1 / val2;
+        } else if (op->compare("%") == 0) {
+            resultVal = val1 % val2;
+        } else if (op->compare("==") == 0) {
+            resultVal = val1 == val2;
+        } else if (op->compare("!=") == 0) {
+            resultVal = val1 != val2;
+        } else if (op->compare("<") == 0) {
+            resultVal = val1 < val2;
+        } else if (op->compare("<=") == 0) {
+            resultVal = val1 <= val2;
+        } else if (op->compare(">") == 0) {
+            resultVal = val1 > val2;
+        } else if (op->compare(">=") == 0) {
+            resultVal = val1 >= val2;
+        } else if (op->compare("&&") == 0) {
+            resultVal = val1 && val2;
+        } else if (op->compare("||") == 0) {
+            resultVal = val1 || val2;
+        } else {
+            throw RucolaException(("Unknown operator '" + (*op) + "'").c_str());
+        }
+
+        result->push_back(resultVal);
     }
 }
