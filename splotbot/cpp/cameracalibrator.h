@@ -17,6 +17,8 @@ class CameraCalibrator: public Component {
     public:
         CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
+        void registerCalls(map<string,map<string,Rucola::CompileArgs>>
+                *componentCalls, int start);
         void calibrate();
         void recalibrate();
 

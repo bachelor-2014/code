@@ -12,6 +12,8 @@
 #include "utils/errors.h"
 #include "utils/threading.h"
 
+#include "rucolang/compileargs.h"
+
 #include "computer_vision/imagestitcher.h"
 #include "computer_vision/featuresimagestitcher.h"
 #include "computer_vision/featuresandpositionimagestitcher.h"
@@ -182,4 +184,12 @@ void Scanner::registerActions(vector<function<void(InstructionBuffer *)>> *actio
     };
 
     (*actions).push_back(scanAction);
+}
+
+void Scanner::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    Rucola::CompileArgs scanCall;
+    scanCall.Action = start+1;
+    scanCall.NumberofArguments = 7;
+
+    (*componentCalls)[name]["scan"] = scanCall; 
 }

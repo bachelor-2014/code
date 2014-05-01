@@ -4,6 +4,7 @@
 
 #include "xyaxes.h"
 #include "utils/errors.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 
@@ -180,6 +181,19 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
 
     (*actions).push_back(homeAction);
     (*actions).push_back(moveAction);
+}
+
+void XYAxes::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    Rucola::CompileArgs homeCall;
+    homeCall.Action = start+1;
+    homeCall.NumberofArguments = 1;
+
+    Rucola::CompileArgs setPositionCall;
+    setPositionCall.Action = start+2;
+    setPositionCall.NumberofArguments = 2;
+
+    (*componentCalls)[name]["home"] = homeCall; 
+    (*componentCalls)[name]["setPosition"] = setPositionCall; 
 }
 
 int XYAxes::positionX(){
