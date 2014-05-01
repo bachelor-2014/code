@@ -103,6 +103,8 @@ filelogger.o: logging/filelogger.cpp logging/filelogger.h \
  logging/logger.h
 videologger.o: logging/videologger.cpp logging/videologger.h \
  logging/logger.h
+imagelogger.o: logging/imagelogger.cpp logging/logger.h \
+ logging/imagelogger.h
 dropletdetector.o: computer_vision/dropletdetector.cpp \
  computer_vision/dropletdetector.h computer_vision/datastructs.h
 computervisionutils.o: computer_vision/computervisionutils.cpp \

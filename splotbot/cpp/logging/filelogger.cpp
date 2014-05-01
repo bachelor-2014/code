@@ -9,12 +9,12 @@
 using namespace std;
 
 FileLogger::FileLogger(string componentType, string componentName) : Logger<string> (){
-	this->componentType = componentType;
-	this->componentName = componentName;
+    this->componentType = componentType;
+    this->componentName = componentName;
 
-	filename = this->directory + "data.csv";
+    filename = this->directory + "data.csv";
 
-	dataOut = new ofstream();
+    dataOut = new ofstream();
     dataOut->open(filename,ios::out | ios::app);
 }
 
@@ -30,11 +30,11 @@ bool FileLogger::Write(Entry<string> entry){
         dataOut->open(filename,ios::out | ios::app);
     }
 
-	string l = this->identifier(entry);
+    string l = this->identifier(entry);
     (*dataOut) << l << endl;
 
 
-	return true;
+    return true;
 };
 
 bool FileLogger::Info(string data){

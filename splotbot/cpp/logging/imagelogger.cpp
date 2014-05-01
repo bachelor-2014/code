@@ -2,22 +2,62 @@
 #include <fstream>
 #include <opencv2/opencv.hpp>
 
-#include "videologger.h"
+#include "logger.h"
+#include "imagelogger.h"
 
 using namespace std;
 
 ImageLogger::ImageLogger(string componentType,string componentName)
-	: Logger<cv::Mat*>(){
+: Logger<cv::Mat*>(){
+
+    this->componentType = componentType;
+    this->componentName = componentName;
 
 }
 
-VideoLogger::~VideoLogger(){
+ImageLogger::~ImageLogger(){
 }
 
-bool VideoLogger::Write(Mat *image){
-    string filename = "data/"+identifier+".avi";
+vector<Entry<cv::Mat*>> ImageLogger::Read(){};
 
-    (*videoWriter).write(*image);
+bool ImageLogger::Info(cv::Mat*){};
 
-    return true;
+bool ImageLogger::Error(cv::Mat*){};
+
+bool ImageLogger::Data(cv::Mat* data){
+
+	Entry<cv::Mat*> e = this->entry();
+	e.ActivityType = "data";
+	e.Data = data;
+
+	this->Write(e);
+};
+
+bool ImageLogger::Init(string componentType, string componentName){};
+bool ImageLogger::Clear(){};
+
+string ImageLogger::identifier(Entry<cv::Mat*> entry){
+	return to_string(entry.Timestamp)+"_"+entry.ComponentType+"_"+entry.ComponentName+"_"+entry.ActivityType;
+}
+
+Entry<cv::Mat*> ImageLogger::entry(){
+
+	const double timestamp = double(clock()) / CLOCKS_PER_SEC;
+
+	Entry<cv::Mat*> entry(timestamp,this->componentType,
+		this->componentName,"",NULL);
+
+	return entry;
+}
+
+bool ImageLogger::Write(Entry<cv::Mat*> entry){
+	string filename = this->directory + this->identifier(entry) + ".png";
+
+	vector<int> compression_params;
+	compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+	compression_params.push_back(9);
+
+	cv::imwrite(filename, *entry.Data, compression_params);
+
+	return true;
 }

@@ -14,7 +14,7 @@ SRCFILES = \
 	rcservomotor.cpp scanner.cpp  mendel.cpp xyaxes.cpp \
 	cameracalibrator.cpp \
 	componentinitializer.cpp splotbot.cpp logging/logger.cpp \
-	logging/filelogger.cpp logging/videologger.cpp \
+	logging/filelogger.cpp logging/videologger.cpp logging/imagelogger.cpp \
 	computer_vision/dropletdetector.cpp \
 	computer_vision/computervisionutils.cpp computer_vision/calibrator.cpp \
 	computer_vision/featuresandpositionimagestitcher.cpp \

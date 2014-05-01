@@ -18,13 +18,13 @@ class FileLogger : public Logger<string> {
 
         bool Info(string);
         bool Error(string);
-		bool Data(string);
+	bool Data(string);
+	bool Clear();
+	string identifier(Entry<string>);
 
 	protected:
         bool Write(Entry<string>);
-		string identifier(Entry<string>);
-		Entry<string> entry();
-		bool Clear();
+	Entry<string> entry();
 
 	private:
 		string filename;

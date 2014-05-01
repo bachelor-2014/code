@@ -28,32 +28,33 @@ template <typename T>
 class Logger {
 
     public:
-        Logger(){};
+        Logger(){
+		directory = "./data/logs/";
+	};
         ~Logger(){};
 
         virtual vector<Entry<T>> Read(){};
 
-		/**
-		 * Different types of message
-		 */
-        virtual bool Info(T t){ cout << "Whoops" << endl; };
+	/**
+	* Different types of message
+	*/
+        virtual bool Info(T t){};
         virtual bool Error(T t){};
-		virtual bool Data (T t){};
+	virtual bool Data (T t){};
 
-		// In lieu of constructur (requires specific type or header implementation)
-		// TODO: Revisit
-		virtual bool Init(string componentType, string componentName){};
+	// In lieu of constructur (requires specific type or header implementation)
+	// TODO: Revisit
+	virtual bool Init(string componentType, string componentName){};
+	virtual string identifier(Entry<T> entry){};
+	virtual bool Clear(){};
 
 	protected:
-		string directory = "./data/logs/";
+		string directory;
 		string componentType;
 		string componentName;
 		Entry<T> entry(); // Get a "base" entry with the common fields defined
 
-        virtual bool Write(Entry<T> e){};
-		virtual string identifier(Entry<T> entry){};
-
-		bool Clear();
+		virtual bool Write(Entry<T> e){};
 };
 
 #endif

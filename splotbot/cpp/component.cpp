@@ -2,9 +2,7 @@
 
 using namespace std;
 
-Component::Component(){
-    file_logger = new FileLogger("exp");
-}
+Component::Component(){}
 
 /**
  * registerCallback registeres the event callback

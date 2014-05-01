@@ -2,10 +2,12 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <opencv2/opencv.hpp>
 
 #include "../../logging/logger.h"
 #include "../../logging/filelogger.h"
 #include "../../logging/videologger.h"
+#include "../../logging/imagelogger.h"
 
 #define SH_FG_RED            "\033[0;31m"
 #define SH_FG_GREEN          "\033[0;32m"
@@ -18,7 +20,7 @@ bool status = true;
 bool test_logger_instantiation(){
     clog << __func__ << endl;
 
-    Logger<string> fl = FileLogger("file");
+    Logger<string> fl = FileLogger("type","name");
 
     return true;
 }
@@ -28,88 +30,23 @@ bool test_file_read_write(){
 
     string towrite = "JohnJohn";
 
-    for(int i=0; i++; i < 2){
-
-        FileLogger fl("file");
-        fl.Clear();
-        fl.Write(towrite);
-
-        vector<string> res = fl.Read();
-
-        //for(string s : res){
-        //    cout << s << endl;
-        //}
-        if(res.size() != 1)
-            return false;
-
-        if(res[0] != towrite){
-            cerr << res[0] << endl;
-            return false;
-        }
-    }
+    FileLogger fl("type","name");
+    fl.Clear();
+    fl.Data(towrite);
 
     return true;
 }
 
-bool test_video_read_write(){
-    clog << __func__ << endl;
+bool test_image_read_write(){
+	clog << __func__ << endl;
 
-    VideoCapture cap(0);
+	string image = "data/grab0_0.jpg";
+	cv::Mat mat = cv::imread(image);
 
-    VideoLogger *video_logger = new VideoLogger("exp",&cap);
-    if(!cap.isOpened()){
-        cerr << "No video data!" << endl;
-    }
+	ImageLogger il("type","name");
+	il.Data(&mat);
 
-    Mat image;
-    while (true) {
-        //Pull image
-        bool success = cap.read(image);
-
-        if (!success)
-        {
-                cout << "ERROR: Cannot read a frame from video device: " << endl;
-                break;
-        }
-
-        namedWindow("test",CV_WINDOW_AUTOSIZE);
-        imshow("test",image);
-
-        // Log the image
-        (*video_logger).Write(&image);
-
-        waitKey(1);
-    }
-}
-
-bool test_db_read_write(){
-    clog << __func__ << endl;
-
-    //DBLogger *dblogger = new DBLogger("john");
-
-    //(*dblogger).Clear();
-
-    //bool w =    (*dblogger).Write(string("data1")) &&
-    //            (*dblogger).Write(string("data2")) &&
-    //            (*dblogger).Write(string("data3"));
-    //if(!w){
-    //    return false;
-    //}
-
-    //vector<string> res = (*dblogger).Read();
-    //if(res.size() != 3){
-    //    clog << "Write didn't work. Size: " << res.size() << endl;
-    //    return false;
-    //}
-
-    //(*dblogger).Clear();
-    //res = (*dblogger).Read();
-    //if(res.size() != 0){
-    //    clog << "Clear didn't work. Remaining: " << res.size() << endl;
-    //    return false;
-    //}
-
-    //return true;
+	return true;
 }
 
 bool test(function<bool()> f, string message){
@@ -122,14 +59,13 @@ bool test(function<bool()> f, string message){
 }
 
 int main() {
-    test(test_file_read_write,"test write failed");
+    test(test_file_read_write,"test write file failed");
+    test(test_image_read_write,"test write image failed");
     test(test_logger_instantiation,"test_instantiation failed!");
-    //test(test_video_read_write,"test video failed");
-    test(test_db_read_write,"test read write db failed");
 
     if(status){
-        return 0;
+	return 0;
     }else{
-        return 1;
+	return 1;
     }
 }

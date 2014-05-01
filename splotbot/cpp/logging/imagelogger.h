@@ -10,21 +10,25 @@
 
 using namespace std;
 
-class ImageLogger : public Logger<cv::Mat> {
+class ImageLogger : public Logger<cv::Mat*> {
 
     public:
         ImageLogger(string componentType, string componentName);
         ~ImageLogger();
 
-        vector<Entry<string>> Read();
+        vector<Entry<cv::Mat*>> Read();
 
-		bool Data(cv::Mat);
+	bool Info(cv::Mat*);
+	bool Error(cv::Mat*);
+	bool Data(cv::Mat*);
+
+	bool Init(string componentType, string componentName);
+	string identifier(Entry<cv::Mat*>);
+	bool Clear();
 
 	protected:
-        bool Write(Entry<cv::Mat>);
-		string identifier(Entry<cv::Mat>);
-		Entry<cv::Mat> entry();
-		bool Clear();
+        bool Write(Entry<cv::Mat*>);
+	Entry<cv::Mat*> entry();
 };
 
 #endif
