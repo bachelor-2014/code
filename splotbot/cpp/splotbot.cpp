@@ -60,7 +60,11 @@ void Splotbot::executeRucolaCode(string code){
  * registerCallback registeres an event callback
  */
 void Splotbot::registerCallback(function<void(string,string)> callback) {
-    eventCallback = callback;
+    eventCallback = [=](string event, string data){
+        vector<int> instrs = rucolang.Event(event);
+        executeInstructions(instrs.size(), &instrs[0]);
+        callback(event, data);
+    };
 }
 
 /**

@@ -14,7 +14,12 @@ rucola.tab.o: rucolang/rucola.tab.cpp rucolang/Absyn.h \
 lex.yy.o: rucolang/lex.yy.cpp rucolang/Absyn.h rucolang/compileargs.h \
  rucolang/rucola.tab.h
 rucola.o: rucolang/rucola.cpp rucolang/Absyn.h rucolang/compileargs.h \
- rucolang/lex.yy.h rucolang/rucola.tab.h rucolang/rucola.h
+ rucolang/lex.yy.h rucolang/rucola.tab.h rucolang/rucola.h \
+ rucolang/../utils/errors.h rucolang/../utils/../component.h \
+ rucolang/../utils/../instructionbuffer.h \
+ rucolang/../utils/../logging/filelogger.h \
+ rucolang/../utils/../logging/logger.h \
+ rucolang/../utils/../rucolang/compileargs.h
 cJSON.o: libraries/cJSON/cJSON.cpp libraries/cJSON/cJSON.h
 base64.o: utils/base64.cpp utils/base64.h
 threading.o: utils/threading.cpp utils/threading.h
