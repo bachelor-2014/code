@@ -23,7 +23,7 @@ main() {
     r.RegisterComponentCalls(m);
 
     string s = 
-        "module1.do(1,2)"
+        "module1.do(-1,2)"
         "module2.do(1,2)";
 
     auto result = r.Compile(s);
