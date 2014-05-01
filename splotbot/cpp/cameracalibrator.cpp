@@ -45,11 +45,13 @@ void CameraCalibrator::calibrate(){
     cv::Mat coefs;
     cv::Mat matrix;
 
+    vector<int> args;
+
     if (calibrator->isCalibrated()) {
         cout << "CameraCalibrator: Camera already calibrated" << endl;
         calibrator->getCalibrationFromFile(&coefs,&matrix,&(camera->xStep), &(camera->yStep));
         camera->calibrate(coefs, matrix);
-        (*eventCallback)(name, "success");
+        (*eventCallback)(name, "success", args);
         return;
     }
 
@@ -123,7 +125,7 @@ void CameraCalibrator::calibrate(){
     cout << "camera->xStep: [" << (camera->xStep)[0] << ", " << (camera->xStep)[1] << "]" << endl;
     cout << "camera->yStep: [" << (camera->yStep)[0] << ", " << (camera->yStep)[1] << "]" << endl;
 
-    (*eventCallback)(name, "success");
+    (*eventCallback)(name, "success", args);
 }
 
 void CameraCalibrator::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
