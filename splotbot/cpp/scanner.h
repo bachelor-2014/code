@@ -24,6 +24,8 @@ class Scanner: public Component {
     public:
         Scanner(string name, Camera *camera, XYAxes *xyaxes);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
+        void registerCalls(map<string,map<string,Rucola::CompileArgs>>
+                *componentCalls, int start);
         void scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, int fromY, int toX, int toY, int stitchingAlgorithm);
 
     private:

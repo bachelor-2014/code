@@ -21,6 +21,8 @@ class XYAxes: public Component {
     public:
         XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort, string yLimitSwitchPort, int xStepLimit, int yStepLimit, string mendelSocket);
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
+        void registerCalls(map<string,map<string,Rucola::CompileArgs>>
+                *componentCalls, int start);
         void home();
         void move(int xPosition, int yPosition);
 
