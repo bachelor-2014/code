@@ -32,7 +32,7 @@ void yyerror(const char *s);
 }
 
 // Constant-string tokens
-%token LPAR RPAR DOT COMMA EQ ARROW LBRACE RBRACE
+%token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE
 
 //Terminal symbols
 %token <ival> INT
@@ -56,7 +56,7 @@ stmt:
       //Call to a component
       STRING DOT STRING LPAR args RPAR{$$ = new ComponentCall($1, $3, $5);}
       //Variable assignment
-    | STRING EQ expr { $$ = new Assignment($1, $3); }
+    | STRING ASSIGN expr { $$ = new Assignment($1, $3); }
 
       //Event binding
     | LPAR STRING RPAR ARROW LBRACE stmts RBRACE {$$ = new Event($2, $6);}

@@ -12,7 +12,7 @@ using namespace Rucola;
 \)              { return RPAR; }
 \.              { return DOT; }
 ,               { return COMMA; }
-=               { return EQ; }
+=               { return ASSIGN; }
 ->              { return ARROW; }
 \{              { return LBRACE; }
 \}              { return RBRACE; }

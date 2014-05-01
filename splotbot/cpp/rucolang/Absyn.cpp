@@ -165,4 +165,51 @@ namespace Rucola{
             throw RucolaException(("Can not get value of unassigned variable '" + (*value) + "'").c_str());
         }
     }
+
+    AExpr::AExpr(string *op, Expr *expr1, Expr *expr2): op(op), expr1(expr1), expr2(expr2) {
+        // Empty constructor
+    }
+
+    string AExpr::toString() {
+        return "AExpr(" + (*op) + ", " + expr1->toString() + ", " + expr2->toString() + ")";
+    }
+
+    void AExpr::Compile(map<string,map<string,CompileArgs>> componentCalls, map<string, int> *env, vector<int> *result) {
+        expr1->Compile(componentCalls, env, result);
+        int val1 = result->back();
+        result->pop_back();
+
+        expr2->Compile(componentCalls, env, result);
+        int val2 = result->back();
+        result->pop_back();
+
+        int resultVal;
+        
+        // Determine the operator type
+        if (op->compare("+") == 0) {
+            resultVal = val1 + val2;
+        } else if (op->compare("-") == 0) {
+            resultVal = val1 - val2;
+        } else if (op->compare("*") == 0) {
+            resultVal = val1 * val2;
+        } else if (op->compare("/") == 0) {
+            resultVal = val1 / val2;
+        } else if (op->compare("%") == 0) {
+            resultVal = val1 % val2;
+        } else if (op->compare("==") == 0) {
+            resultVal = val1 == val2;
+        } else if (op->compare("<") == 0) {
+            resultVal = val1 < val2;
+        } else if (op->compare("<=") == 0) {
+            resultVal = val1 <= val2;
+        } else if (op->compare(">") == 0) {
+            resultVal = val1 > val2;
+        } else if (op->compare(">=") == 0) {
+            resultVal = val1 >= val2;
+        } else {
+            throw RucolaException(("Unknown operator '" + (*op) + "'").c_str());
+        }
+
+        result->push_back(resultVal);
+    }
 }
