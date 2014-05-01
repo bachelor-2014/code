@@ -5,7 +5,12 @@ Absyn.o: rucolang/Absyn.cpp rucolang/Absyn.h rucolang/compileargs.h \
  rucolang/../utils/../logging/logger.h \
  rucolang/../utils/../rucolang/compileargs.h
 rucola.tab.o: rucolang/rucola.tab.cpp rucolang/Absyn.h \
- rucolang/compileargs.h rucolang/rucola.tab.h rucolang/lex.yy.h
+ rucolang/compileargs.h rucolang/rucola.tab.h rucolang/lex.yy.h \
+ rucolang/../utils/errors.h rucolang/../utils/../component.h \
+ rucolang/../utils/../instructionbuffer.h \
+ rucolang/../utils/../logging/filelogger.h \
+ rucolang/../utils/../logging/logger.h \
+ rucolang/../utils/../rucolang/compileargs.h
 lex.yy.o: rucolang/lex.yy.cpp rucolang/Absyn.h rucolang/compileargs.h \
  rucolang/rucola.tab.h
 rucola.o: rucolang/rucola.cpp rucolang/Absyn.h rucolang/compileargs.h \
@@ -64,7 +69,7 @@ rcservomotor.o: rcservomotor.cpp rcservomotor.h instructionbuffer.h \
 scanner.o: scanner.cpp utils/base64.h utils/errors.h utils/../component.h \
  utils/../instructionbuffer.h utils/../logging/filelogger.h \
  utils/../logging/logger.h utils/../rucolang/compileargs.h \
- utils/threading.h computer_vision/imagestitcher.h \
+ utils/threading.h rucolang/compileargs.h computer_vision/imagestitcher.h \
  computer_vision/../camera.h computer_vision/../instructionbuffer.h \
  computer_vision/../component.h computer_vision/../logging/videologger.h \
  computer_vision/../logging/logger.h \

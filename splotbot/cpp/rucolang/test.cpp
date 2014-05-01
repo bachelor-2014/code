@@ -5,6 +5,14 @@
 using namespace std;
 using namespace Rucola;
 
+void prettyPrint(vector<int> result){
+    cout << "[";
+    for(int i :result){
+        cout << to_string(i) << ",";
+    }
+    cout << "]" << endl;
+}
+
 main() {
 
     auto m = map<string,map<string,CompileArgs>>();
@@ -26,18 +34,17 @@ main() {
         "module1.do(-1,2)"
         " hej = 5 "
         "module2.do(1,hej)"
-        "(event) -> { module1.do(1,2) }";
+        "(event) -> { module1.do(hej,2) }";
 
     auto result = r.Compile(s);
     
     cout << r.CodeToString(s);
 
     cout << "Result:" << endl;
-    cout << "[";
-    for(int i :result){
-        cout << to_string(i) << ",";
-    }
-    cout << "]" << endl;
+    prettyPrint(result);
 
+    auto event = r.Event("event");
+    cout << "Event:" << endl;
+    prettyPrint(event);
 }
 

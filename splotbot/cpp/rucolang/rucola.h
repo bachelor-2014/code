@@ -17,6 +17,7 @@ namespace Rucola{
         private:
             map<string,map<string,CompileArgs>> componentCalls;
             map<string, Statement*> events;
+            map<string, int> env;
     };
 
 }
