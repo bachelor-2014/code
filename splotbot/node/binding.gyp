@@ -35,7 +35,8 @@
       ],
       'link_settings': {
           'libraries': [
-              '-lfl'
+              '-lfl',
+	      '-lcurl'
           ]
       },
       'cflags!': [ '-fno-exceptions' ],
