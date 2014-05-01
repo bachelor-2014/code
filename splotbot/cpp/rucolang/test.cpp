@@ -32,9 +32,9 @@ main() {
 
     string s = 
         "module1.do(-1,2)"
-        " x = 2 "
-        " a = 5 + x * 3 "
-        " b = x * (3 + 5) "
+        " x = 3 "
+        " if (x == 2) { a = 5 } else { a = 7 } "
+        " b = 1 <= 2 && 3 == 3 "
         "module2.do(a,b)"
         "(event: a, b) -> { module1.do(a,b+x) }";
 

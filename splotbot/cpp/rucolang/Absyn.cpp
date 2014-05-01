@@ -112,6 +112,28 @@ namespace Rucola{
         (*env)[(*varName)] = val;
     }
 
+    Conditional::Conditional(Expr *condition, Block *block1, Block *block2): condition(condition), block1(block1), block2(block2) {
+        // Empty constructor
+    }
+
+    string Conditional::toString() {
+        return "Conditional(" + condition->toString() + ", " + block1->toString() + ", " + block2->toString() + ")";
+    }
+
+    void Conditional::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, map<string, Statement*> *events,
+            vector<int> *result) {
+        condition->Compile(componentCalls, env, result);
+        int val = result->back();
+        result->pop_back();
+
+        if (val) {
+            block1->Compile(componentCalls, env, events, result);
+        } else {
+            block2->Compile(componentCalls, env, events, result);
+        }
+    }
+
     /**
      * Event
      */
@@ -225,6 +247,10 @@ namespace Rucola{
             resultVal = val1 > val2;
         } else if (op->compare(">=") == 0) {
             resultVal = val1 >= val2;
+        } else if (op->compare("&&") == 0) {
+            resultVal = val1 && val2;
+        } else if (op->compare("||") == 0) {
+            resultVal = val1 || val2;
         } else {
             throw RucolaException(("Unknown operator '" + (*op) + "'").c_str());
         }

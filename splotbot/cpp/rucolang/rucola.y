@@ -22,6 +22,7 @@ void yyerror(const char *s);
     Rucola::Block *block;
     Rucola::ComponentCall *ccall;
     Rucola::Assignment *assignment;
+    Rucola::Conditional *conditional;
     Rucola::Event *event;
     Rucola::Expr *expr;
     Rucola::IExpr *iexpr;
@@ -35,10 +36,13 @@ void yyerror(const char *s);
 
 // Constant-string tokens
 %token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE COLON
-%token PLUS MINUS TIMES DIV MOD EQ NEQ LT LTEQ GT GTEQ
+%token PLUS MINUS TIMES DIV MOD EQ NEQ LT LTEQ GT GTEQ AND OR
+%token IF ELSE
 
 // Precedence
 %right ASSIGN
+%left OR
+%left AND
 %left EQ NEQ
 %nonassoc LT LTEQ GT GTEQ
 %left PLUS MINUS
@@ -73,6 +77,9 @@ stmt:
 
       //Event binding
     | LPAR STRING argnames RPAR ARROW LBRACE stmts RBRACE {$$ = new Event($2, $3, $7);}
+
+      //Conditional statement
+    | IF LPAR expr RPAR LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE { $$ = new Conditional($3, $6, $10); }
 ;
 
 //A block (multiple statements)
@@ -106,6 +113,8 @@ expr : LPAR expr RPAR { $$ = $2; }
      | expr LTEQ expr { $$ = new AExpr(new string("<="), $1, $3); }
      | expr GT expr { $$ = new AExpr(new string(">"), $1, $3); }
      | expr GTEQ expr { $$ = new AExpr(new string(">="), $1, $3); }
+     | expr AND expr { $$ = new AExpr(new string("&&"), $1, $3); }
+     | expr OR expr { $$ = new AExpr(new string("||"), $1, $3); }
 ;
 
 %%

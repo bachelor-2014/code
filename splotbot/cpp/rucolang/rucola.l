@@ -20,14 +20,18 @@ using namespace Rucola;
 %               { return MOD; }
 ==              { return EQ; }
 !=              { return NEQ; }
-\<               { return LT; }
-\<=              { return LTEQ; }
-\>               { return GT; }
-\>=              { return GTEQ; }
+\<              { return LT; }
+\<=             { return LTEQ; }
+\>              { return GT; }
+\>=             { return GTEQ; }
+&&              { return AND; }
+\|\|            { return OR; }
 ->              { return ARROW; }
 \{              { return LBRACE; }
 \}              { return RBRACE; }
 \:              { return COLON; }
+if              { return IF; }
+else            { return ELSE; }
 [0-9]+\.[0-9]+  { yylval.fval = atof(yytext); return FLOAT; }
 [-]*[0-9]+          { yylval.ival = atoi(yytext); return INT; }
 [a-zA-Z0-9]+    {
