@@ -52,6 +52,23 @@ namespace Rucola {
     };
 
     /**
+     * An arithmetic expression
+     */
+    class AExpr: public Expr {
+        public:
+           AExpr(string *op, Expr *expr1, Expr *expr2);
+           string toString();
+           void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, 
+                    vector<int> *result);
+
+        private:
+           string *op;
+           Expr *expr1;
+           Expr *expr2;
+    };
+
+    /**
      * A Statement Interface
      */
     class Statement {

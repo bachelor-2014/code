@@ -32,7 +32,17 @@ void yyerror(const char *s);
 }
 
 // Constant-string tokens
-%token LPAR RPAR DOT COMMA EQ ARROW LBRACE RBRACE
+%token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE
+%token PLUS MINUS TIMES DIV MOD EQ NEQ LT LTEQ GT GTEQ
+
+// Precedence
+%right ASSIGN
+%left EQ NEQ
+%nonassoc LT LTEQ GT GTEQ
+%left PLUS MINUS
+%left TIMES DIV MOD
+%nonassoc LBRACE
+
 
 //Terminal symbols
 %token <ival> INT
@@ -56,7 +66,7 @@ stmt:
       //Call to a component
       STRING DOT STRING LPAR args RPAR{$$ = new ComponentCall($1, $3, $5);}
       //Variable assignment
-    | STRING EQ expr { $$ = new Assignment($1, $3); }
+    | STRING ASSIGN expr { $$ = new Assignment($1, $3); }
 
       //Event binding
     | LPAR STRING RPAR ARROW LBRACE stmts RBRACE {$$ = new Event($2, $6);}
@@ -74,8 +84,20 @@ args :     { $$ = new vector<Expr*>();}
 ;
 
 //An expression, either a constant int or a variable
-expr : INT { $$ = new IExpr($1); }  
+expr : LPAR expr RPAR { $$ = $2; }
+     | INT { $$ = new IExpr($1); }  
      | STRING { $$ = new VExpr($1); } 
+     | expr PLUS expr { $$ = new AExpr(new string("+"), $1, $3); }
+     | expr MINUS expr { $$ = new AExpr(new string("-"), $1, $3); }
+     | expr TIMES expr { $$ = new AExpr(new string("*"), $1, $3); }
+     | expr DIV expr { $$ = new AExpr(new string("/"), $1, $3); }
+     | expr MOD expr { $$ = new AExpr(new string("%"), $1, $3); }
+     | expr EQ expr { $$ = new AExpr(new string("=="), $1, $3); }
+     | expr NEQ expr { $$ = new AExpr(new string("!="), $1, $3); }
+     | expr LT expr { $$ = new AExpr(new string("<"), $1, $3); }
+     | expr LTEQ expr { $$ = new AExpr(new string("<="), $1, $3); }
+     | expr GT expr { $$ = new AExpr(new string(">"), $1, $3); }
+     | expr GTEQ expr { $$ = new AExpr(new string(">="), $1, $3); }
 ;
 
 %%

@@ -32,9 +32,11 @@ main() {
 
     string s = 
         "module1.do(-1,2)"
-        " hej = 5 "
-        "module2.do(1,hej)"
-        "(event) -> { module1.do(hej,2) }";
+        " x = 2 "
+        " a = 5 + x * 3 "
+        " b = x * (3 + 5) "
+        "module2.do(a,b)"
+        "(event) -> { module1.do(x, 5 != 3) }";
 
     auto result = r.Compile(s);
     
