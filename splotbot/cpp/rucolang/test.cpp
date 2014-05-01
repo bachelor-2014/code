@@ -36,7 +36,7 @@ main() {
         " if (x == 2) { a = 5 } else { a = 7 } "
         " b = 1 <= 2 && 3 == 3 "
         "module2.do(a,b)"
-        "(event: a, b) -> { module1.do(a,b+x) }";
+        "(event: a_, _b) -> { module1.do(a_,_b+x) }";
 
     auto result = r.Compile(s);
     
