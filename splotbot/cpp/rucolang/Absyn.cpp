@@ -1,8 +1,11 @@
 #include <string>
 #include <iostream>
 #include "Absyn.h"
+#include "compileargs.h"
+#include "../utils/errors.h"
 
 using namespace std;
+using namespace Rucola;
 
 namespace Rucola{
     /**
@@ -40,6 +43,13 @@ namespace Rucola{
         s += "}\n";
         return s;
     }
+
+    void Block::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            vector<int> *result){
+        for(Statement* s: statements){
+            s->Compile(componentCalls, result);
+        }
+    }
     /**
      * ComponentCall Implementations
      */
@@ -54,5 +64,29 @@ namespace Rucola{
             a += to_string(arg) + " ";
         }
         return "Component: " + *component + " Action: " + *action + " Args: " + a;
+    }
+
+    void ComponentCall::Compile(map<string,map<string,CompileArgs>>
+            componentCalls, vector<int> *result){
+
+        if(!componentCalls.count((*component))){
+            string err = "Component does not exist: " + (*component);
+            throw RucolaException(err.c_str());
+        }
+
+        if(!componentCalls[(*component)].count((*action))){
+            string err = (*component) + " does not have action: " + (*action);
+            throw RucolaException(err.c_str());
+        }
+
+
+        CompileArgs ca = componentCalls[(*component)][(*action)];
+        if((*args).size() == ca.NumberofArguments){
+            result->push_back(ca.Action);
+            result->insert(result->end(),args->begin(),args->end());
+        }else{
+            string err = (*component) + " with action '" + (*action) + "' takes " + to_string(ca.NumberofArguments) + " arguments, you supplied " + to_string((*args).size());
+            throw RucolaException(err.c_str());
+        }
     }
 }

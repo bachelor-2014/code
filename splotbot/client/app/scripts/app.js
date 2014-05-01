@@ -3,7 +3,8 @@
 // Define the main app module
 angular.module('clientApp', [
   'ngResource',
-  'ngRoute'
+  'ngRoute',
+  'ui.ace'
 ])
   // Configure routing
   .config(function ($routeProvider) {

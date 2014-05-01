@@ -11,4 +11,10 @@ angular.module('clientApp')
     this.postInput = function(data){
         return $http.post(url+"runcode",data);
     }
+    this.postRucola = function(code){
+        var data = {
+            code : code
+        }
+        return $http.post(url+"rucola",data);
+    }
   });

@@ -2,10 +2,13 @@
 #define COMPONENT_H
 
 #include <vector>
+#include <map>
+#include <tuple>
 
 #include "instructionbuffer.h"
 
 #include "logging/filelogger.h"
+#include "rucolang/compileargs.h"
 
 using namespace std;
 
@@ -20,6 +23,7 @@ class Component {
     public:
         Component();
         virtual void registerActions(vector<function<void(InstructionBuffer *)>> *actions) {};
+        virtual void registerCalls(map<string,map<string,Rucola::CompileArgs>> *componentCalls, int start) {};
         void registerCallback(function<void(string,string)> *callback);
         string name;
         void raiseError(string message);
