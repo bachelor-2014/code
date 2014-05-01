@@ -53,15 +53,15 @@ namespace Rucola{
     /**
      * ComponentCall Implementations
      */
-    ComponentCall::ComponentCall(string *component, string *action, vector<int>
+    ComponentCall::ComponentCall(string *component, string *action, vector<Expr*>
             *args): component(component), action(action), args(args) {
         //Empty
     }
 
     string ComponentCall::toString() {
         string a;
-        for(int arg : *args){
-            a += to_string(arg) + " ";
+        for(auto arg : *args){
+            a += arg->toString() + " ";
         }
         return "Component: " + *component + " Action: " + *action + " Args: " + a;
     }
@@ -83,10 +83,38 @@ namespace Rucola{
         CompileArgs ca = componentCalls[(*component)][(*action)];
         if((*args).size() == ca.NumberofArguments){
             result->push_back(ca.Action);
-            result->insert(result->end(),args->begin(),args->end());
+
+            for (auto e : *args) {
+                e->Compile(componentCalls, result);
+            }
         }else{
             string err = (*component) + " with action '" + (*action) + "' takes " + to_string(ca.NumberofArguments) + " arguments, you supplied " + to_string((*args).size());
             throw RucolaException(err.c_str());
         }
+    }
+
+    IExpr::IExpr(int value): value(value) {
+        // Empty constructor
+    }
+
+    string IExpr::toString() {
+        return "IExpr(" + to_string(value) + ")";
+    }
+
+    void IExpr::Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result) {
+        result->push_back(value);
+    }
+
+    VExpr::VExpr(string *value): value(value) {
+        // Empty constructor
+    }
+
+    string VExpr::toString() {
+        return "VExpr(" + *value + ")";
+    }
+
+    void VExpr::Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result) {
+        //TODO
+        //result->push_back(value);
     }
 }

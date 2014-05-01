@@ -13,7 +13,7 @@ main() {
     module1.NumberofArguments = 2;
 
     CompileArgs module2;
-    module2.Action = 1;
+    module2.Action = 2;
     module2.NumberofArguments = 2;
 
     m["module1"]["do"] = module1;
