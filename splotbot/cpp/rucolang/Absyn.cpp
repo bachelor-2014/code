@@ -87,7 +87,7 @@ namespace Rucola{
             result->push_back(ca.Action);
 
             for (auto e : *args) {
-                e->Compile(componentCalls, result);
+                e->Compile(componentCalls, env, result);
             }
         }else{
             string err = (*component) + " with action '" + (*action) + "' takes " + to_string(ca.NumberofArguments) + " arguments, you supplied " + to_string((*args).size());
@@ -103,8 +103,13 @@ namespace Rucola{
         return "Assignment(" + *varName + ", " + expr->toString() + ")";
     }
 
-    void Assignment::Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result) {
-        //TODO
+    void Assignment::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, map<string, Statement*> *events,
+            vector<int> *result) {
+        expr->Compile(componentCalls, env, result);
+        int val = result->back();
+        result->pop_back();
+        (*env)[(*varName)] = val;
     }
 
     /**
@@ -140,7 +145,8 @@ namespace Rucola{
         return "IExpr(" + to_string(value) + ")";
     }
 
-    void IExpr::Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result) {
+    void IExpr::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, vector<int> *result) {
         result->push_back(value);
     }
 
@@ -152,8 +158,11 @@ namespace Rucola{
         return "VExpr(" + *value + ")";
     }
 
-    void VExpr::Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result) {
-        //TODO
-        //result->push_back(value);
+    void VExpr::Compile(map<string,map<string,CompileArgs>> componentCalls, map<string, int> *env, vector<int> *result) {
+        if (env->count(*value)) {
+            result->push_back((*env)[(*value)]);
+        } else {
+            throw RucolaException(("Can not get value of unassigned variable '" + (*value) + "'").c_str());
+        }
     }
 }

@@ -24,7 +24,7 @@ main() {
 
     string s = 
         "module1.do(-1,2)"
-        " hej = 3 "
+        " hej = 5 "
         "module2.do(1,hej)"
         "(event) -> { module1.do(1,2) }";
 
