@@ -13,6 +13,10 @@ using namespace Rucola;
 \.              { return DOT; }
 ,               { return COMMA; }
 =               { return ASSIGN; }
+[\+\-\*/\%<>=][=]? { 
+    yylval.sval = new std::string(yytext, yyleng);
+    return OP;
+}
 ->              { return ARROW; }
 \{              { return LBRACE; }
 \}              { return RBRACE; }

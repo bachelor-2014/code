@@ -38,6 +38,7 @@ void yyerror(const char *s);
 %token <ival> INT
 %token <fval> FLOAT
 %token <sval> STRING
+%token <sval> OP
 
 //Types
 %type <block> program stmts
@@ -76,6 +77,7 @@ args :     { $$ = new vector<Expr*>();}
 //An expression, either a constant int or a variable
 expr : INT { $$ = new IExpr($1); }  
      | STRING { $$ = new VExpr($1); } 
+     | expr OP expr { $$ = new AExpr($2, $1, $3); }
 ;
 
 %%
