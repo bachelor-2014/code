@@ -16,8 +16,9 @@ namespace Rucola {
     class Statement {
         public:
             virtual string toString() {};
-            virtual void Compile(map<string,map<string,CompileArgs>> componentCalls,
-                    vector<int> *result){};
+            virtual void Compile(map<string,map<string,CompileArgs>>
+                    componentCalls, map<string, int> *env, map<string, Statement*>
+                    *events, vector<int> *result){};
             //virtual vector<int> compile() {};
     };
 
@@ -33,6 +34,7 @@ namespace Rucola {
             vector<Statement*> GetStatements();
             string toString();
             void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
                     vector<int> *result);
         private:
             vector<Statement*> statements;
@@ -45,13 +47,26 @@ namespace Rucola {
         public:
            ComponentCall(string *component, string *action, vector<int> *args); 
            string toString();
+           void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
+                   vector<int> *result);
 
         private:
            string *component;
            string *action;
            vector<int> *args;
-           void Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int>
-                   *result);
+    };
+
+    class Event: public Statement {
+        public:
+            Event(string *eventName, Block *block);
+            string toString(); 
+            void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
+                    vector<int> *result);
+        private:
+            string *eventName;
+            Block *block;
     };
 }
 

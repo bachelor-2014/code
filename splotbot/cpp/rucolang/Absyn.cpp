@@ -45,9 +45,10 @@ namespace Rucola{
     }
 
     void Block::Compile(map<string,map<string,CompileArgs>> componentCalls,
-            vector<int> *result){
+            map<string, int> *env, map<string, Statement*> *events, vector<int>
+            *result){
         for(Statement* s: statements){
-            s->Compile(componentCalls, result);
+            s->Compile(componentCalls, env, events, result);
         }
     }
     /**
@@ -67,7 +68,8 @@ namespace Rucola{
     }
 
     void ComponentCall::Compile(map<string,map<string,CompileArgs>>
-            componentCalls, vector<int> *result){
+            componentCalls, map<string,int> *env, map<string, Statement*>
+            *events, vector<int> *result){
 
         if(!componentCalls.count((*component))){
             string err = "Component does not exist: " + (*component);
@@ -89,4 +91,26 @@ namespace Rucola{
             throw RucolaException(err.c_str());
         }
     }
+
+    /**
+     * Event
+     */
+    Event::Event(string *eventName, Block *block): eventName(eventName),
+    block(block) {
+        //Empty
+    }
+
+    string Event::toString(){
+        string s;
+        s += "Event: " + *eventName + "-> \n";
+        s += block->toString();
+        return s;
+    }
+
+    void Event::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, map<string, Statement*> *events, vector<int>
+            *result){
+        //TODO: Event Mapping
+    }
+    
 }

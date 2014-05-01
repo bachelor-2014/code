@@ -49,9 +49,12 @@ extern int yydebug;
     RPAR = 259,
     DOT = 260,
     COMMA = 261,
-    INT = 262,
-    FLOAT = 263,
-    STRING = 264
+    ARROW = 262,
+    LBRACE = 263,
+    RBRACE = 264,
+    INT = 265,
+    FLOAT = 266,
+    STRING = 267
   };
 #endif
 
@@ -65,12 +68,13 @@ union YYSTYPE
     Rucola::Statement *stmt;
     Rucola::Block *block;
     Rucola::ComponentCall *ccall;
+    Rucola::Event *event;
     int ival;
     float fval;
     string *sval;
     vector<int> *veci;
 
-#line 74 "rucola.tab.h" /* yacc.c:1909  */
+#line 78 "rucola.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

@@ -24,10 +24,14 @@ main() {
 
     string s = 
         "module1.do(-1,2)"
-        "module2.do(1,2)";
+        "module2.do(1,2)"
+        "(event) -> { module1.do(1,2) }";
 
     auto result = r.Compile(s);
+    
+    cout << r.CodeToString(s);
 
+    cout << "Result:" << endl;
     cout << "[";
     for(int i :result){
         cout << to_string(i) << ",";
