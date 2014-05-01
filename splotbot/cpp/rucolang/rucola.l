@@ -13,10 +13,17 @@ using namespace Rucola;
 \.              { return DOT; }
 ,               { return COMMA; }
 =               { return ASSIGN; }
-[\+\-\*/\%<>=][=]? { 
-    yylval.sval = new std::string(yytext, yyleng);
-    return OP;
-}
+\+              { return PLUS; }
+-               { return MINUS; }
+\*              { return TIMES; }
+\/              { return DIV; }
+%               { return MOD; }
+==              { return EQ; }
+!=              { return NEQ; }
+\<               { return LT; }
+\<=              { return LTEQ; }
+\>               { return GT; }
+\>=              { return GTEQ; }
 ->              { return ARROW; }
 \{              { return LBRACE; }
 \}              { return RBRACE; }

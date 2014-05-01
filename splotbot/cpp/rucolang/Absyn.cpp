@@ -205,6 +205,8 @@ namespace Rucola{
             resultVal = val1 % val2;
         } else if (op->compare("==") == 0) {
             resultVal = val1 == val2;
+        } else if (op->compare("!=") == 0) {
+            resultVal = val1 != val2;
         } else if (op->compare("<") == 0) {
             resultVal = val1 < val2;
         } else if (op->compare("<=") == 0) {
