@@ -21,10 +21,13 @@ void yyerror(const char *s);
     Rucola::Block *block;
     Rucola::ComponentCall *ccall;
     Rucola::Event *event;
+    Rucola::Expr *expr;
+    Rucola::IExpr *iexpr;
+    Rucola::VExpr *vexpr;
     int ival;
     float fval;
     string *sval;
-    vector<int> *veci;
+    vector<Rucola::Expr*> *vece;
 }
 
 // Constant-string tokens
@@ -38,7 +41,8 @@ void yyerror(const char *s);
 //Types
 %type <block> program stmts
 %type <stmt> stmt
-%type <veci> args
+%type <vece> args
+%type <expr> expr
 
 %%
 
@@ -59,9 +63,14 @@ stmts : stmt { $$ = new Block(); $$->AddStatement($1); }
 ;
 
 //Interger list of comma seperated arguments
-args :     { $$ = new vector<int>();}  
-     | INT { $$ = new vector<int>(); $$->push_back($1);} 
-     | args COMMA INT { $1->push_back($3);}
+args :     { $$ = new vector<Expr*>();}  
+     | expr { $$ = new vector<Expr*>(); $$->push_back($1);} 
+     | args COMMA expr { $1->push_back($3);}
+;
+
+//An expression, either a constant int or a variable
+expr : INT { $$ = new IExpr($1); }  
+     | STRING { $$ = new VExpr($1); } 
 ;
 
 %%

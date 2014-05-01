@@ -69,12 +69,15 @@ union YYSTYPE
     Rucola::Block *block;
     Rucola::ComponentCall *ccall;
     Rucola::Event *event;
+    Rucola::Expr *expr;
+    Rucola::IExpr *iexpr;
+    Rucola::VExpr *vexpr;
     int ival;
     float fval;
     string *sval;
-    vector<int> *veci;
+    vector<Rucola::Expr*> *vece;
 
-#line 78 "rucola.tab.h" /* yacc.c:1909  */
+#line 81 "rucola.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

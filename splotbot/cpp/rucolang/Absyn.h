@@ -10,6 +10,43 @@ using namespace std;
 
 
 namespace Rucola {
+
+    /**
+     * An expression such as an integer or a variable
+     */
+    class Expr {
+        public:
+           virtual string toString() {};
+           virtual void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                   vector<int> *result){};
+    };
+
+    /**
+     * An integer expression
+     */
+    class IExpr: public Expr {
+        public:
+           IExpr(int value);
+           string toString() override;
+           void Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result) override;
+
+        private:
+           int value;
+    };
+
+    /**
+     * A variable
+     */
+    class VExpr: public Expr {
+        public:
+           VExpr(string *value);
+           string toString();
+           void Compile(map<string,map<string,CompileArgs>> componentCalls, vector<int> *result);
+
+        private:
+           string *value;
+    };
+
     /**
      * A Statement Interface
      */
@@ -45,7 +82,7 @@ namespace Rucola {
      */
     class ComponentCall: public Statement {
         public:
-           ComponentCall(string *component, string *action, vector<int> *args); 
+           ComponentCall(string *component, string *action, vector<Expr*> *args); 
            string toString();
            void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
@@ -54,7 +91,7 @@ namespace Rucola {
         private:
            string *component;
            string *action;
-           vector<int> *args;
+           vector<Expr*> *args;
     };
 
     class Event: public Statement {
@@ -68,6 +105,7 @@ namespace Rucola {
             string *eventName;
             Block *block;
     };
+
 }
 
 #endif
