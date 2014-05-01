@@ -36,7 +36,6 @@ class Component {
         ImageLogger *imageLogger;
         VideoLogger *videoLogger;
         FileLogger *file_logger;
-
 };
 
 #endif
