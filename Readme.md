@@ -19,6 +19,21 @@ NodeJS can be installed and updated doing:
 
 > sudo n 0.10.26
 
+##Building rucolang
+First we need to install flex and bison. To install flex pick if up from your
+package manager:
+> sudo apt-get install flex
+
+Then we need to install the 3.0.2 version (or possibly newer) of bison
+> wget 
+
+In the bison directory do:
+> ./configure
+
+> make
+
+> make install
+
 ##Building the C++ code and test program (splotbot/cpp)
 Enter the cpp directory. Create the database directory (for logging)
 > mkdir data

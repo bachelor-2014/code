@@ -60,7 +60,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 18 "rucola.y" /* yacc.c:1909  */
+#line 19 "rucola.y" /* yacc.c:1909  */
 
     Rucola::Statement *stmt;
     Rucola::Block *block;
