@@ -146,6 +146,22 @@ namespace Rucola {
            Expr *expr;
     };
 
+    /**
+     * Conditional statement
+     */
+    class Conditional: public Statement {
+        public:
+           Conditional(Expr *condition, Block *block1, Block *block2);
+           string toString();
+           void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
+                   vector<int> *result);
+
+        private:
+           Expr *condition;
+           Block *block1;
+           Block *block2;
+    };
 }
 
 #endif

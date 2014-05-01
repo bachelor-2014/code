@@ -25,10 +25,12 @@ using namespace Rucola;
 \>              { return GT; }
 \>=             { return GTEQ; }
 &&              { return AND; }
-\|\|              { return OR; }
+\|\|            { return OR; }
 ->              { return ARROW; }
 \{              { return LBRACE; }
 \}              { return RBRACE; }
+if              { return IF; }
+else            { return ELSE; }
 [0-9]+\.[0-9]+  { yylval.fval = atof(yytext); return FLOAT; }
 [-]*[0-9]+          { yylval.ival = atoi(yytext); return INT; }
 [a-zA-Z0-9]+    {
