@@ -52,6 +52,23 @@ namespace Rucola {
     };
 
     /**
+     * An arithmetic expression
+     */
+    class AExpr: public Expr {
+        public:
+           AExpr(string *op, Expr *expr1, Expr *expr2);
+           string toString();
+           void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, 
+                    vector<int> *result);
+
+        private:
+           string *op;
+           Expr *expr1;
+           Expr *expr2;
+    };
+
+    /**
      * A Statement Interface
      */
     class Statement {
@@ -100,14 +117,18 @@ namespace Rucola {
 
     class Event: public Statement {
         public:
-            Event(string *eventName, Block *block);
+            Event(string *eventName, vector<string*> *argNames, Block *block);
             string toString(); 
             void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
+                    vector<int> *result);
+            void Call(vector<int> args, map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
                     vector<int> *result);
         private:
             string *eventName;
             Block *block;
+            vector<string*> *argNames;
     };
 
     /**
@@ -126,6 +147,22 @@ namespace Rucola {
            Expr *expr;
     };
 
+    /**
+     * Conditional statement
+     */
+    class Conditional: public Statement {
+        public:
+           Conditional(Expr *condition, Block *block1, Block *block2);
+           string toString();
+           void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
+                   vector<int> *result);
+
+        private:
+           Expr *condition;
+           Block *block1;
+           Block *block2;
+    };
 }
 
 #endif

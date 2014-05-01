@@ -27,7 +27,7 @@ class Component {
         Component();
         virtual void registerActions(vector<function<void(InstructionBuffer *)>> *actions) {};
         virtual void registerCalls(map<string,map<string,Rucola::CompileArgs>> *componentCalls, int start) {};
-        void registerCallback(function<void(string,string)> *callback);
+        void registerCallback(function<void(string,string,vector<int>)> *callback);
         string name;
         void raiseError(string message);
 
@@ -36,7 +36,6 @@ class Component {
         FileLogger *fileLogger;
         ImageLogger *imageLogger;
         VideoLogger *videoLogger;
-
 };
 
 #endif

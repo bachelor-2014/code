@@ -134,7 +134,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
         // Send the stitching time as an event
         double runTime = endTime - startTime;
 
-        (*eventCallback)(name + "_time", to_string(runTime));
+        vector<int> args = { ((int)runTime) * 1000 };
+        (*eventCallback)(name + "_time", to_string(runTime), args);
 
         fileLogger->Info("startTime = " + to_string(startTime));
         fileLogger->Info("endTime = " + to_string(endTime));
@@ -151,7 +152,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
         string base64 = base64_encode(&buff[0],buff.size());
 
         // Send the image as an event
-        (*eventCallback)(name, base64);
+        vector<int> args2;
+        (*eventCallback)(name, base64, args2);
             
             });
 

@@ -13,10 +13,11 @@ namespace Rucola{
             void RegisterComponentCalls(map<string,map<string, CompileArgs>> componentCalls);
             vector<int> Compile(string code);
             string CodeToString(string code);
-            vector<int> Event(string event);
+            vector<int> Event(string event, vector<int> args);
         private:
             map<string,map<string,CompileArgs>> componentCalls;
             map<string, Statement*> events;
+            map<string, int> env;
     };
 
 }

@@ -42,7 +42,7 @@ class Splotbot {
         InstructionBuffer buffer;
         vector<Component *> components;
         vector<function<void(InstructionBuffer *)>> actions;
-        function<void(string,string)> eventCallback;
+        function<void(string,string,vector<int>)> eventCallback;
         Rucola::Rucolang rucolang;
         map<string,map<string,Rucola::CompileArgs>> componentCalls;
 };

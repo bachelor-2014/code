@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <iostream>
 #include <vector>
+#include <string>
 #include "Absyn.h"
 #include "rucola.tab.h"
 #include "lex.yy.h"
@@ -21,6 +22,7 @@ void yyerror(const char *s);
     Rucola::Block *block;
     Rucola::ComponentCall *ccall;
     Rucola::Assignment *assignment;
+    Rucola::Conditional *conditional;
     Rucola::Event *event;
     Rucola::Expr *expr;
     Rucola::IExpr *iexpr;
@@ -29,10 +31,24 @@ void yyerror(const char *s);
     float fval;
     string *sval;
     vector<Rucola::Expr*> *vece;
+    vector<string*> *strings;
 }
 
 // Constant-string tokens
-%token LPAR RPAR DOT COMMA EQ ARROW LBRACE RBRACE
+%token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE COLON
+%token PLUS MINUS TIMES DIV MOD EQ NEQ LT LTEQ GT GTEQ AND OR
+%token IF ELSE
+
+// Precedence
+%right ASSIGN
+%left OR
+%left AND
+%left EQ NEQ
+%nonassoc LT LTEQ GT GTEQ
+%left PLUS MINUS
+%left TIMES DIV MOD
+%nonassoc LBRACE
+
 
 //Terminal symbols
 %token <ival> INT
@@ -44,6 +60,7 @@ void yyerror(const char *s);
 %type <stmt> stmt
 %type <vece> args
 %type <expr> expr
+%type <strings> argnames
 
 %%
 
@@ -56,10 +73,13 @@ stmt:
       //Call to a component
       STRING DOT STRING LPAR args RPAR{$$ = new ComponentCall($1, $3, $5);}
       //Variable assignment
-    | STRING EQ expr { $$ = new Assignment($1, $3); }
+    | STRING ASSIGN expr { $$ = new Assignment($1, $3); }
 
       //Event binding
-    | LPAR STRING RPAR ARROW LBRACE stmts RBRACE {$$ = new Event($2, $6);}
+    | LPAR STRING argnames RPAR ARROW LBRACE stmts RBRACE {$$ = new Event($2, $3, $7);}
+
+      //Conditional statement
+    | IF LPAR expr RPAR LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE { $$ = new Conditional($3, $6, $10); }
 ;
 
 //A block (multiple statements)
@@ -73,9 +93,28 @@ args :     { $$ = new vector<Expr*>();}
      | args COMMA expr { $1->push_back($3);}
 ;
 
+//String list of comma seperated argument names
+argnames : { $$ = new vector<string*>(); }
+         | COLON STRING { $$ = new vector<string*>(); $$->push_back($2);}
+         | argnames COMMA STRING { $1->push_back($3);}
+
 //An expression, either a constant int or a variable
-expr : INT { $$ = new IExpr($1); }  
+expr : LPAR expr RPAR { $$ = $2; }
+     | INT { $$ = new IExpr($1); }  
      | STRING { $$ = new VExpr($1); } 
+     | expr PLUS expr { $$ = new AExpr(new string("+"), $1, $3); }
+     | expr MINUS expr { $$ = new AExpr(new string("-"), $1, $3); }
+     | expr TIMES expr { $$ = new AExpr(new string("*"), $1, $3); }
+     | expr DIV expr { $$ = new AExpr(new string("/"), $1, $3); }
+     | expr MOD expr { $$ = new AExpr(new string("%"), $1, $3); }
+     | expr EQ expr { $$ = new AExpr(new string("=="), $1, $3); }
+     | expr NEQ expr { $$ = new AExpr(new string("!="), $1, $3); }
+     | expr LT expr { $$ = new AExpr(new string("<"), $1, $3); }
+     | expr LTEQ expr { $$ = new AExpr(new string("<="), $1, $3); }
+     | expr GT expr { $$ = new AExpr(new string(">"), $1, $3); }
+     | expr GTEQ expr { $$ = new AExpr(new string(">="), $1, $3); }
+     | expr AND expr { $$ = new AExpr(new string("&&"), $1, $3); }
+     | expr OR expr { $$ = new AExpr(new string("||"), $1, $3); }
 ;
 
 %%
