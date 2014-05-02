@@ -42,8 +42,7 @@ vector<int> Rucola::Rucolang::Event(string event, vector<int> args){
     if(events.count(event)){
         Statement *s = events[event];
         if(Rucola::Event *e = dynamic_cast<Rucola::Event*>(s)){
-            map<string, int> callEnv(env.begin(), env.end());
-            e->Call(args, componentCalls, &callEnv, &events, &result);
+            e->Call(args, componentCalls, &env, &events, &result);
         } else {
             string err = "Error in compiler: event " + event + " not an Event";
             throw RucolaException(err.c_str());
