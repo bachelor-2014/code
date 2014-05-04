@@ -9,11 +9,14 @@ angular.module('clientApp')
       x: 0,
       y: 0
     }
+    $scope.newPosition = {
+      x: 0,
+      y: 0
+    }
 
     // Initialize the element from the configuration
     $scope.init = function(elementInfo){
       $scope.elementInfo = elementInfo;
-      console.log($scope.elementInfo.start_action);
     };
 
     // The action of homing
@@ -26,12 +29,21 @@ angular.module('clientApp')
         }
     }
 
-    // The action of set the position of the hardware motor
-    // Send the instruction to the web server
-    $scope.moveTo = function(x, y) {
+    // The action of moving the position of the axes by the given amounts
+    // Sends the instruction to the web server
+    $scope.moveBy = function(x, y) {
       $scope.currentPosition.x = parseInt($scope.currentPosition.x) + parseInt(x);
       $scope.currentPosition.y = parseInt($scope.currentPosition.y) + parseInt(y);
-      console.log("Sending:", $scope.currentPosition);
+
+      splotService.postInput([$scope.elementInfo.start_action + 1, $scope.currentPosition.x, $scope.currentPosition.y]);
+    };
+
+    // The action of setting the position of the axes to the given position
+    // Sends the instruction to the web server
+    $scope.moveTo = function(x, y) {
+      $scope.currentPosition.x = parseInt(x);
+      $scope.currentPosition.y = parseInt(y);
+
       splotService.postInput([$scope.elementInfo.start_action + 1, $scope.currentPosition.x, $scope.currentPosition.y]);
     };
   });

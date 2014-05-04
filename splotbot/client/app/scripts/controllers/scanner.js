@@ -2,8 +2,19 @@
 
 angular.module('clientApp')
   .controller('ScannerCtrl', function ($scope,splotService, socket) {
-    $scope.scanner = {};
-    $scope.scanner.algorithm = 0;
+    $scope.scanner = {
+      algorithm: 0,
+      stepsize: 5,
+      sleep: 1000,
+      start: {
+        x: 0,
+        y: 0
+      },
+      stop: {
+        x: 10,
+        y: 10
+      }
+    };
     $scope.scanTime = "";
 
     $scope.init = function(elementInfo){
