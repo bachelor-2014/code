@@ -1,27 +1,32 @@
 <!-- Control for the 'XYAxes' component type -->
 <div class="control-box col-md-12" ng-controller="XYAxesCtrl" ng-init="init(elementInfo)">
-  <h1>{{elementInfo.name}}</h1>
-  <p>XYAxes</p>
 
-  <!-- Button for homing -->
-  <div class="glyphicon glyphicon-home"
-    ng-click="home()"></div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{elementInfo.name}} (XYAxes)</h3>
+    </div>
+    <div class="panel-body">
+      <!-- Button for homing -->
+      <div class="glyphicon glyphicon-home"
+        ng-click="home()"></div>
 
-  <!-- Buttons for moving along the axes -->
-  <div class="glyphicon glyphicon-arrow-left nav-arrow"
-    ng-click="moveTo(-movementAmount, 0)"></div>
+      <!-- Buttons for moving along the axes -->
+      <div class="glyphicon glyphicon-arrow-left nav-arrow"
+        ng-click="moveTo(-movementAmount, 0)"></div>
 
-  <div class="glyphicon glyphicon-arrow-down nav-arrow"
-    ng-click="moveTo(0, -movementAmount)"></div>
+      <div class="glyphicon glyphicon-arrow-down nav-arrow"
+        ng-click="moveTo(0, -movementAmount)"></div>
 
-  <div class="glyphicon glyphicon-arrow-up nav-arrow"
-    ng-click="moveTo(0, movementAmount)"></div>
+      <div class="glyphicon glyphicon-arrow-up nav-arrow"
+        ng-click="moveTo(0, movementAmount)"></div>
 
-  <span class="glyphicon glyphicon-arrow-right nav-arrow"
-    ng-click="moveTo(movementAmount, 0)"></span>
+      <span class="glyphicon glyphicon-arrow-right nav-arrow"
+        ng-click="moveTo(movementAmount, 0)"></span>
 
-  <div>
-    Movement amount (per click):
-    <input type="text" ng-model="movementAmount" />
+      <div>
+        Movement amount (per click):
+        <input type="text" ng-model="movementAmount" />
+      </div>
+    </div>
   </div>
 </div>

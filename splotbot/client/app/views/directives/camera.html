@@ -1,13 +1,17 @@
 <!-- Control for the 'Camera' component type -->
 <div class="control-box col-md-12"  ng-controller="CanvasCtrl" ng-init="init(elementInfo)">
-  <h1>{{elementInfo.name}}</h1>
-  <div class="btn-group">
-    <button type="button" class="btn btn-default" ng-click="mode(0)">Off</button>
-    <button type="button" class="btn btn-default" ng-click="mode(1)">On</button>
-    <button type="button" class="btn btn-default" ng-click="mode(2)">Droplet</button>
-    <div class="alert alert-info">{{dropletspeed}}</div>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{elementInfo.name}} (Camera)</h3>
+    </div>
+    <div class="panel-body">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-click="mode(0)">Off</button>
+        <button type="button" class="btn btn-default" ng-click="mode(1)">On</button>
+        <button type="button" class="btn btn-default" ng-click="mode(2)">Droplet</button>
+        <div class="alert alert-info">Droplet speed: {{dropletspeed}}</div>
+      </div>
+    </div>
   </div>
-  <p>Camera</p>
-  <!--canvas id="{{elementInfo.name}}_canvas" width="800" height="640" 
-    ></canvas-->
 </div>
