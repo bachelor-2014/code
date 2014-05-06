@@ -4,12 +4,9 @@
 angular.module('clientApp')
   .controller( "CanvasCtrl", function($scope,$rootScope,$compile,socket,splotService) {
 
-    // The canvas and contexts for drawing the image
-    var canvas,
-        context;
 
     // The image to draw
-    var img = new Image();
+    $scope.img = new Image();
 
     // Initializer
     // Add the canvas to the GUI control
@@ -18,7 +15,9 @@ angular.module('clientApp')
 
       $scope.$on("broadcasted", function(event,element) {
         //addCanvas($("#"+$scope.elementInfo.name));
-        setupCanvas();
+        $scope.$apply(function(){
+          setupCanvas()
+        })
       });
 
 
@@ -37,37 +36,40 @@ angular.module('clientApp')
 
       // Initialize the canvas
       var cId = $scope.elementInfo.name+"_canvas";
-      canvas = document.getElementById(cId);
-      context = canvas.getContext("2d");
+      $scope.canvas = document.getElementById(cId);
+      $scope.context = $scope.canvas.getContext("2d");
 
       // On load, draw the image on the canvas
-      img.onload = function(){
-        context.drawImage(this,0,0,canvas.width, canvas.height);
+      $scope.img.onload = function(){
+        $scope.context.drawImage(this,0,0,canvas.width, canvas.height);
       };
 
       // Get the position of the canvas
-      var canvasPosition = {
-          x: canvas.offsetLeft,
-          y: canvas.offsetTop
-      };
+      $scope.canvasPosition = {
+          x: $scope.context.canvas.offsetLeft,
+          y: $scope.context.canvas.offsetTop
+        };
 
       // Add an on-click event to the canvas, logging the location
       // of the mouse click in the console
-      canvas.addEventListener("click",function(e){
-          var scale_x = img.width / context.canvas.clientWidth;
-          var scale_y = img.height / context.canvas.clientHeight;
+      $scope.canvas.addEventListener("click",function(e){
+        var canvas = $scope.context.canvas
+        var rect = canvas.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
 
-          var click_x = e.pageX-canvasPosition.x;
-          var click_y = e.pageY-canvasPosition.y;
-          var click = getCursorPosition(e,context.canvas);
+          //var scale_x = $scope.img.width / $scope.context.canvas.clientWidth;
+          //var scale_y = $scope.img.height / $scope.context.canvas.clientHeight;
 
-          var x = Math.floor(click.x * scale_x);
-          var y = Math.floor(click.y * scale_y);
+          //var click_x = e.pageX-$scope.canvasPosition.x;
+          //var click_y = e.pageY-$scope.canvasPosition.y;
+          //var click = getCursorPosition(e,$scope.context.canvas);
 
-          console.log("Clicked the canvas: ", click);
-          console.log("Clicked on the image: ",x,y);
-          splotService.postInput([$scope.elementInfo.start_action+1,x,y]);
+          //var x = Math.floor(click.x * scale_x);
+          //var y = Math.floor(click.y * scale_y);
 
+        console.log("x,y",x,y)
+        splotService.postInput([$scope.elementInfo.start_action+1,x,y]);
 
       });
 
@@ -79,7 +81,7 @@ angular.module('clientApp')
     // contained in the event data on the canvas
     function addSocket(canvasId,eventName){
       socket.on(eventName,function(data){
-        renderImage(data.data,canvas,context,$scope);
+        renderImage(data.data,$scope.canvas,$scope.context,$scope);
       });
 
     }
@@ -87,16 +89,16 @@ angular.module('clientApp')
     // Renders the given image data on the canvas
     function renderImage(data,canvas,context,$scope){
         var img_data = 'data:image/png;base64,'+data;
-        img.src = img_data;
+        $scope.img.src = img_data;
     }
   });
 
 function getCursorPosition(e,canvas) {
-    var x;
-    var y;
+    var x,y;
+
     if (e.pageX != undefined && e.pageY != undefined) {
-    x = e.pageX;
-    y = e.pageY;
+      x = e.pageX;
+      y = e.pageY;
     }
     else {
     x = e.clientX + document.body.scrollLeft +
