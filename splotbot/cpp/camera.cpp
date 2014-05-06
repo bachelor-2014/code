@@ -50,8 +50,12 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         string s = ss.str();
         (*file_logger).Info(s);
 
+        cout << s << endl;
+
         // Do the action
         setMode(instr[0]);
+
+        cout << "Camera mode successfully set" << endl;
     };
 
     // 'Set droplet variables' 
@@ -128,9 +132,17 @@ void Camera::registerCalls(map<string, map<string,Rucola::CompileArgs>> *compone
  */
 void Camera::setMode(int m){
     if (mode == 0 && m > 0) {
+        openVideoDevice();
         run();
     }
     mode = m;
+}
+
+/**
+ * Gets the current camera mode
+ */
+int Camera::getMode() {
+    return mode;
 }
 
 /**
@@ -138,7 +150,8 @@ void Camera::setMode(int m){
  */
 void Camera::stop(){
     setMode(0);
-    sleep(3);
+    closeVideoDevice();
+    //sleep(3);
 }
 
 /**
@@ -154,6 +167,22 @@ void Camera::start(){
 }
 
 /**
+ * Opens the video device
+ */
+void Camera::openVideoDevice() {
+    cap = new VideoCapture(videoDevice);
+    cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+}
+
+/**
+ * Closes the video device
+ */
+void Camera::closeVideoDevice() {
+    cap->release();
+}
+
+/**
  * Start the droplet detection
  */
 void Camera::dropletDetection(){
@@ -164,17 +193,17 @@ void Camera::dropletDetection(){
  * Grabs the current camera image
  */
 Mat Camera::grabImage() {
-    Mat newimage;
+    Mat image;
 
-    imagelock.lock();
+    //imagelock.lock();
 
-    VideoCapture cap(videoDevice);
-    cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+    //VideoCapture cap(videoDevice);
+    //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
-    bool success = cap.read(image); 
+    bool success = cap->read(image); 
 
-    cap.release();
+    //cap.release();
 
     if (!success) {
         throw ComponentException(this,"Camera: Failed to grab image");
@@ -185,11 +214,11 @@ Mat Camera::grabImage() {
         cv::undistort(imageClone, image, matrix, coefs);
     }
 
-    newimage = image.clone();
+    //newimage = image.clone();
 
-    imagelock.unlock();
+    //imagelock.unlock();
 
-    return newimage;
+    return image;
 }
 
 /**

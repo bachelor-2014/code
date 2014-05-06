@@ -67,6 +67,16 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     int resetX = xyaxes->positionX();
     int resetY = xyaxes->positionY();
 
+    // Stop the camera
+    int cameraMode = camera->getMode();
+    if (cameraMode > 0) {
+        camera->stop();
+    }
+
+    // Make the camera open the video device as a resource
+    // of this thread
+    camera->openVideoDevice();
+
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
     // TODO currently the camera might move a bit further than the to-destination. Should this be changed?
@@ -85,6 +95,14 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
 
     // Move back to the previous position
     xyaxes->move(resetX, resetY);
+
+    // Close the video device in this thread
+    camera->closeVideoDevice();
+
+    // Restart the camera
+    if (cameraMode > 0) {
+        camera->start();
+    }
 
     // Run stitching in a separate thread
     // In order to aboid the image stitcher local variable
