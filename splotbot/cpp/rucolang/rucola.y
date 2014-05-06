@@ -83,7 +83,8 @@ stmt:
 ;
 
 //A block (multiple statements)
-stmts : stmt { $$ = new Block(); $$->AddStatement($1); }
+stmts : { $$ = new Block();}
+      | stmt { $$ = new Block(); $$->AddStatement($1); }
       | stmts stmt  { $1->AddStatement($2);}
 ;
 

@@ -35,7 +35,7 @@ main() {
         " x = 3 "
         " if (x == 2) { a = 5 } else { a = 7 } "
         " b = 1 <= 2 && 3 == 3 "
-        "module2.do(a,b)"
+        "if(1){module2.do(a,b)}else{}"
         "(event1: a, b) -> { module1.do(a,x) x=4 }"
         "(event2: a, b) -> { module1.do(a,x) }"
         "(event: a_, _b) -> { module1.do(a_,_b+x) }";
