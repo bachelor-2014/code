@@ -25,7 +25,6 @@ function addDirectiveElements(elements,$scope,$compile,$rootScope){
     for (var e in elements){
 
       var ename = elements[e].type;
-      $("#splotcontrols").append($compile("<"+ename+" info=element"+e+" id="+elements[e].js_name+"></"+ename+">")($scope))
 
       $rootScope["element"+e] = {
         name: elements[e].name,
@@ -33,6 +32,8 @@ function addDirectiveElements(elements,$scope,$compile,$rootScope){
         parameters: elements[e].parameters,
         start_action: elements[e].start_action
       };
+
+      $("#splotcontrols").append($compile("<"+ename+" info=element"+e+" id="+elements[e].js_name+"></"+ename+">")($scope))
 
     }
 }
