@@ -49,6 +49,27 @@ bool test_image_read_write(){
 	return true;
 }
 
+bool test_video_read_write(){
+	clog << __func__ << endl;
+
+        cv::VideoCapture *cap = new cv::VideoCapture(0);
+
+        cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
+        cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+
+	string image = "data/grab0_0.jpg";
+	cv::Mat mat = cv::imread(image);
+
+        VideoLogger *videoLogger = new VideoLogger("Camera","johnny stash",cap);
+        videoLogger->Data(&mat);
+
+
+	ImageLogger il("type","name");
+	il.Data(&mat);
+
+	return true;
+}
+
 bool test(function<bool()> f, string message){
     if(!f()){
         status = false;
@@ -61,6 +82,7 @@ bool test(function<bool()> f, string message){
 int main() {
     test(test_file_read_write,"test write file failed");
     test(test_image_read_write,"test write image failed");
+    test(test_video_read_write,"test write video failed");
     test(test_logger_instantiation,"test_instantiation failed!");
 
     if(status){
