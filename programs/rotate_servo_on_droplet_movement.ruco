@@ -4,8 +4,8 @@ Servo2.setPosition(90)
 
 BottomAxes.setPosition(10, 10)
 
-(Camera_dropletspeed: speed) {
-    if (speed > 100) {
+(Camera_dropletspeed: speed) -> {
+    if (speed > 10) {
         servoPos = (servoPos % 90) + 10;
         Servo1.setPosition(servoPos);
         Servo2.setPosition(90 - servoPos);

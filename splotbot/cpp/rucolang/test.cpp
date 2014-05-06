@@ -36,6 +36,8 @@ main() {
         " if (x == 2) { a = 5 } else { a = 7 } "
         " b = 1 <= 2 && 3 == 3 "
         "module2.do(a,b)"
+        "(event1: a, b) -> { module1.do(a,x) x=4 }"
+        "(event2: a, b) -> { module1.do(a,x) }"
         "(event: a_, _b) -> { module1.do(a_,_b+x) }";
 
     auto result = r.Compile(s);
@@ -47,7 +49,13 @@ main() {
 
     vector<int> args = {1,2};
     auto event = r.Event("event", args);
+    auto event1 = r.Event("event1", args);
+    auto event2 = r.Event("event2", args);
     cout << "Event:" << endl;
     prettyPrint(event);
+    cout << "Event1:" << endl;
+    prettyPrint(event1);
+    cout << "Event2:" << endl;
+    prettyPrint(event2);
 }
 

@@ -4,10 +4,15 @@
 angular.module('clientApp')
   .controller( "ErrorDisplayCtrl", function($scope,$rootScope,$compile,socket) {
 
-    $scope.errorMessage = "";
-
     // The event of an incoming error
     socket.on("error", function(data){
-        $scope.errorMessage = data.data;
+        var element = $('#error-message-container');
+
+        element.append($compile(
+            '<div class="alert alert-danger alert-dismissable">' + 
+              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+              data.data + 
+            '</div>'
+            )($scope));
     });
   })

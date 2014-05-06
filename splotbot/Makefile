@@ -2,9 +2,12 @@ default: compile_all
 
 compile_all: node_files
 
-cpp_files: cpp
-	(cd cpp ; make)
+cpp_files: cpp node rucolang_files
+	$(MAKE) -C cpp
 
-node_files: node
+node_files: node rucolang_files
 	#(cd node ; npm install)
-	(cd node ; make)
+	$(MAKE) -C node
+
+rucolang_files:
+	$(MAKE) -C cpp/rucolang

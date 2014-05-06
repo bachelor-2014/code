@@ -188,7 +188,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
 void XYAxes::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
     Rucola::CompileArgs homeCall;
     homeCall.Action = start+1;
-    homeCall.NumberofArguments = 1;
+    homeCall.NumberofArguments = 0;
 
     Rucola::CompileArgs setPositionCall;
     setPositionCall.Action = start+2;

@@ -1,0 +1,26 @@
+.header {
+    margin-bottom: 50px;
+}
+
+.ace_editor {
+    height: 200px;
+}
+
+.glyphicon {
+    cursor: pointer;
+}
+
+.form-control-number {
+    display: inline-block;
+    width: 60px !important;
+    margin-right: 20px;
+    text-align: center;
+}
+
+.row {
+    margin-bottom: 10px;
+}
+
+.radio {
+    display: block !important;
+}
