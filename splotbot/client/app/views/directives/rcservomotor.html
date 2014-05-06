@@ -1,18 +1,51 @@
 <!-- Control for the 'RCServoMotor' component type -->
 <div class="control-box col-md-12" ng-controller="RCServoMotorCtrl" ng-init="init(elementInfo)">
-  <h1>{{elementInfo.name}}</h1>
-  <p>RCServoMotor</p>
 
-  <!-- Buttons for moving the motor -->
-  <div class="glyphicon glyphicon-arrow-left nav-arrow"
-    ng-click="move(-10)"></div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{elementInfo.name}} (RCServoMotor)</h3>
+    </div>
+    <div class="panel-body">
 
-  <span class="glyphicon glyphicon-arrow-right nav-arrow"
-    ng-click="move(10)"></span>
+      <!-- Control buttons-->
+      <div class="row">
+        <div class="col-md-2">
+          <label>Controls:</label>
+        </div>
+        <div class="col-md-10">
+          <!-- Buttons for moving the motor -->
+          <div class="glyphicon glyphicon-arrow-left nav-arrow"
+            ng-click="move(-movementAmount)"></div>
 
-  <div>
-    Set position:
-    <input type="text" ng-model="position" ng-keypress="keyPressEvent($event)" />
-    <button ng-click="setPosition(position)">Set</button>
+          <span class="glyphicon glyphicon-arrow-right nav-arrow"
+            ng-click="move(movementAmount)"></span>
+        </div>
+      </div>
+
+      <!-- Movement amount -->
+      <div class="row">
+        <div class="col-md-2">
+          <label>Movement amount (per click):</label>
+        </div>
+        <div class="col-md-10">
+          <input class="form-control form-control-number" type="text" ng-model="movementAmount" />
+        </div>
+      </div>
+
+      <!-- Set position -->
+      <div class="row">
+        <div class="col-md-2">
+          <label>Set position (0-90 degrees):</label>
+        </div>
+        <div class="col-md-10">
+          <form class="form-inline">
+            <input class="form-control form-control-number" type="text" ng-model="position" ng-keypress="keyPressEvent($event)" />
+            <button class="btn btn-default" ng-click="setPosition(position)">Set</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
   </div>
+
 </div>

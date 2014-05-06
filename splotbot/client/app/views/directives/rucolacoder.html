@@ -1,15 +1,18 @@
 <!-- Control for the 'IntegerCoderCtrl' component type -->
 <div class="control-box col-md-12" ng-controller="RucolaCoderCtrl" ng-init="init(elementInfo)">
-  <style>
-    .ace_editor {
-        height: 200px;
-    }
-  </style>
-  <h1>Rucola Coder</h1>
-  <form class="form-inline" role="form">
-      <div class="form-group col-md-10">
-          <div ui-ace="{ theme: 'ace/theme/monokai', mode: 'csharp' }" ng-model="rucolacode"></div>
-      </div>
-      <button ng-click="sendRucolaCode()" class="btn btn-primary">Send</button>
-  </form>
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">RucolaCoder</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-inline" role="form">
+          <div class="form-group col-md-10">
+              <div ui-ace="{ mode: 'csharp' }" ng-model="rucolacode"></div>
+          </div>
+          <button ng-click="sendRucolaCode()" class="btn btn-default">Run code</button>
+      </form>
+    </div>
+  </div>
+
 </div>

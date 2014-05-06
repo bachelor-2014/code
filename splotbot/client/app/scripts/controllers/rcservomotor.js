@@ -8,13 +8,11 @@ angular.module('clientApp')
 
     $scope.currentOperation = "";
 
+    $scope.movementAmount = 0;
+
     // Initialize the element from the configuration
     $scope.init = function(elementInfo){
       $scope.elementInfo = elementInfo;
-      console.log($scope.elementInfo.start_action);
-
-      //Reset the position
-      splotService.postInput([$scope.elementInfo.start_action,0]);
     };
 
     // The action of set the position of the hardware motor
@@ -33,7 +31,7 @@ angular.module('clientApp')
     // Move the motor the specified number of steps
     // Depends on the setPosition function
     $scope.move = function(direction) {
-      $scope.setPosition($scope.currentPosition + direction);
+      $scope.setPosition($scope.currentPosition + parseInt(direction));
     };
 
     // Input field key press event

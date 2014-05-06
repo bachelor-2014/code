@@ -1,27 +1,70 @@
 <!-- Control for the 'XYAxes' component type -->
 <div class="control-box col-md-12" ng-controller="XYAxesCtrl" ng-init="init(elementInfo)">
-  <h1>{{elementInfo.name}}</h1>
-  <p>XYAxes</p>
 
-  <!-- Button for homing -->
-  <div class="glyphicon glyphicon-home"
-    ng-click="home()"></div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{elementInfo.name}} (XYAxes)</h3>
+    </div>
+    <div class="panel-body">
+      <div class="row"> 
+        <!-- Control buttons -->
+        <div class="col-md-2">
+          <label>Controls:</label>
+        </div>
+        <div class="col-md-10">
+          <!-- Button for homing -->
+          <div class="glyphicon glyphicon-home"
+            ng-click="home()"></div>
 
-  <!-- Buttons for moving along the axes -->
-  <div class="glyphicon glyphicon-arrow-left nav-arrow"
-    ng-click="moveTo(-movementAmount, 0)"></div>
+          <!-- Buttons for moving along the axes -->
+          <div class="glyphicon glyphicon-arrow-left nav-arrow"
+            ng-click="moveBy(-movementAmount, 0)"></div>
 
-  <div class="glyphicon glyphicon-arrow-down nav-arrow"
-    ng-click="moveTo(0, -movementAmount)"></div>
+          <div class="glyphicon glyphicon-arrow-down nav-arrow"
+            ng-click="moveBy(0, -movementAmount)"></div>
 
-  <div class="glyphicon glyphicon-arrow-up nav-arrow"
-    ng-click="moveTo(0, movementAmount)"></div>
+          <div class="glyphicon glyphicon-arrow-up nav-arrow"
+            ng-click="moveBy(0, movementAmount)"></div>
 
-  <span class="glyphicon glyphicon-arrow-right nav-arrow"
-    ng-click="moveTo(movementAmount, 0)"></span>
+          <span class="glyphicon glyphicon-arrow-right nav-arrow"
+            ng-click="moveBy(movementAmount, 0)"></span>
+        </div>
+      </div>
+      
+      <!-- Movement amount -->
+      <div class="row">
+        <div class="col-md-2">
+          <label>Movement amount (per click):</label>
+        </div>
+        <div class="col-md-10">
+          <input class="form-control form-control-number" type="text" ng-model="movementAmount" />
+        </div>
+      </div>
 
-  <div>
-    Movement amount (per click):
-    <input type="text" ng-model="movementAmount" />
+      <!-- Set position -->
+      <div class="row">
+        <div class="col-md-2">
+          <label>Set position:</label>
+        </div>
+        <div class="col-md-10">
+          <form class="form-inline" role="form">
+            x: <input class="form-control form-control-number" type="text" ng-model="newPosition.x" ng-keypress="keyPressEvent($event)" />
+            y: <input class="form-control form-control-number" type="text" ng-model="newPosition.y" ng-keypress="keyPressEvent($event)" />
+            <button class="btn btn-default" ng-click="moveTo(newPosition.x, newPosition.y)">Set</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Current position -->
+      <div class="row">
+        <div class="col-md-2">
+          <label>Current position:</label>
+        </div>
+        <div class="col-md-10">
+          ({{currentPosition.x}}, {{currentPosition.y}})
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
