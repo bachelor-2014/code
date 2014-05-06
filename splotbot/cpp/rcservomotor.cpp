@@ -29,7 +29,7 @@ void RCServoMotor::registerActions(vector<function<void(InstructionBuffer *)>> *
     stringstream ss;
     ss << "Registering actions" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     // 'SetTarget' <target in degrees>
     function<void(InstructionBuffer *)> setTarget = [&](InstructionBuffer *buffer) -> void {
@@ -40,7 +40,7 @@ void RCServoMotor::registerActions(vector<function<void(InstructionBuffer *)>> *
         stringstream ss;
         ss << "Setting target to " << target << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
 
         setPosition((unsigned short) target);
     };
@@ -52,7 +52,7 @@ void RCServoMotor::registerCalls(map<string, map<string,Rucola::CompileArgs>> *c
     stringstream ss;
     ss << "Registering calls" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     Rucola::CompileArgs setPos;
     setPos.Action = start+1;

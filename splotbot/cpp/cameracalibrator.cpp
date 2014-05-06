@@ -24,14 +24,14 @@ void CameraCalibrator::registerActions(vector<function<void(InstructionBuffer *)
     stringstream ss;
     ss << "Registering actions" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     // 'Calibrate'
     function<void(InstructionBuffer *)> calibrate = [&](InstructionBuffer *buffer) -> void {
         stringstream ss;
         ss << "Calibrating" << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
 
         this->calibrate();
     };
@@ -41,7 +41,7 @@ void CameraCalibrator::registerActions(vector<function<void(InstructionBuffer *)
         stringstream ss;
         ss << "Recalibrating" << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
 
         this->recalibrate();
     };
@@ -178,7 +178,7 @@ void CameraCalibrator::registerCalls(map<string, map<string,Rucola::CompileArgs>
     stringstream ss;
     ss << "Registering calls" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     Rucola::CompileArgs calibrateCall;
     calibrateCall.Action = start+1;

@@ -151,7 +151,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
     stringstream ss;
     ss << "Registering actions" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     // 'Home'
     function<void(InstructionBuffer *)> homeAction = [&](InstructionBuffer *buffer) -> void {
@@ -159,7 +159,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
         stringstream ss;
         ss << "Homing" << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
 
         //Do the homing
         home();
@@ -191,7 +191,7 @@ void XYAxes::registerCalls(map<string, map<string,Rucola::CompileArgs>> *compone
     stringstream ss;
     ss << "Registering calls" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     Rucola::CompileArgs homeCall;
     homeCall.Action = start+1;
