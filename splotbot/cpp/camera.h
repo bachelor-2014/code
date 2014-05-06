@@ -35,6 +35,7 @@ class Camera: public Component {
         void registerActions(vector<function<void(InstructionBuffer *)>> *actions);
         void registerCalls(map<string,map<string,Rucola::CompileArgs>>
                 *componentCalls, int start);
+        void registerEvents(map<string,int> *eventArgs);
         void setMode(int m);
         int getMode();
         void stop();

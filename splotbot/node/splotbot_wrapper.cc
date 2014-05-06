@@ -41,6 +41,9 @@ void SplotbotWrapper::Init(Handle<Object> exports) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("runRucolaCode"),
       FunctionTemplate::New(runRucolaCode)->GetFunction());
 
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("rucolaDocumentation"),
+      FunctionTemplate::New(rucolaDocumentation)->GetFunction());
+
   tpl->PrototypeTemplate()->Set(String::NewSymbol("registerCallback"),
       FunctionTemplate::New(registerCallback)->GetFunction());
 
@@ -128,6 +131,17 @@ Handle<Value> SplotbotWrapper::runRucolaCode(const Arguments& args) {
 
     // Return 0
     return scope.Close(Number::New(0));
+}
+
+/**
+ * Rucolang documentation
+ */
+Handle<Value> SplotbotWrapper::rucolaDocumentation(const Arguments& args){
+    HandleScope scope;
+
+    string doc = splotbot->rucolaDocumentation();
+
+    return scope.Close(String::New(doc.c_str()));
 }
 
 

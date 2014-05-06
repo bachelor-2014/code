@@ -25,10 +25,16 @@ Splotbot::Splotbot(string configFile, string mendelSocket) {
         Component *c = *it;
         (*c).registerCalls(&componentCalls, (actions.size()-1));
         (*c).registerActions(&actions);
+        (*c).registerEvents(&(eventArgs[c->name]));
     }
 
     rucolang.RegisterComponentCalls(componentCalls);
+    rucolang.RegisterEvents(eventArgs);
     rucolang.RegisterEventCallback(&eventCallback);
+}
+
+string Splotbot::rucolaDocumentation(){
+    return rucolang.Documentation();
 }
 
 /**

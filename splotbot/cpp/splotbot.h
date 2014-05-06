@@ -33,6 +33,7 @@ using namespace std;
 class Splotbot {
     public:
         Splotbot(string configFile, string mendelSocket);
+        string rucolaDocumentation();
         void executeInstructions(int numberOfInstructions, int instructions[]);
         void executeRucolaCode(string code);
         void registerCallback(function<void(string,string)> callback);
@@ -45,6 +46,7 @@ class Splotbot {
         function<void(string,string,vector<int>)> eventCallback;
         Rucola::Rucolang rucolang;
         map<string,map<string,Rucola::CompileArgs>> componentCalls;
+        map<string,map<string,int>> eventArgs;
 };
 
 #endif

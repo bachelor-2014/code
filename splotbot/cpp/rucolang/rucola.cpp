@@ -5,6 +5,7 @@
 #include "compileargs.h"
 #include "../utils/errors.h"
 #include <string>
+#include "../libraries/cJSON/cJSON.h"
 using namespace std;
 using namespace Rucola;
 
@@ -31,8 +32,45 @@ void Rucola::Rucolang::Clear(){
     env = map<string,int>();
 }
 
+string Rucola::Rucolang::Documentation(){
+    cJSON *root = cJSON_CreateObject();
+    for(auto comp : componentCalls){
+        cJSON *component = cJSON_CreateObject();
+        string componentName = comp.first;
+        //ComponentCalls
+        cJSON *componentActions = cJSON_CreateObject();
+        for(auto call : comp.second){
+            string callName = call.first;
+            CompileArgs args = call.second;
+            int numberOfArguments = args.NumberofArguments;
+            cJSON_AddNumberToObject(componentActions, callName.c_str(), numberOfArguments);
+        }
+        cJSON_AddItemToObject(component, "actions", componentActions);
+
+        //ComponentEvents
+        cJSON *componentEvents = cJSON_CreateObject();
+        for(auto event : eventArgs[componentName]){
+           cJSON_AddNumberToObject(componentEvents, event.first.c_str(),
+                   event.second); 
+        }
+
+        cJSON_AddItemToObject(component, "events", componentEvents);
+
+        cJSON_AddItemToObject(root, componentName.c_str(), component);
+    }
+
+    string s = string(cJSON_Print(root));
+    cJSON_Delete(root);
+
+    return s;
+}
+
 void Rucola::Rucolang::RegisterComponentCalls(map<string,map<string,CompileArgs>> componentCalls){
     this->componentCalls = componentCalls;
+}
+
+void Rucola::Rucolang::RegisterEvents(map<string,map<string,int>> eventArgs){
+    this->eventArgs = eventArgs;
 }
 
 void Rucola::Rucolang::RegisterEventCallback(function<void(string,string,vector<int>)> *eventCallback){

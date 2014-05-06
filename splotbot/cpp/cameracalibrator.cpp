@@ -50,6 +50,10 @@ void CameraCalibrator::registerActions(vector<function<void(InstructionBuffer *)
     (*actions).push_back(recalibrate);
 }
 
+void registerEvents(map<string,int> *eventArgs){
+    (*eventArgs)[name] = 0; 
+}
+
 void CameraCalibrator::calibrate(){
     vector<cv::Mat> images;
 

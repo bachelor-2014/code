@@ -87,6 +87,11 @@ app.post('/rucola', getdata, function(req, res){
     res.send();
 }); 
 
+app.get('/rucola', function(req, res){
+    var doc = splotbot.rucolaDocumentation();
+    res.send(doc);
+});
+
 // Event callback endpoint
 app.post('/event/:name', getdata, function(req, res){
     eventCallback(req.params.name, req.data);
@@ -96,6 +101,7 @@ app.post('/event/:name', getdata, function(req, res){
 app.get('/',function(req,res){
     res.sendfile("client/app/index.html");
 });
+
 
 //Serving the client folder
 app.get('/*', function(req,res){

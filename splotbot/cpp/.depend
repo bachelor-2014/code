@@ -19,7 +19,8 @@ rucola.o: rucolang/rucola.cpp rucolang/Absyn.h rucolang/compileargs.h \
  rucolang/../utils/../instructionbuffer.h \
  rucolang/../utils/../logging/filelogger.h \
  rucolang/../utils/../logging/logger.h \
- rucolang/../utils/../rucolang/compileargs.h
+ rucolang/../utils/../rucolang/compileargs.h \
+ rucolang/../libraries/cJSON/cJSON.h
 cJSON.o: libraries/cJSON/cJSON.cpp libraries/cJSON/cJSON.h
 base64.o: utils/base64.cpp utils/base64.h
 threading.o: utils/threading.cpp utils/threading.h

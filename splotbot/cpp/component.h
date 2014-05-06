@@ -24,6 +24,7 @@ class Component {
         Component();
         virtual void registerActions(vector<function<void(InstructionBuffer *)>> *actions) {};
         virtual void registerCalls(map<string,map<string,Rucola::CompileArgs>> *componentCalls, int start) {};
+        virtual void registerEvents(map<string,int> *events) {};
         void registerCallback(function<void(string,string,vector<int>)> *callback);
         string name;
         void raiseError(string message);

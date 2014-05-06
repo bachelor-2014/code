@@ -14,6 +14,11 @@ void prettyPrint(vector<int> result){
 
 main() {
 
+    map<string,map<string,int>> eventArgs;
+    map<string,int> module1Event;
+    module1Event["event"] = 2;
+    eventArgs["module1"] = module1Event;
+
     auto m = map<string,map<string,CompileArgs>>();
     CompileArgs module1;
     module1.Action = 1;
@@ -34,6 +39,7 @@ main() {
     Rucolang r = Rucolang();
     r.RegisterComponentCalls(m);
     r.RegisterEventCallback(&fun);
+    r.RegisterEvents(eventArgs);
 
     string s = 
         "module1.do(-1,2)"
@@ -63,5 +69,7 @@ main() {
     prettyPrint(event1);
     cout << "Event2:" << endl;
     prettyPrint(event2);
+
+    cout << r.Documentation();
 }
 

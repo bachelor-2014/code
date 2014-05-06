@@ -127,6 +127,10 @@ void Camera::registerCalls(map<string, map<string,Rucola::CompileArgs>> *compone
     (*componentCalls)[name]["dropletvariables"] = dropletvariables; 
 }
 
+void Camera::registerEvents(map<string,int> *events){
+    (*events)[name + "_dropletspeed"] = 1;
+}
+
 /**
  * Sets the current camera mode
  */
