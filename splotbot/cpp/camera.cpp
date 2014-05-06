@@ -32,7 +32,7 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
     stringstream ss;
     ss << "Registering actions" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     // 'Set camera mode' <mode>
     // Modes:
@@ -48,7 +48,7 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         stringstream ss;
         ss << "Setting mode to " << instr[0] << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
 
         cout << s << endl;
 
@@ -69,7 +69,7 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         stringstream ss;
         ss << "Setting droplet variables: minArea = " << instr[0] << ", maxArea = " << instr[1] << ", structuringElementSize = " << instr[2] << ", tolerance = " << instr[3] << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
 
         // Do the action
         dropletdetector.minArea = instr[0];
@@ -91,7 +91,7 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
         stringstream ss;
         ss << "Setting droplet detection color interval based on image position (x, y) = (" << x << ", " << y << ")" << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
 
         // Do the action
         Mat image = grabImage();
@@ -108,7 +108,7 @@ void Camera::registerCalls(map<string, map<string,Rucola::CompileArgs>> *compone
     stringstream ss;
     ss << "Registering calls" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     Rucola::CompileArgs mode;
     mode.Action = start+1;

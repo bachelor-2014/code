@@ -175,7 +175,7 @@ void Scanner::registerActions(vector<function<void(InstructionBuffer *)>> *actio
     stringstream ss;
     ss << "Registering actions" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     // 'Scan' <steps between each image> <sleep time between each image> <from x> <from y> <to x> <to y> <stitching algorithm>
     function<void(InstructionBuffer *)> scanAction = [&](InstructionBuffer *buffer) -> void {
@@ -205,7 +205,7 @@ void Scanner::registerCalls(map<string, map<string,Rucola::CompileArgs>> *compon
     stringstream ss;
     ss << "Registering calls" << endl;
     string s = ss.str();
-    (*file_logger).Info(s);
+    (*fileLogger).Info(s);
 
     Rucola::CompileArgs scanCall;
     scanCall.Action = start+1;
