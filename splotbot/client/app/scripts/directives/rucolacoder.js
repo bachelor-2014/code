@@ -8,7 +8,7 @@ angular.module('clientApp')
       templateUrl: '/views/directives/rucolacoder.html',
       link: function(scope, element, attributes) {
         scope.output = "";
-        scope.rucolacode = "asd";
+        scope.rucolacode = "";
 
         scope.sendRucolaCode = function(){
           var code = scope.rucolacode;
