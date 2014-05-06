@@ -17,9 +17,6 @@ angular.module('clientApp')
             scope.show = false;
           else
             scope.show = true;
-          scope.clicked = function(){
-            console.log("FDSFSDF");
-          }
         }
       }
     }

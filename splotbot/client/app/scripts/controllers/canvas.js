@@ -15,8 +15,12 @@ angular.module('clientApp')
     // Add the canvas to the GUI control
     $scope.init = function(elementInfo){
       $scope.elementInfo = elementInfo;
-      $scope.panelId = "component-"+elementInfo.name+"-panel";
-      addCanvas($("#"+elementInfo.name));
+
+      $scope.$on("broadcasted", function(event,element) {
+        //addCanvas($("#"+$scope.elementInfo.name));
+        setupCanvas();
+      });
+
 
       socket.on($scope.elementInfo.name + "_dropletspeed", function(data){
         $scope.dropletspeed = data.data;
@@ -69,16 +73,6 @@ angular.module('clientApp')
 
       // Add a socket connection for the camera event
       addSocket(cId,$scope.elementInfo.parameters.event_name);
-    }
-
-    // Adds a canvas to the GUI control initialized form the given config element
-    function addCanvas(element){
-      var panel_child = element//.find(".panel-body")
-      panel_child.append($compile(""+
-        "<canvas id='"+$scope.elementInfo.name+"_canvas' width='320'"+
-        " height='240'></canvas>")($scope))
-
-      setupCanvas();
     }
 
     // Adds an event handler to the socket, rendering the image
