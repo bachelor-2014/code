@@ -44,7 +44,6 @@ void Splotbot::executeRucolaCode(string code){
                 vector<int> instrs = rucolang.Compile(code);
                 executeInstructions(instrs.size(), &instrs[0]);
             }else{
-                cout << "Clearing" << endl;
                 rucolang.Clear();
             }
         } catch(RucolaException& e){
