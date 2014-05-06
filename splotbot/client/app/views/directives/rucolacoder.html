@@ -7,11 +7,20 @@
     </div>
     <div class="panel-body">
       <form class="form-inline" role="form">
-          <div class="form-group col-md-10">
-              <div ui-ace="{ mode: 'csharp' }" ng-model="rucolacode"></div>
-          </div>
+        <div class="form-group col-md-10">
+          <div ui-ace="{ mode: 'csharp' }" ng-model="rucolacode"></div>
+        </div>
+        <div class="form-group col-md-2">
           <button ng-click="sendRucolaCode()" class="btn btn-default">Run code</button>
+        </div>
       </form>
+      <div>
+        <div class="col-md-12 console-container">
+          <label>Output:</label>
+          <textarea class="form-control" rows="6" ng-model="output" disabled="disabled"></textarea>
+          <button ng-click="clearOutput()" class="btn btn-default">Clear output</button>
+        </div>
+      </div>
     </div>
   </div>
 
