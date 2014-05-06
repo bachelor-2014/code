@@ -24,7 +24,10 @@ RCServoMotor::RCServoMotor(string name, string device, unsigned char channel): d
  * registerActions register the actions of the single stepper motor
  */
 void RCServoMotor::registerActions(vector<function<void(InstructionBuffer *)>> *actions) {
-    cout << "RCServoMotor (" << name << ") registering actions" << endl;
+    stringstream ss;
+    ss << "Registering actions" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
 
     // 'SetTarget' <target in degrees>
     function<void(InstructionBuffer *)> setTarget = [&](InstructionBuffer *buffer) -> void {
@@ -32,20 +35,23 @@ void RCServoMotor::registerActions(vector<function<void(InstructionBuffer *)>> *
         (*buffer).popInstructions(1, instr);
         int target = instr[0];
 
-        cout << "RCServoMotor (" << name << ") setting target to " << target << endl;
-
-        setPosition((unsigned short) target);
-
         stringstream ss;
-        ss << "RCServoMotor (" << name << ") setting target to " << target << endl;
+        ss << "Setting target to " << target << endl;
         string s = ss.str();
         (*file_logger).Info(s);
+
+        setPosition((unsigned short) target);
     };
 
     (*actions).push_back(setTarget);
 }
 
 void RCServoMotor::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    stringstream ss;
+    ss << "Registering calls" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
+
     Rucola::CompileArgs setPos;
     setPos.Action = start+1;
     setPos.NumberofArguments = 1;
@@ -60,7 +66,7 @@ int RCServoMotor::getPosition() {
     unsigned char command[] = {0x90, channel};
     if(write(fd, command, sizeof(command)) == -1) {
         stringstream ss;
-        ss << "RCServoMotor (" << name << ") failed to write to device " << device << endl;
+        ss << "Failed to write to device " << device << endl;
         string s = ss.str();
         throw ComponentException(this,s.c_str());
     }
@@ -68,7 +74,7 @@ int RCServoMotor::getPosition() {
     unsigned char response[2];
     if(read(fd,response,2) != 2) {
         stringstream ss;
-        ss << "RCServoMotor (" << name << ") failed to read from device " << device << endl;
+        ss << "Failed to read from device " << device << endl;
         string s = ss.str();
         throw ComponentException(this,s.c_str());
     }
@@ -90,7 +96,7 @@ int RCServoMotor::setPosition(unsigned short target) {
     unsigned char command[] = {0x84, channel, (unsigned char) (target & 0x7F), (unsigned char) (target >> 7 & 0x7F)};
     if (write(fd, command, sizeof(command)) == -1) {
         stringstream ss;
-        ss << "RCServoMotor (" << name << ") failed to write to device " << device << endl;
+        ss << "Failed to write to device " << device << endl;
         string s = ss.str();
         throw ComponentException(this,s.c_str());
     }
@@ -100,7 +106,7 @@ int RCServoMotor::setPosition(unsigned short target) {
     //TODO find better solution for this sleep
     //Currently it is there to allow the motor to finish its rotation before
     //continuing executing more commands
-    sleep(1);
+    //sleep(1);
 
     return 0;
 }
@@ -112,7 +118,7 @@ int RCServoMotor::openDeviceFile() {
     // Handles error if file opening was not successful
     if (fd == -1) {
         stringstream ss;
-        ss << "RCServoMotor (" << name << ") failed to open device " << device << endl;
+        ss << "Failed to open device " << device << endl;
         string s = ss.str();
         throw ComponentException(this,s.c_str());
     }

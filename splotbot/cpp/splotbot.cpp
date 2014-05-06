@@ -14,17 +14,12 @@ using namespace std;
  */
 Splotbot::Splotbot(string configFile, string mendelSocket) {
 
-    cout << "Splotbot starting with " << endl << "config: " << configFile << endl << "Mendel socket: " << mendelSocket << endl;
-
     // Register empty callback
     registerCallback([] (string name, string data) -> void {
         cout << "Default callback. You need to provide a better one." << endl;
     });
 
-    cout << "EvoBot intializing components ..." << endl;
     components = initializeComponents(&eventCallback,configFile,mendelSocket);
-
-    cout << "Number of components in Splotbot: " << components.size() << endl;
 
     for (auto it = components.begin(); it != components.end(); ++it) {
         Component *c = *it;
@@ -32,9 +27,6 @@ Splotbot::Splotbot(string configFile, string mendelSocket) {
         (*c).registerActions(&actions);
     }
 
-    cout << "Number of actions registered: " << actions.size() << endl;
-
-    cout << "Registerings Component Calls with Rucolang" << endl;
     rucolang.RegisterComponentCalls(componentCalls);
     rucolang.RegisterEventCallback(&eventCallback);
 }
@@ -89,7 +81,7 @@ void Splotbot::run() {
             } catch(ComponentException& e){
                 e.component->raiseError(e.what());
             } catch(exception& e) {
-                cout << "TOO GENERAL AN EXCEPTION." << endl;
+                cout << "An unknown exception was encountered: " << e.what() << endl;
             }
         }
     });

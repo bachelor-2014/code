@@ -21,6 +21,6 @@ angular.module('clientApp')
 
     // The event of an incoming print statement
     socket.on("Rucola_print", function(data){
-      output += data.data + "\n";
+      $scope.output = data.data + "\n" + $scope.output;
     });
   })
