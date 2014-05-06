@@ -36,6 +36,7 @@ Splotbot::Splotbot(string configFile, string mendelSocket) {
 
     cout << "Registerings Component Calls with Rucolang" << endl;
     rucolang.RegisterComponentCalls(componentCalls);
+    rucolang.RegisterEventCallback(&eventCallback);
 }
 
 /**

@@ -35,12 +35,13 @@ void yyerror(const char *s);
 }
 
 // Constant-string tokens
-%token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE COLON
+%token LPAR RPAR DOT COMMA ASSIGN ARROW LBRACE RBRACE COLON SEMI
 %token PLUS MINUS TIMES DIV MOD EQ NEQ LT LTEQ GT GTEQ AND OR
-%token IF ELSE
+%token IF ELSE PRINT
 
 // Precedence
 %right ASSIGN
+%nonassoc PRINT
 %left OR
 %left AND
 %left EQ NEQ
@@ -54,6 +55,7 @@ void yyerror(const char *s);
 %token <ival> INT
 %token <fval> FLOAT
 %token <sval> STRING
+%token <sval> STRINGLIT
 
 //Types
 %type <block> program stmts
@@ -80,11 +82,13 @@ stmt:
 
       //Conditional statement
     | IF LPAR expr RPAR LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE { $$ = new Conditional($3, $6, $10); }
+      //Print
+    | PRINT STRINGLIT LPAR args RPAR { $$ = new Print($2, $4);}
 ;
 
 //A block (multiple statements)
-stmts : { $$ = new Block();}
-      | stmt { $$ = new Block(); $$->AddStatement($1); }
+stmts :
+       stmt { $$ = new Block(); $$->AddStatement($1); }
       | stmts stmt  { $1->AddStatement($2);}
 ;
 
