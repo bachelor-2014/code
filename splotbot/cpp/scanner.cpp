@@ -63,6 +63,10 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             break;
     }
 
+    // Save the start position, so it can later be reset
+    int resetX = xyaxes->positionX();
+    int resetY = xyaxes->positionY();
+
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
     // TODO currently the camera might move a bit further than the to-destination. Should this be changed?
@@ -78,6 +82,9 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             stitcher->grabImage(x, y);
         }
     }
+
+    // Move back to the previous position
+    xyaxes->move(resetX, resetY);
 
     // Run stitching in a separate thread
     // In order to aboid the image stitcher local variable

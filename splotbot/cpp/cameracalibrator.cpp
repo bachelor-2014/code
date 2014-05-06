@@ -89,6 +89,9 @@ void CameraCalibrator::calibrate(){
         }
     }
 
+    // Reset the position
+    xyaxes->move(centerX, centerY);
+
     bool success = calibrator->calibrate(calibrationImages,&coefs,&matrix);
     if(!success){
         throw ComponentException(this, "Failed to calibrate");
