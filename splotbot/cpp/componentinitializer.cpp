@@ -187,7 +187,6 @@ vector<Component *> initializeComponents(function<void(string,string,vector<int>
     for (int i = 0 ; i < cJSON_GetArraySize(document) ; i++) {
         cJSON *componentDocument = cJSON_GetArrayItem(document, i);
         string type(cJSON_GetObjectItem(componentDocument, "type")->valuestring);
-        cout << i << ": " << type << endl;
 
         //Determine components
         if (type.compare("SingleStepperMotor") == 0) {

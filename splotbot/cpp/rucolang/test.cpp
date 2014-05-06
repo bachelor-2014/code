@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdio>
 #include "rucola.h"
 #include "compileargs.h"
 using namespace std;
@@ -27,15 +26,22 @@ main() {
     m["module1"]["do"] = module1;
     m["module2"]["do"] = module2;
 
+    function<void(string,string,vector<int>)> fun = [](string eventName, string
+            data, vector<int> v){
+        cout << eventName << ": " << data << endl;
+    };
+
     Rucolang r = Rucolang();
     r.RegisterComponentCalls(m);
+    r.RegisterEventCallback(&fun);
 
     string s = 
         "module1.do(-1,2)"
         " x = 3 "
         " if (x == 2) { a = 5 } else { a = 7 } "
         " b = 1 <= 2 && 3 == 3 "
-        "module2.do(a,b)"
+        "if(1){module2.do(a,b)}else{ a = 2}"
+        "print \"hello world\" (a,b)"
         "(event1: a, b) -> { module1.do(a,x) x=4 }"
         "(event2: a, b) -> { module1.do(a,x) }"
         "(event: a_, _b) -> { module1.do(a_,_b+x) }";

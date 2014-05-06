@@ -36,6 +36,7 @@ class Camera: public Component {
         void registerCalls(map<string,map<string,Rucola::CompileArgs>>
                 *componentCalls, int start);
         void setMode(int m);
+        int getMode();
         void stop();
         void start();
         void dropletDetection();
@@ -43,17 +44,19 @@ class Camera: public Component {
         void calibrate(cv::Mat coefs, cv::Mat matrix);
         void translation(double xTranslationX, double yTranslationX, double
                 xTranslationY, double yTranslationY);
+        void openVideoDevice();
+        void closeVideoDevice();
 
         vector<double> xStep;
         vector<double> yStep;
         void uncalibrate();
     private:
         VideoLogger *video_logger;
-        //VideoCapture *cap;
+        VideoCapture *cap;
         mutex imagelock;
         int mode;
         string eventName;
-        Mat image;
+        //Mat image;
 
         /**
          * Droplet detection variables

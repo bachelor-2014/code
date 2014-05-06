@@ -2,14 +2,18 @@ servoPos = 0
 Servo1.setPosition(0)
 Servo2.setPosition(90)
 
+BottomAxes.home()
 BottomAxes.setPosition(10, 10)
 
 (Camera_dropletspeed: speed) -> {
     if (speed > 10) {
-        servoPos = (servoPos % 90) + 10;
-        Servo1.setPosition(servoPos);
-        Servo2.setPosition(90 - servoPos);
-    } else { }
+
+        print "Speed " (speed)
+
+        servoPos = (servoPos % 90) + 10
+        Servo1.setPosition(servoPos)
+        Servo2.setPosition(90 - servoPos)
+    } else { b = 3 }
 }
 
 Camera.mode(2)

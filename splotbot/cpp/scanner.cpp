@@ -65,7 +65,19 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             break;
     }
 
-    cout << "Scanner -> sleepBetweenImages: " << sleepBetweenImages << endl;
+    // Save the start position, so it can later be reset
+    int resetX = xyaxes->positionX();
+    int resetY = xyaxes->positionY();
+
+    // Stop the camera
+    int cameraMode = camera->getMode();
+    if (cameraMode > 0) {
+        camera->stop();
+    }
+
+    // Make the camera open the video device as a resource
+    // of this thread
+    camera->openVideoDevice();
 
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
@@ -83,11 +95,16 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
         }
     }
 
-    // Start the camera
-    //TODO is this needed?
-    //cout << "Scanner: Starting the camera ..." << endl;
-    //camera->start();
-    //cout << "Scanner: Started the camera" << endl;
+    // Move back to the previous position
+    xyaxes->move(resetX, resetY);
+
+    // Close the video device in this thread
+    camera->closeVideoDevice();
+
+    // Restart the camera
+    if (cameraMode > 0) {
+        camera->start();
+    }
 
     // Run stitching in a separate thread
     // In order to aboid the image stitcher local variable
@@ -97,12 +114,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     sem_init(&stitcherSemaphore, 0, 0);
     
     runAsThread( [&] () {
-	fileLogger->Info("Scanner: Stitching thread started");
-
         // Stitch the images together
         cv::Mat stitchedImage;
-        fileLogger->Info("Scanner: Stitching grabbed images ...");
-        //stitchedImage = stitcher->stitch();
         
         // Timing variable
         clock_t timestamp;
@@ -124,7 +137,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             sem_post(&stitcherSemaphore);
             stitchedImage = ii.stitch();
         } else {
-           throw runtime_error("Unknown image stitcher type detected");
+           throw ComponentException(this, "Unknown image stitcher type detected");
         }
 
         // Get time for timing
@@ -136,12 +149,6 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
 
         vector<int> args = { ((int)runTime) * 1000 };
         (*eventCallback)(name + "_time", to_string(runTime), args);
-
-        fileLogger->Info("startTime = " + to_string(startTime));
-        fileLogger->Info("endTime = " + to_string(endTime));
-        fileLogger->Info("runTime = " + to_string(runTime));
-
-        fileLogger->Info("Scanner: Stitched grabbed images");
 
         // Convert the image to base64
         vector<uchar> buff;
@@ -157,16 +164,18 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             
             });
 
-    cout << "Scanner: Waiting for stitching thread ..." << endl;
+    // Wait for the stitching thread to get started
     sem_wait(&stitcherSemaphore);
-    cout << "Scanner: Continuing while stitching thread does its thing" << endl;
 }
 
 /**
  * registerActions register the actions of the scanner
  */
 void Scanner::registerActions(vector<function<void(InstructionBuffer *)>> *actions) {
-    cout << "Scanner (" << name << ") registering actions" << endl;
+    stringstream ss;
+    ss << "Registering actions" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
 
     // 'Scan' <steps between each image> <sleep time between each image> <from x> <from y> <to x> <to y> <stitching algorithm>
     function<void(InstructionBuffer *)> scanAction = [&](InstructionBuffer *buffer) -> void {
@@ -184,7 +193,7 @@ void Scanner::registerActions(vector<function<void(InstructionBuffer *)>> *actio
         scan(stepsBetweenImages, sleepBetweenImages, fromX, fromY, toX, toY, stitchingAlgorithm);
 
         stringstream ss;
-        ss << "Scanner (" << name << ") scanning area (" << fromX << ", " << fromY << ") -> (" << toX << ", " << toY << ") with " << stepsBetweenImages << " steps and " << sleepBetweenImages << " miliseconds of sleep time between each image, stitching with algorithm " << stitchingAlgorithm << endl;
+        ss << "Scanning area (" << fromX << ", " << fromY << ") -> (" << toX << ", " << toY << ") with " << stepsBetweenImages << " steps and " << sleepBetweenImages << " milliseconds of sleep time between each image, stitching with algorithm " << stitchingAlgorithm << endl;
         string s = ss.str();
         (*fileLogger).Info(s);
     };
@@ -193,6 +202,11 @@ void Scanner::registerActions(vector<function<void(InstructionBuffer *)>> *actio
 }
 
 void Scanner::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    stringstream ss;
+    ss << "Registering calls" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
+
     Rucola::CompileArgs scanCall;
     scanCall.Action = start+1;
     scanCall.NumberofArguments = 7;

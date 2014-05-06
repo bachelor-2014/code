@@ -13,9 +13,6 @@ using namespace cv;
  * Camera constructor
  */
 CameraCalibrator::CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes): camera(camera), xyaxes(xyaxes) {
-    cout    << "Instantiating calibrator " << name << " With camera "
-            << camera->name << " and xyaxes " << xyaxes->name << endl;
-
     this->name = name;
     calibrator = new Calibrator("data/calibration.xml");
 }
@@ -24,14 +21,28 @@ CameraCalibrator::CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes): c
  * registerActions registeres the actions of the Camera unto an actions buffer
  */
 void CameraCalibrator::registerActions(vector<function<void(InstructionBuffer *)>> *actions) {
+    stringstream ss;
+    ss << "Registering actions" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
 
     // 'Calibrate'
     function<void(InstructionBuffer *)> calibrate = [&](InstructionBuffer *buffer) -> void {
+        stringstream ss;
+        ss << "Calibrating" << endl;
+        string s = ss.str();
+        (*file_logger).Info(s);
+
         this->calibrate();
     };
 
     // 'Recalibrate'
     function<void(InstructionBuffer *)> recalibrate = [&](InstructionBuffer *buffer) -> void {
+        stringstream ss;
+        ss << "Recalibrating" << endl;
+        string s = ss.str();
+        (*file_logger).Info(s);
+
         this->recalibrate();
     };
 
@@ -48,14 +59,11 @@ void CameraCalibrator::calibrate(){
     vector<int> args;
 
     if (calibrator->isCalibrated()) {
-        cout << "CameraCalibrator: Camera already calibrated" << endl;
         calibrator->getCalibrationFromFile(&coefs,&matrix,&(camera->xStep), &(camera->yStep));
         camera->calibrate(coefs, matrix);
         (*eventCallback)(name, "success", args);
         return;
     }
-
-    cout << "CameraCalibrator: Camera not already calibrated" << endl;
 
     int centerX = xyaxes->positionX();
     int centerY = xyaxes->positionY();
@@ -63,9 +71,18 @@ void CameraCalibrator::calibrate(){
     vector<cv::Mat> calibrationImages;
     cv::Mat image;
 
+    // Stop the camera
+    int cameraMode = camera->getMode();
+    if (cameraMode > 0) {
+        camera->stop();
+    }
+
+    // Make the camera open the video device as a resource
+    // of this thread
+    camera->openVideoDevice();
+
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
-            cout << "Moving to (x,y)=(" << centerX+x << "," << centerY+y << ")" << endl;
             // Move to the position
             xyaxes->move(centerX+x, centerY+y);
 
@@ -82,18 +99,13 @@ void CameraCalibrator::calibrate(){
         }
     }
 
-    //cap.release();
     bool success = calibrator->calibrate(calibrationImages,&coefs,&matrix);
     if(!success){
-        throw ComponentException(this,"Could not calibrate");
+        throw ComponentException(this, "Failed to calibrate");
     }
     camera->calibrate(coefs, matrix);
 
-    cout << "Calibrated" << endl;
-
-
     //Step calibration
-    cout << "Initiate Step calibration" << endl;
     vector<vector<cv::Mat>> allStepImages;
     int stepTimes = 3;
     for(int i = 0; i < stepTimes; i++){
@@ -117,18 +129,57 @@ void CameraCalibrator::calibrate(){
         allStepImages.push_back(stepImages);
     }
 
-    calibrator->stepCalibrate(allStepImages, &(camera->xStep), &(camera->yStep));
-    cout << "Step calibration done" << endl;
 
-    cout << "coefs: " << coefs << endl;
-    cout << "matrix: " << matrix << endl;
-    cout << "camera->xStep: [" << (camera->xStep)[0] << ", " << (camera->xStep)[1] << "]" << endl;
-    cout << "camera->yStep: [" << (camera->yStep)[0] << ", " << (camera->yStep)[1] << "]" << endl;
+    try {
+        calibrator->stepCalibrate(allStepImages, &(camera->xStep), &(camera->yStep));
+    } catch(ComponentException& e){
+        // Reset the position
+        xyaxes->move(centerX, centerY);
+
+        // Close the video device in this thread
+        camera->closeVideoDevice();
+
+        // Restart the camera
+        if (cameraMode > 0) {
+            camera->start();
+        }
+
+        throw;
+    } catch(exception& e){
+        // Reset the position
+        xyaxes->move(centerX, centerY);
+
+        // Close the video device in this thread
+        camera->closeVideoDevice();
+
+        // Restart the camera
+        if (cameraMode > 0) {
+            camera->start();
+        }
+
+        throw;
+    }
 
     (*eventCallback)(name, "success", args);
+
+    // Reset the position
+    xyaxes->move(centerX, centerY);
+
+    // Close the video device in this thread
+    camera->closeVideoDevice();
+
+    // Restart the camera
+    if (cameraMode > 0) {
+        camera->start();
+    }
 }
 
 void CameraCalibrator::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    stringstream ss;
+    ss << "Registering calls" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
+
     Rucola::CompileArgs calibrateCall;
     calibrateCall.Action = start+1;
     calibrateCall.NumberofArguments = 0;
