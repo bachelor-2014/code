@@ -1,5 +1,7 @@
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <iterator>
 #include "Absyn.h"
 #include "compileargs.h"
 #include "../utils/errors.h"
@@ -46,9 +48,9 @@ namespace Rucola{
 
     void Block::Compile(map<string,map<string,CompileArgs>> componentCalls,
             map<string, int> *env, map<string, Statement*> *events, vector<int>
-            *result){
+            *result, function<void(string, string, vector<int>)> eventCallback){
         for(Statement* s: statements){
-            s->Compile(componentCalls, env, events, result);
+            s->Compile(componentCalls, env, events, result, eventCallback);
         }
     }
     /**
@@ -69,7 +71,7 @@ namespace Rucola{
 
     void ComponentCall::Compile(map<string,map<string,CompileArgs>>
             componentCalls, map<string,int> *env, map<string, Statement*>
-            *events, vector<int> *result){
+            *events, vector<int> *result, function<void(string, string, vector<int>)> eventCallback){
 
         if(!componentCalls.count((*component))){
             string err = "Component does not exist: " + (*component);
@@ -105,7 +107,7 @@ namespace Rucola{
 
     void Assignment::Compile(map<string,map<string,CompileArgs>> componentCalls,
             map<string, int> *env, map<string, Statement*> *events,
-            vector<int> *result) {
+            vector<int> *result, function<void(string, string, vector<int>)> eventCallback) {
         expr->Compile(componentCalls, env, result);
         int val = result->back();
         result->pop_back();
@@ -122,15 +124,15 @@ namespace Rucola{
 
     void Conditional::Compile(map<string,map<string,CompileArgs>> componentCalls,
             map<string, int> *env, map<string, Statement*> *events,
-            vector<int> *result) {
+            vector<int> *result, function<void(string, string, vector<int>)> eventCallback) {
         condition->Compile(componentCalls, env, result);
         int val = result->back();
         result->pop_back();
 
         if (val) {
-            block1->Compile(componentCalls, env, events, result);
+            block1->Compile(componentCalls, env, events, result, eventCallback);
         } else {
-            block2->Compile(componentCalls, env, events, result);
+            block2->Compile(componentCalls, env, events, result, eventCallback);
         }
     }
 
@@ -151,13 +153,13 @@ namespace Rucola{
 
     void Event::Compile(map<string,map<string,CompileArgs>> componentCalls,
             map<string, int> *env, map<string, Statement*> *events, vector<int>
-            *result){
+            *result, function<void(string, string, vector<int>)> eventCallback){
         (*events)[(*eventName)] = this;
     }
 
     void Event::Call(vector<int> args, map<string,map<string,CompileArgs>>
             componentCalls, map<string, int> *env, map<string, Statement*>
-            *events, vector<int> *result){
+            *events, vector<int> *result, function<void(string, string, vector<int>)> eventCallback){
         if(args.size() < argNames->size()){
             string err = (*eventName) + " takes at most " +
                 to_string(args.size()) + " arguments, you defined it as" +
@@ -169,7 +171,7 @@ namespace Rucola{
            (*env)[(*argName)] = args[i];
            i++;
         }
-        block->Compile(componentCalls, env, events, result);
+        block->Compile(componentCalls, env, events, result, eventCallback);
     }
 
     /**
@@ -257,4 +259,32 @@ namespace Rucola{
 
         result->push_back(resultVal);
     }
+
+    /**
+     * Print
+     */
+    Print::Print(string *str, vector<Expr*> *args): str(str), args(args){
+    }
+    void Print::Compile(map<string,map<string,CompileArgs>> componentCalls,
+            map<string, int> *env, map<string, Statement*> *events, vector<int>
+            *result, function<void(string, string, vector<int>)> eventCallback) {
+        vector<int> v;
+        for(auto e: (*args)){
+            e->Compile(componentCalls, env, result);
+        }
+
+        for(int i = 0; i<(*args).size(); i++){
+            int r = result->back();
+            result->pop_back();
+            v.push_back(r);
+        }
+
+        stringstream ss;
+        copy( v.begin(), v.end(), ostream_iterator<int>(ss, ","));
+        string s = ss.str();
+        s = s.substr(0, s.length()-1);  // get rid of the trailing comma
+
+        eventCallback("Rucola_print", (*str) + s, v);
+    }
+
 }

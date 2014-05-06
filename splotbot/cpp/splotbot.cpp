@@ -28,6 +28,7 @@ Splotbot::Splotbot(string configFile, string mendelSocket) {
     }
 
     rucolang.RegisterComponentCalls(componentCalls);
+    rucolang.RegisterEventCallback(&eventCallback);
 }
 
 /**

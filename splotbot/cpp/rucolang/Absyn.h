@@ -4,6 +4,7 @@
 #include<vector>
 #include<string>
 #include<map>
+#include<functional>
 #include "compileargs.h"
 
 using namespace std;
@@ -76,7 +77,7 @@ namespace Rucola {
             virtual string toString() {};
             virtual void Compile(map<string,map<string,CompileArgs>>
                     componentCalls, map<string, int> *env, map<string, Statement*>
-                    *events, vector<int> *result){};
+                    *events, vector<int> *result, function<void(string, string, vector<int>)> eventCallback){};
             //virtual vector<int> compile() {};
     };
 
@@ -93,7 +94,7 @@ namespace Rucola {
             string toString();
             void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
-                    vector<int> *result);
+                    vector<int> *result, function<void(string, string, vector<int>)> eventCallback);
         private:
             vector<Statement*> statements;
     }; 
@@ -107,7 +108,7 @@ namespace Rucola {
            string toString();
            void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
-                   vector<int> *result);
+                   vector<int> *result, function<void(string, string, vector<int>)> eventCallback);
 
         private:
            string *component;
@@ -121,10 +122,10 @@ namespace Rucola {
             string toString(); 
             void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
-                    vector<int> *result);
+                    vector<int> *result, function<void(string, string, vector<int>)> eventCallback);
             void Call(vector<int> args, map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
-                    vector<int> *result);
+                    vector<int> *result, function<void(string, string, vector<int>)> eventCallback);
         private:
             string *eventName;
             Block *block;
@@ -140,7 +141,7 @@ namespace Rucola {
            string toString();
            void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
-                   vector<int> *result);
+                   vector<int> *result, function<void(string, string, vector<int>)> eventCallback);
 
         private:
            string *varName;
@@ -156,12 +157,23 @@ namespace Rucola {
            string toString();
            void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, map<string, Statement*> *events,
-                   vector<int> *result);
+                   vector<int> *result, function<void(string, string, vector<int>)> eventCallback);
 
         private:
            Expr *condition;
            Block *block1;
            Block *block2;
+    };
+
+    class Print: public Statement {
+        public:
+            Print(string *str, vector<Expr*> *args);
+            void Compile(map<string,map<string,CompileArgs>> componentCalls,
+                    map<string, int> *env, map<string, Statement*> *events,
+                    vector<int> *result, function<void(string, string, vector<int>)> eventCallback);
+        private:
+            string *str;
+            vector<Expr*> *args;
     };
 }
 
