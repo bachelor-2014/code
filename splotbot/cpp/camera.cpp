@@ -174,8 +174,11 @@ void Camera::start(){
  */
 void Camera::openVideoDevice() {
     cap = new VideoCapture(videoDevice);
+
     cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
     cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+
+    this->videoLogger = new VideoLogger("Camera",name,cap);
 }
 
 /**
@@ -217,6 +220,7 @@ Mat Camera::grabImage() {
         cv::undistort(imageClone, image, matrix, coefs);
     }
 
+    videoLogger->Data(&image);
     //newimage = image.clone();
 
     //imagelock.unlock();
