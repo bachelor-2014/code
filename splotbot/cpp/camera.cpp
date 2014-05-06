@@ -23,17 +23,16 @@ Camera::Camera(string name, int videoDevice, string eventName): videoDevice(vide
     setMode(0);
     tolerance = 20;
     isCalibrated = false;
-    //cap = new VideoCapture(videoDevice);
-    //cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    //cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-    //run();
 }
 
 /**
  * registerActions registeres the actions of the Camera unto an actions buffer
  */
 void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *actions) {
-    cout << "Camera (" << name << ") registering actions" << endl;
+    stringstream ss;
+    ss << "Registering actions" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
 
     // 'Set camera mode' <mode>
     // Modes:
@@ -41,19 +40,34 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
     // 1 - Camera On
     // 2 - Droplet detection
     function<void(InstructionBuffer *)> setCameraMode = [&](InstructionBuffer *buffer) -> void {
-        //Get mode
+        // Get args 
         int instr[1];
         (*buffer).popInstructions(1, instr);
+
+        // Log
+        stringstream ss;
+        ss << "Setting mode to " << instr[0] << endl;
+        string s = ss.str();
+        (*file_logger).Info(s);
+
+        // Do the action
         setMode(instr[0]);
-        cout << "Camera (" << name << ") mode set to " << mode << endl;
     };
 
     // 'Set droplet variables' 
     // <min area> <max area> <structuring element size> <tolerance>
     function<void(InstructionBuffer *)> setDropletVariables = [&](InstructionBuffer *buffer) -> void {
+        // Get args 
         int instr[4];
         (*buffer).popInstructions(4, instr);
 
+        // Log
+        stringstream ss;
+        ss << "Setting droplet variables: minArea = " << instr[0] << ", maxArea = " << instr[1] << ", structuringElementSize = " << instr[2] << ", tolerance = " << instr[3] << endl;
+        string s = ss.str();
+        (*file_logger).Info(s);
+
+        // Do the action
         dropletdetector.minArea = instr[0];
         dropletdetector.maxArea = instr[1];
         dropletdetector.structuringElementSize = instr[2];
@@ -63,19 +77,22 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
 
     // 'End color selector' <x> <y>
     function<void(InstructionBuffer *)> dropletSelector = [&](InstructionBuffer *buffer) -> void {
-
-        //Get coordinates
+        // Get args 
         int instr[2];
         (*buffer).popInstructions(2, instr);
         int x = instr[0];
         int y = instr[1];
 
+        // Log
+        stringstream ss;
+        ss << "Setting droplet detection color interval based on image position (x, y) = (" << x << ", " << y << ")" << endl;
+        string s = ss.str();
+        (*file_logger).Info(s);
+
+        // Do the action
         Mat image = grabImage();
         dropletdetector.colorInterval =
             computeColorIntervalFromSelection(image, tolerance,x,y);
-        cout << x;
-
-        //Stop the droplet selection
     };
 
     (*actions).push_back(setCameraMode);
@@ -84,12 +101,19 @@ void Camera::registerActions(vector<function<void(InstructionBuffer *)>> *action
 }
 
 void Camera::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    stringstream ss;
+    ss << "Registering calls" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
+
     Rucola::CompileArgs mode;
     mode.Action = start+1;
     mode.NumberofArguments = 1;
+
     Rucola::CompileArgs dropletselect;
     dropletselect.Action = start+2;
     dropletselect.NumberofArguments = 2;
+
     Rucola::CompileArgs dropletvariables;
     dropletvariables.Action = start+3;
     dropletvariables.NumberofArguments = 4;
