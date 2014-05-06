@@ -30,7 +30,7 @@ XYAxes::XYAxes(string name, string xPort, string yPort, string xLimitSwitchPort,
 /*
  * Checks whether the limit switch at the given port (J9-14) is pressed
  */
-bool isLimitSwitchPressed(string switchPort) {
+bool XYAxes::isLimitSwitchPressed(string switchPort) {
     int gpio;
     
     if (switchPort == "J9") {
@@ -46,7 +46,7 @@ bool isLimitSwitchPressed(string switchPort) {
     } else if (switchPort.compare("J14") == 0) {
         gpio = 27;
     } else {
-        throw runtime_error("Unknown switch connector: Can not read the switch value.");
+        throw ComponentException(this, "Unknown limit switch connector: Can not read the switch value");
     }
 
     stringstream pathStream;
@@ -146,16 +146,18 @@ void XYAxes::move(int xPosition, int yPosition) {
  */
 void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>> 
         *actions) {
-    cout << "XYAxes (" << name << ") registering actions" << endl;
+    stringstream ss;
+    ss << "Registering actions" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
 
     // 'Home'
     function<void(InstructionBuffer *)> homeAction = [&](InstructionBuffer *buffer) -> void {
         // Log the action
         stringstream ss;
-        ss << "XYAxes (" << name << ") homing" << endl;
+        ss << "Homing" << endl;
         string s = ss.str();
         (*file_logger).Info(s);
-        cout << s << endl;
 
         //Do the homing
         home();
@@ -171,7 +173,7 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
 
         // Log the action
         stringstream ss;
-        ss << "XYAxes (" << name << ") moving to position (x,y)=(" << xPosition << "," << yPosition << ")" << endl;
+        ss << "Moving to position (x, y) = (" << xPosition << ", " << yPosition << ")" << endl;
         string s = ss.str();
         (*file_logger).Info(s);
 
@@ -184,6 +186,11 @@ void XYAxes::registerActions(vector<function<void(InstructionBuffer *)>>
 }
 
 void XYAxes::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){
+    stringstream ss;
+    ss << "Registering calls" << endl;
+    string s = ss.str();
+    (*file_logger).Info(s);
+
     Rucola::CompileArgs homeCall;
     homeCall.Action = start+1;
     homeCall.NumberofArguments = 0;

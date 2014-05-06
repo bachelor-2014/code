@@ -30,13 +30,19 @@ using namespace Rucola;
 \{              { return LBRACE; }
 \}              { return RBRACE; }
 \:              { return COLON; }
+\;              { return SEMI; }
 if              { return IF; }
 else            { return ELSE; }
+print            { return PRINT; }
 [0-9]+\.[0-9]+  { yylval.fval = atof(yytext); return FLOAT; }
 [-]*[0-9]+          { yylval.ival = atoi(yytext); return INT; }
 [_a-zA-Z0-9]+    {
     yylval.sval = new std::string(yytext, yyleng);
     return STRING;
+}
+\"([a-zA-Z0-9 ]*)\" {
+    yylval.sval = new std::string(&yytext[1], yyleng-2); //substring to remove "
+    return STRINGLIT;
 }
 .              ;
 %%

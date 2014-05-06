@@ -43,6 +43,8 @@ class XYAxes: public Component {
         int currentPositionY;
 
         Mendel *mendel;
+
+        bool isLimitSwitchPressed(string switchPort);
 };
 
 #endif
