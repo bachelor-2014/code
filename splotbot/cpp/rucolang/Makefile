@@ -1,7 +1,7 @@
 all: test.out
 
 test.out: rucola.l rucola.y test.cpp Absyn.cpp rucola.cpp ../utils/errors.cpp
-	/usr/local/bin/bison -d rucola.y -v
+	/usr/local/bin/bison -d rucola.y
 	flex  --header-file=lex.yy.h rucola.l
 	mv rucola.tab.c rucola.tab.cpp
 	mv lex.yy.c lex.yy.cpp

@@ -4,10 +4,15 @@
 angular.module('clientApp')
   .controller( "RucolaCoderCtrl", function($scope,$rootScope,$compile,socket,splotService) {
     $scope.output = "";
+    $scope.rucolacode = "";
 
     $scope.sendRucolaCode = function(){
       var code = $scope.rucolacode;
       splotService.postRucola(code);
+    };
+
+    $scope.sendRucolaClear = function(){
+        splotService.postRucola("");
     };
 
     $scope.clearOutput = function() {
