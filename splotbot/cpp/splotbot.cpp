@@ -40,8 +40,12 @@ void Splotbot::executeInstructions(int numberOfInstructions, int instructions[])
 
 void Splotbot::executeRucolaCode(string code){
         try{
-            vector<int> instrs = rucolang.Compile(code);
-            executeInstructions(instrs.size(), &instrs[0]);
+            if(code != ""){
+                vector<int> instrs = rucolang.Compile(code);
+                executeInstructions(instrs.size(), &instrs[0]);
+            }else{
+                rucolang.Clear();
+            }
         } catch(RucolaException& e){
             runAsThread( [=] () {
                 vector<int> args;

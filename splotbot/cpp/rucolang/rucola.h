@@ -12,6 +12,7 @@ namespace Rucola{
     class Rucolang {
         public:
             Rucolang();
+            void Clear();
             void RegisterComponentCalls(map<string,map<string, CompileArgs>> componentCalls);
             void RegisterEventCallback(function<void(string,string,vector<int>)> *eventCallback);
             vector<int> Compile(string code);

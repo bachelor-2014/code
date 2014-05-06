@@ -26,6 +26,11 @@ Rucola::Rucolang::Rucolang(){
     //Empty constructor
 }
 
+void Rucola::Rucolang::Clear(){
+    events = map<string,Statement*>();
+    env = map<string,int>();
+}
+
 void Rucola::Rucolang::RegisterComponentCalls(map<string,map<string,CompileArgs>> componentCalls){
     this->componentCalls = componentCalls;
 }
