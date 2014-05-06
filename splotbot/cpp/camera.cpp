@@ -243,7 +243,7 @@ void Camera::run() {
                         computeMovementSpeed(firstDropletLog,
                                 secondDropletLog);
                     //Send the images to the event
-                    vector<int> args = { (int)movementSpeed * 1000 };
+                    vector<int> args = { (int)(movementSpeed * 1000) };
                     (*eventCallback)(name + "_dropletspeed", to_string(1000 * movementSpeed), args);
                 }
 

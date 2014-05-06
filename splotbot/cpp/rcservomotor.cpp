@@ -106,7 +106,7 @@ int RCServoMotor::setPosition(unsigned short target) {
     //TODO find better solution for this sleep
     //Currently it is there to allow the motor to finish its rotation before
     //continuing executing more commands
-    sleep(1);
+    //sleep(1);
 
     return 0;
 }
