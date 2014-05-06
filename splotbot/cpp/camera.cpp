@@ -23,6 +23,9 @@ Camera::Camera(string name, int videoDevice, string eventName): videoDevice(vide
     setMode(0);
     tolerance = 20;
     isCalibrated = false;
+
+    this->fileLogger = new FileLogger("Camera",name);
+
 }
 
 /**

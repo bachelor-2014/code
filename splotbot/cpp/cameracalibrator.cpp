@@ -15,6 +15,8 @@ using namespace cv;
 CameraCalibrator::CameraCalibrator(string name,Camera *camera,XYAxes *xyaxes): camera(camera), xyaxes(xyaxes) {
     this->name = name;
     calibrator = new Calibrator("data/calibration.xml");
+
+    this->fileLogger = new FileLogger("CameraCalibrator",name);
 }
 
 /**
