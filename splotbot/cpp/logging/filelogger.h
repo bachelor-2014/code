@@ -11,22 +11,24 @@ using namespace std;
 class FileLogger : public Logger<string> {
 
     public:
-        FileLogger(string);
+        FileLogger(string componentType, string componentName);
         ~FileLogger();
 
-        bool Write(string);
-
-        vector<string> Read();
+        vector<Entry<string>> Read();
 
         bool Info(string);
-
         bool Error(string);
+	bool Data(string);
+	bool Clear();
+	string identifier(Entry<string>);
 
-        bool Clear();
+	protected:
+        bool Write(Entry<string>);
+	Entry<string> entry();
 
-    private:
-        string filename;
-        ofstream dataOut;
+	private:
+		string filename;
+		ofstream *dataOut;
 };
 
 #endif

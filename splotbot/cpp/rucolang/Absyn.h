@@ -28,7 +28,7 @@ namespace Rucola {
     class IExpr: public Expr {
         public:
            IExpr(int value);
-           string toString() override;
+           string toString();
            void Compile(map<string,map<string,CompileArgs>> componentCalls,
                     map<string, int> *env, 
                     vector<int> *result);

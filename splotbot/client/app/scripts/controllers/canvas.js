@@ -15,7 +15,12 @@ angular.module('clientApp')
     // Add the canvas to the GUI control
     $scope.init = function(elementInfo){
       $scope.elementInfo = elementInfo;
-      addCanvas($("#"+elementInfo.name));
+
+      $scope.$on("broadcasted", function(event,element) {
+        //addCanvas($("#"+$scope.elementInfo.name));
+        setupCanvas();
+      });
+
 
       socket.on($scope.elementInfo.name + "_dropletspeed", function(data){
         $scope.dropletspeed = data.data;
@@ -70,16 +75,6 @@ angular.module('clientApp')
       addSocket(cId,$scope.elementInfo.parameters.event_name);
     }
 
-    // Adds a canvas to the GUI control initialized form the given config element
-    function addCanvas(element){
-
-      element.append($compile(""+
-        "<canvas id='"+$scope.elementInfo.name+"_canvas' width='320'"+
-        " height='240'></canvas>")($scope))
-
-      setupCanvas();
-    }
-
     // Adds an event handler to the socket, rendering the image
     // contained in the event data on the canvas
     function addSocket(canvasId,eventName){
@@ -109,7 +104,7 @@ function getCursorPosition(e,canvas) {
     y = e.clientY + document.body.scrollTop +
             document.documentElement.scrollTop;
     }
-    
+
     x -= canvas.offsetLeft;
     y -= canvas.offsetTop;
 

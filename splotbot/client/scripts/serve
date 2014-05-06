@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sensible-browser localhost:9000
+(cd app ; python -m SimpleHTTPServer 9000)

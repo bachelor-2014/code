@@ -8,19 +8,29 @@
 #include "logger.h"
 
 using namespace std;
-using namespace cv;
 
-class VideoLogger : public Logger<Mat*>{
+class VideoLogger : public Logger<cv::Mat*>{
 
-    public:
-        VideoLogger(string,VideoCapture*);
-        ~VideoLogger();
+	public:
+		VideoLogger(string,string,cv::VideoCapture*);
+		~VideoLogger();
 
-        bool Write(Mat*);
-    private:
-        string filename;
-        VideoWriter *videoWriter;
-        VideoCapture cap;
+		bool Data(cv::Mat* data);
+
+		bool Init(string componentType, string componentName){};
+		string identifier(Entry<cv::Mat*> entry);
+		bool Clear();
+	
+	protected:
+		Entry<cv::Mat*> entry(); 
+		bool Write(Entry<cv::Mat*>);
+
+
+	private:
+		string filename;
+		cv::VideoWriter *videoWriter;
+		cv::VideoCapture cap;
+
 };
 
 #endif

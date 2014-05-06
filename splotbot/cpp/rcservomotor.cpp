@@ -18,6 +18,8 @@ using namespace std;
  */
 RCServoMotor::RCServoMotor(string name, string device, unsigned char channel): device(device), channel(channel) {
     this->name = name;
+
+    this->fileLogger = new FileLogger("RCServoMotor",name);
 }
 
 /**

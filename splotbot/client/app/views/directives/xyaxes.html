@@ -1,11 +1,8 @@
 <!-- Control for the 'XYAxes' component type -->
 <div class="control-box col-md-12" ng-controller="XYAxesCtrl" ng-init="init(elementInfo)">
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{elementInfo.name}} (XYAxes)</h3>
-    </div>
-    <div class="panel-body">
+    <panel heading="{{elementInfo.name}} (XYAxes)">
+
       <div class="row"> 
         <!-- Control buttons -->
         <div class="col-md-2">
@@ -13,24 +10,24 @@
         </div>
         <div class="col-md-10">
           <!-- Button for homing -->
-          <div class="glyphicon glyphicon-home"
-            ng-click="home()"></div>
+          <span class="glyphicon glyphicon-home"
+            ng-click="home()"></span>
 
           <!-- Buttons for moving along the axes -->
-          <div class="glyphicon glyphicon-arrow-left nav-arrow"
-            ng-click="moveBy(-movementAmount, 0)"></div>
+          <span class="glyphicon glyphicon-arrow-left nav-arrow"
+            ng-click="moveBy(-movementAmount, 0)"></span>
 
-          <div class="glyphicon glyphicon-arrow-down nav-arrow"
-            ng-click="moveBy(0, -movementAmount)"></div>
+          <span class="glyphicon glyphicon-arrow-down nav-arrow"
+            ng-click="moveBy(0, -movementAmount)"></span>
 
-          <div class="glyphicon glyphicon-arrow-up nav-arrow"
-            ng-click="moveBy(0, movementAmount)"></div>
+          <span class="glyphicon glyphicon-arrow-up nav-arrow"
+            ng-click="moveBy(0, movementAmount)"></span>
 
           <span class="glyphicon glyphicon-arrow-right nav-arrow"
             ng-click="moveBy(movementAmount, 0)"></span>
         </div>
       </div>
-      
+
       <!-- Movement amount -->
       <div class="row">
         <div class="col-md-2">
@@ -65,6 +62,5 @@
         </div>
       </div>
 
-    </div>
-  </div>
+    </panel>
 </div>

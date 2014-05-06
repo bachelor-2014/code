@@ -1,0 +1,6 @@
+<panel heading="Logs">
+    <div ng-repeat="log in logs track by $index">
+        <a ng-href="{{getLogLink(log)}}" target="_blank">{{log}}</a>
+        <a ng-click="deleteLog(log)">X</a>
+    </div>
+</panel>

@@ -15,9 +15,9 @@
 #include "rucolang/compileargs.h"
 
 #include "computer_vision/imagestitcher.h"
+#include "computer_vision/positionimagestitcher.h"
 #include "computer_vision/featuresimagestitcher.h"
 #include "computer_vision/featuresandpositionimagestitcher.h"
-#include "computer_vision/positionimagestitcher.h"
 
 #include "scanner.h"
 
@@ -28,6 +28,8 @@ using namespace std;
  */
 Scanner::Scanner(string name, Camera *camera, XYAxes *xyaxes): camera(camera), xyaxes(xyaxes) {
     this->name = name;
+    this->fileLogger = new FileLogger("Scanner",name);
+    this->imageLogger = new ImageLogger("Scanner",name);
 }
 
 /*
@@ -160,6 +162,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
         vector<uchar> buff;
         vector<int> param = vector<int>(0);
         imencode(".png", stitchedImage, buff, param);
+	imageLogger->Data(&stitchedImage);
+
         string base64 = base64_encode(&buff[0],buff.size());
 
         // Send the image as an event
@@ -199,7 +203,7 @@ void Scanner::registerActions(vector<function<void(InstructionBuffer *)>> *actio
         stringstream ss;
         ss << "Scanning area (" << fromX << ", " << fromY << ") -> (" << toX << ", " << toY << ") with " << stepsBetweenImages << " steps and " << sleepBetweenImages << " milliseconds of sleep time between each image, stitching with algorithm " << stitchingAlgorithm << endl;
         string s = ss.str();
-        (*file_logger).Info(s);
+        (*fileLogger).Info(s);
     };
 
     (*actions).push_back(scanAction);
