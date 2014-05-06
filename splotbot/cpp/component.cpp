@@ -4,7 +4,9 @@
 
 using namespace std;
 
-Component::Component(){}
+Component::Component(){
+
+}
 
 /**
  * registerCallback registeres the event callback
