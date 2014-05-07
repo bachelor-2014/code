@@ -82,9 +82,10 @@ bool test(function<bool()> f, string message){
 int main() {
     test(test_file_read_write,"test write file failed");
     test(test_image_read_write,"test write image failed");
-    test(test_video_read_write,"test write video failed");
+    //test(test_video_read_write,"test write video failed");
     test(test_logger_instantiation,"test_instantiation failed!");
 
+    clog << "TIMESTAMP:" << getTimeStamp() << endl;
     if(status){
 	return 0;
     }else{
