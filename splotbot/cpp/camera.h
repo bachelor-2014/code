@@ -37,8 +37,8 @@ class Camera: public Component {
                 *componentCalls, int start);
         void setMode(int m);
         int getMode();
-        void stop();
-        void start();
+        void pause();
+        void resume();
         void dropletDetection();
         Mat grabImage();
         void calibrate(cv::Mat coefs, cv::Mat matrix);

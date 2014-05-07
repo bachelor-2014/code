@@ -149,26 +149,18 @@ int Camera::getMode() {
 }
 
 /**
- * Stops the camera, making it no longer grabbing new images
+ * Blocks the camera, making it no longer grab new images
  */
-void Camera::stop(){
+void Camera::pause(){
     imagelock.lock();
-    setMode(0);
     closeVideoDevice();
-    //sleep(3);
 }
 
 /**
  * Starts the camera
  */
-void Camera::start(){
-    //Don't stop the droplet detection
+void Camera::resume(){
     openVideoDevice();
-    if(mode == 0){
-        setMode(1);
-    } else if (mode < 2) {
-        setMode(1);
-    }
     imagelock.unlock();
 }
 
