@@ -40,8 +40,8 @@ int main() {
     gv.push_back(gi4);
 
     Camera camera("Cam", 0, "event");
-    camera.xStep = {24.915325033641395, 5.7030984481543534};
-    camera.yStep = {15.704089269213707, -2.6978784794984407};
+    camera.xStep = {19.879867553710938, 0.072934468587239579};
+    camera.yStep = {0.81430053710937500, -19.770927429199219};
 
     //camera.yStep = {-0.4,18.6};
     //camera.xStep = {-18.2, 0.0};
