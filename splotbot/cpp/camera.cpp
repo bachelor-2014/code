@@ -169,7 +169,7 @@ void Camera::start(){
     } else if (mode < 2) {
         setMode(1);
     }
-    image.unlock();
+    imagelock.unlock();
 }
 
 /**
