@@ -1,20 +1,19 @@
 <!-- Control for the 'SingleStepperMotor' component type -->
 <div class="control-box col-md-12" ng-controller="MotorCtrl" ng-init="init(elementInfo)">
-    <panel heading="{{elementInfo.name}}">
-        <p>SingleStepperMotor</p>
+  <h1>{{elementInfo.name}}</h1>
+  <p>SingleStepperMotor</p>
 
-        <!-- Buttons for stepping the motor -->
-        <div class="glyphicon glyphicon-arrow-left nav-arrow"
-            ng-click="move(-1)"></div>
+  <!-- Buttons for stepping the motor -->
+  <div class="glyphicon glyphicon-arrow-left nav-arrow"
+    ng-click="move(-1)"></div>
 
-        <span class="glyphicon glyphicon-arrow-right nav-arrow"
-            ng-click="move(1)"></span>
+  <span class="glyphicon glyphicon-arrow-right nav-arrow"
+    ng-click="move(1)"></span>
 
-        <!--span class="glyphicon glyphicon-circle-arrow-left nav-arrow"
-            ng-when="currentOperation=='moveLeft'"
-            ></span>
-        <span class="glyphicon glyphicon-circle-arrow-up"></span>
-        <span class="glyphicon glyphicon-circle-arrow-down"></span>
-        <span class="glyphicon glyphicon-circle-arrow-right"></span-->
-    </panel>
+  <!--span class="glyphicon glyphicon-circle-arrow-left nav-arrow"
+    ng-when="currentOperation=='moveLeft'"
+    ></span>
+  <span class="glyphicon glyphicon-circle-arrow-up"></span>
+  <span class="glyphicon glyphicon-circle-arrow-down"></span>
+  <span class="glyphicon glyphicon-circle-arrow-right"></span-->
 </div>

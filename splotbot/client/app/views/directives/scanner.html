@@ -1,6 +1,10 @@
 <div class="control-box col-md-12" ng-controller="ScannerCtrl" ng-init="init(elementInfo)">
 
-    <panel heading="{{elementInfo.name}} (Scanner)">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{elementInfo.name}} (Scanner)</h3>
+    </div>
+    <div class="panel-body">
       <form class="form-inline" role="form" ng-submit="scannersubmit()">
           <img ng-src="{{scannedimg}}" ng-show="scannedimg"></img>
           <div class="alert alert-success" ng-show="scanTime">Stitching time: {{scanTime | number:2}} seconds</div>
@@ -86,5 +90,7 @@
           </div>
 
       </form>
-    </panel>
+    </div>
+  </div>
+
 </div>

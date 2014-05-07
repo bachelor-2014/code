@@ -19,7 +19,7 @@ angular.module('clientApp')
 
     $scope.init = function(elementInfo){
         $scope.elementInfo = elementInfo;
-
+        
         socket.on($scope.elementInfo.name, function(data){
             $scope.scannedimg = 'data:image/png;base64,'+data.data;
         });
