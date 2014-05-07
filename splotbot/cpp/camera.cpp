@@ -172,8 +172,6 @@ void Camera::openVideoDevice() {
 
     cap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
     cap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-
-    this->videoLogger = new VideoLogger("Camera",name,cap);
 }
 
 /**
@@ -215,7 +213,6 @@ Mat Camera::grabImage() {
         cv::undistort(imageClone, image, matrix, coefs);
     }
 
-    videoLogger->Data(&image);
     //newimage = image.clone();
 
     //imagelock.unlock();
@@ -228,6 +225,8 @@ Mat Camera::grabImage() {
  * Starts the video capture device and pulls images
  */
 void Camera::run() {
+    this->videoLogger = new VideoLogger("Camera",name,cap);
+
     runAsThread( [&] () {
 
         //cout << "Camera: Thread opening capture device ..." << endl;
@@ -251,6 +250,7 @@ void Camera::run() {
             
             imagelock.lock();
             Mat img = grabImage();
+            videoLogger->Data(&img);
             imagelock.unlock();
 
             //if(isCalibrated){

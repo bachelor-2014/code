@@ -151,7 +151,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
         vector<uchar> buff;
         vector<int> param = vector<int>(0);
         imencode(".png", stitchedImage, buff, param);
-	imageLogger->Data(&stitchedImage);
+        imageLogger->Data(&stitchedImage);
 
         string base64 = base64_encode(&buff[0],buff.size());
 
