@@ -74,10 +74,7 @@ void CameraCalibrator::calibrate(){
     cv::Mat image;
 
     // Stop the camera
-    int cameraMode = camera->getMode();
-    if (cameraMode > 0) {
-        camera->stop();
-    }
+    camera->pause();
 
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
@@ -147,20 +144,14 @@ void CameraCalibrator::calibrate(){
         // Reset the position
         xyaxes->move(centerX, centerY);
 
-        // Restart the camera
-        if (cameraMode > 0) {
-            camera->start();
-        }
+        camera->resume();
 
         throw;
     } catch(exception& e){
         // Reset the position
         xyaxes->move(centerX, centerY);
 
-        // Restart the camera
-        if (cameraMode > 0) {
-            camera->start();
-        }
+        camera->resume();
 
         throw;
     }
@@ -170,10 +161,7 @@ void CameraCalibrator::calibrate(){
     // Reset the position
     xyaxes->move(centerX, centerY);
 
-    // Restart the camera
-    if (cameraMode > 0) {
-        camera->start();
-    }
+    camera->resume();
 }
 
 void CameraCalibrator::registerCalls(map<string, map<string,Rucola::CompileArgs>> *componentCalls, int start){

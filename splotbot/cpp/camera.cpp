@@ -149,24 +149,19 @@ int Camera::getMode() {
 }
 
 /**
- * Stops the camera, making it no longer grabbing new images
+ * Blocks the camera, making it no longer grab new images
  */
-void Camera::stop(){
-    setMode(0);
+void Camera::pause(){
+    imagelock.lock();
     closeVideoDevice();
-    //sleep(3);
 }
 
 /**
  * Starts the camera
  */
-void Camera::start(){
-    //Don't stop the droplet detection
-    if(mode == 0){
-        setMode(1);
-    } else if (mode < 2) {
-        setMode(1);
-    }
+void Camera::resume(){
+    openVideoDevice();
+    imagelock.unlock();
 }
 
 /**
@@ -254,7 +249,9 @@ void Camera::run() {
             //Mat img = image.clone();
             //imagelock.unlock();
             
+            imagelock.lock();
             Mat img = grabImage();
+            imagelock.unlock();
 
             //if(isCalibrated){
             //    cout << "Undistorting" << endl;

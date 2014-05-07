@@ -70,11 +70,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     int resetY = xyaxes->positionY();
 
     // Stop the camera
-    int cameraMode = camera->getMode();
-    if (cameraMode > 0) {
-        camera->stop();
-        cout << "Closed camera" << endl;
-    }
+    camera->pause();
 
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
@@ -105,11 +101,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
 
     cout << "Reset position" << endl;
 
-    // Restart the camera
-    if (cameraMode > 0) {
-        camera->start();
-        cout << "Started camera" << endl;
-    }
+    camera->resume();
 
     // Run stitching in a separate thread
     // In order to aboid the image stitcher local variable

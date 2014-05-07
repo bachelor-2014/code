@@ -31,8 +31,8 @@ cv::Mat PositionImageStitcher::stitch() {
     double left = xStep[0];
     double down = yStep[1];
 
-    x_shift = -1 * left;
-    y_shift = down;
+    x_shift = -left;
+    y_shift = -down;
 
     cout << "xStep" << cv::Mat(xStep) << endl;
     cout << "yStep" << cv::Mat(yStep) << endl;
