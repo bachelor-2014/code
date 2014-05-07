@@ -251,7 +251,6 @@ void Camera::run() {
             
             imagelock.lock();
             Mat img = grabImage();
-            videoLogger->Data(&img);
             imagelock.unlock();
 
             //if(isCalibrated){
@@ -284,7 +283,7 @@ void Camera::run() {
             }
 
             // Log the image
-            //(*video_logger).Write(&img);
+            videoLogger->Data(&img);
 
             //Convert image to base64
             vector<uchar> buff;//buffer for coding
