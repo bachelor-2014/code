@@ -17,7 +17,6 @@
 #include "computer_vision/imagestitcher.h"
 #include "computer_vision/positionimagestitcher.h"
 #include "computer_vision/featuresimagestitcher.h"
-#include "computer_vision/featuresandpositionimagestitcher.h"
 
 #include "scanner.h"
 
@@ -54,10 +53,7 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
         case 0:
             stitcher = new FeaturesImageStitcher(camera, stepsBetweenImages);
             break;
-        case 1: 
-            stitcher = new FeaturesAndPositionImageStitcher(camera, stepsBetweenImages);
-            break;
-        case 2:
+        case 1:
             stitcher = new PositionImageStitcher(camera, stepsBetweenImages);
             break;
         default: 
@@ -123,10 +119,6 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
 
         if (FeaturesImageStitcher *i = dynamic_cast<FeaturesImageStitcher*>(stitcher)) {
             FeaturesImageStitcher ii = *i;
-            sem_post(&stitcherSemaphore);
-            stitchedImage = ii.stitch();
-        } else if (FeaturesAndPositionImageStitcher *i = dynamic_cast<FeaturesAndPositionImageStitcher*>(stitcher)) {
-            FeaturesAndPositionImageStitcher ii = *i;
             sem_post(&stitcherSemaphore);
             stitchedImage = ii.stitch();
         } else if (PositionImageStitcher *i = dynamic_cast<PositionImageStitcher*>(stitcher)) {
