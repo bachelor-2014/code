@@ -63,14 +63,11 @@ bool FileLogger::Data(string data){
 };
 
 string FileLogger::identifier(Entry<string> entry){
-	return to_string(entry.Timestamp)+","+entry.ComponentType+","+entry.ComponentName+","+entry.ActivityType+","+entry.Data;
+	return entry.Timestamp+","+entry.ComponentType+","+entry.ComponentName+","+entry.ActivityType+","+entry.Data;
 }
 
 Entry<string> FileLogger::entry(){
-
-	const double timestamp = double(clock()) / CLOCKS_PER_SEC;
-
-	Entry<string> entry(timestamp,this->componentType,
+	Entry<string> entry(getTimeStamp(),this->componentType,
 			this->componentName,"","");
 
 	return entry;

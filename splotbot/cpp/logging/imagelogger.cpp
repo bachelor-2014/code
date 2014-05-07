@@ -37,14 +37,11 @@ bool ImageLogger::Init(string componentType, string componentName){};
 bool ImageLogger::Clear(){};
 
 string ImageLogger::identifier(Entry<cv::Mat*> entry){
-	return to_string(entry.Timestamp)+"_"+entry.ComponentType+"_"+entry.ComponentName+"_"+entry.ActivityType;
+	return entry.Timestamp+"_"+entry.ComponentType+"_"+entry.ComponentName+"_"+entry.ActivityType;
 }
 
 Entry<cv::Mat*> ImageLogger::entry(){
-
-	const double timestamp = double(clock()) / CLOCKS_PER_SEC;
-
-	Entry<cv::Mat*> entry(timestamp,this->componentType,
+	Entry<cv::Mat*> entry(getTimeStamp(),this->componentType,
 		this->componentName,"",NULL);
 
 	return entry;

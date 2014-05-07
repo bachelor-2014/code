@@ -9,13 +9,13 @@ using namespace std;
 
 template <typename U>
 struct Entry {
-	long Timestamp;
+	string Timestamp;
 	string ComponentType;
 	string ComponentName;
 	string ActivityType;
 	U Data;
 
-	Entry(long time, string comType, string comName,
+	Entry(string time, string comType, string comName,
 			string activityType, U data):
 		Timestamp(time),
 		ComponentType(comType),
@@ -56,5 +56,7 @@ class Logger {
 
 		virtual bool Write(Entry<T> e){};
 };
+
+string getTimeStamp();
 
 #endif

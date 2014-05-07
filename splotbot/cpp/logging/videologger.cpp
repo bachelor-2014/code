@@ -41,13 +41,11 @@ bool VideoLogger::Data(cv::Mat* data){
 bool VideoLogger::Clear(){};
 
 string VideoLogger::identifier(Entry<cv::Mat*> entry){
-	return to_string(entry.Timestamp)+"_"+entry.ComponentType+"_"+entry.ComponentName+"_"+entry.ActivityType;
+	return entry.Timestamp+"_"+entry.ComponentType+"_"+entry.ComponentName+"_"+entry.ActivityType;
 }
 
 Entry<cv::Mat*> VideoLogger::entry(){
-	const double timestamp = double(clock()) / CLOCKS_PER_SEC;
-
-	Entry<cv::Mat*> entry(timestamp,this->componentType,
+	Entry<cv::Mat*> entry(getTimeStamp(),this->componentType,
 		this->componentName,"",NULL);
 
 	return entry;
