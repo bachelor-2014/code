@@ -302,6 +302,8 @@ void Camera::run() {
             (*eventCallback)(eventName, base64, args);
         }
 
+        closeVideoDevice();
+
         //cout << "Camera: Releasing the capture device ..." << endl;
         //cap.release();
         ////free(cap);
