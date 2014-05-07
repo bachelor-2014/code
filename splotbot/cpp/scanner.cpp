@@ -75,9 +75,6 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
         camera->stop();
     }
 
-    // Make the camera open the video device as a resource
-    // of this thread
-    camera->openVideoDevice();
 
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
@@ -90,16 +87,21 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             // Sleep before grabbing the image, allowing the camera to settle
             usleep(sleepBetweenImages * 1000);
 
+            // Make the camera open the video device as a resource
+            // of this thread
+            camera->openVideoDevice();
+
             // Grab the image
             stitcher->grabImage(x, y);
+
+            // Close the video device in this thread
+            camera->closeVideoDevice();
         }
     }
 
     // Move back to the previous position
     xyaxes->move(resetX, resetY);
 
-    // Close the video device in this thread
-    camera->closeVideoDevice();
 
     // Restart the camera
     if (cameraMode > 0) {
