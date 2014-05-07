@@ -12,7 +12,7 @@ angular.module('clientApp')
       link: function(scope,element,attrs){
         $timeout(function(){
           scope.$broadcast("broadcasted",{});
-        },0)
+        },500)
       }
     }
   })
