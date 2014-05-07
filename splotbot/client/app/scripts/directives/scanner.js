@@ -8,8 +8,6 @@ angular.module('clientApp')
       scope: {
         elementInfo: '=info'
       },
-      templateUrl: "views/directives/scanner.html",
-      link: function(scope,element,attrs){
-      }
+      templateUrl: '/views/directives/scanner.html'
     };
   });

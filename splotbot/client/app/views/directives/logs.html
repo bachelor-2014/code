@@ -1,6 +1,14 @@
-<panel heading="Logs">
-    <div ng-repeat="log in logs track by $index">
-        <a ng-href="{{getLogLink(log)}}" target="_blank">{{log}}</a>
-        <a ng-click="deleteLog(log)">X</a>
+<div class="control-box col-md-12" ng-controller="IntegerCoderCtrl" ng-init="init(elementInfo)">
+
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Logs</h3>
     </div>
-</panel>
+    <div class="panel-body">
+	<div ng-repeat="log in logs track by $index">
+
+		<a ng-href="{{getLogLink(log)}}" target="_blank">{{log}}</a>
+		<a ng-click="deleteLog(log)">X</a>
+	</div>
+     </div>
+</div>
