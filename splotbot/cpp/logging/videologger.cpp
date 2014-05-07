@@ -11,6 +11,9 @@ Size frameSize;
 VideoLogger::VideoLogger(string componentType, string componentName,
 		VideoCapture *cap) : Logger<Mat*>(){
 
+    this->componentType = componentType;
+    this->componentName = componentName;
+
     filename = "data/logs/"+this->identifier(this->entry())+".avi";
 
     double dWidth = (*cap).get(CV_CAP_PROP_FRAME_WIDTH);
@@ -22,8 +25,6 @@ VideoLogger::VideoLogger(string componentType, string componentName,
                                     CV_FOURCC('M','P','E','G'),
                                     20,frameSize);
 
-    this->componentType = componentType;
-    this->componentName = componentName;
 }
 
 VideoLogger::~VideoLogger(){

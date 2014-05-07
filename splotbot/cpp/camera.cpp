@@ -302,6 +302,7 @@ void Camera::run() {
         }
 
         closeVideoDevice();
+        free(videoLogger);
 
         //cout << "Camera: Releasing the capture device ..." << endl;
         //cap.release();
