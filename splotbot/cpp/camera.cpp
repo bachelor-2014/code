@@ -153,14 +153,18 @@ int Camera::getMode() {
  */
 void Camera::pause(){
     imagelock.lock();
-    closeVideoDevice();
+    if(mode > 0) {
+        closeVideoDevice();
+    }
 }
 
 /**
  * Starts the camera
  */
 void Camera::resume(){
-    openVideoDevice();
+    if(mode > 0) {
+        openVideoDevice();
+    }
     imagelock.unlock();
 }
 
