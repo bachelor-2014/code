@@ -14,6 +14,11 @@ angular.module('clientApp')
       $scope.output = "";
     };
 
+    $scope.sendRucolaClear = function(){
+      splotService.postRucola("");
+    };
+
+
     // The event of an incoming print statement
     socket.on("Rucola_print", function(data){
       $scope.output = data.data + "\n" + $scope.output;
