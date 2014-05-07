@@ -96,13 +96,11 @@ app.post('/event/:name', getdata, function(req, res){
 
 app.get('/logs',function(req,res){
 	fs.readdir('data/logs', function (err, files) {
-		console.log(files);
 		res.send(files);
 	})
 });
 
 app.get('/logs/:filename', function(req,res){
-	console.log(req.params.filename);
 	res.sendfile("data/logs/"+req.params.filename);
 });
 
