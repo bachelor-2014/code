@@ -47,9 +47,10 @@ void Splotbot::executeRucolaCode(string code){
                 rucolang.Clear();
             }
         } catch(RucolaException& e){
+            string error = string(e.what());
             runAsThread( [=] () {
                 vector<int> args;
-                eventCallback("error", e.what(), args);
+                eventCallback("error", error, args);
             });
         }
 }
