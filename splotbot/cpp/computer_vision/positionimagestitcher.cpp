@@ -28,10 +28,10 @@ cv::Mat PositionImageStitcher::stitch() {
     vector<double> xStep = camera->xStep;
     vector<double> yStep = camera->yStep;
 
-    double left = xStep[0] + (-1.0)*xStep[1];
-    double down = yStep[0] + (-1.0)*yStep[1];
+    double left = xStep[0];
+    double down = yStep[1];
 
-    x_shift = -left;
+    x_shift = -1 * left;
     y_shift = down;
 
     cout << "xStep" << cv::Mat(xStep) << endl;
