@@ -179,6 +179,7 @@ void Camera::openVideoDevice() {
  */
 void Camera::closeVideoDevice() {
     cap->release();
+    free(cap);
 }
 
 /**
