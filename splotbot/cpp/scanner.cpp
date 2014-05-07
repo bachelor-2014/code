@@ -73,8 +73,8 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
     int cameraMode = camera->getMode();
     if (cameraMode > 0) {
         camera->stop();
+        cout << "Closed camera" << endl;
     }
-
 
     // Go to each camera position between the given from and to coordinates
     // and grab an image in each place
@@ -98,14 +98,17 @@ void Scanner::scan(int stepsBetweenImages, int sleepBetweenImages, int fromX, in
             camera->closeVideoDevice();
         }
     }
+    cout << "Grapped images" << endl;
 
     // Move back to the previous position
     xyaxes->move(resetX, resetY);
 
+    cout << "Reset position" << endl;
 
     // Restart the camera
     if (cameraMode > 0) {
         camera->start();
+        cout << "Started camera" << endl;
     }
 
     // Run stitching in a separate thread

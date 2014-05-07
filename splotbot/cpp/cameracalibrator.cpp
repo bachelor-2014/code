@@ -79,10 +79,6 @@ void CameraCalibrator::calibrate(){
         camera->stop();
     }
 
-    // Make the camera open the video device as a resource
-    // of this thread
-    camera->openVideoDevice();
-
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             // Move to the position
@@ -91,7 +87,14 @@ void CameraCalibrator::calibrate(){
             // Sleep before grabbing the image, allowing the camera to settle
             sleep(1);
 
+            // Make the camera open the video device as a resource
+            // of this thread
+            camera->openVideoDevice();
+
             image = camera->grabImage();
+
+            // Close the video device in this thread
+            camera->closeVideoDevice();
 
             stringstream fs;
             fs << "data/images/grab" << centerX+x << "_" << centerY+y << ".jpg";
@@ -115,15 +118,21 @@ void CameraCalibrator::calibrate(){
 
         xyaxes->move(centerX,centerY);
         sleep(1);
+        camera->openVideoDevice();
         stepImages.push_back(camera->grabImage());
+        camera->closeVideoDevice();
 
         xyaxes->move(centerX+1,centerY);
         sleep(1);
+        camera->openVideoDevice();
         stepImages.push_back(camera->grabImage());
+        camera->closeVideoDevice();
 
         xyaxes->move(centerX,centerY+1);
         sleep(1);
+        camera->openVideoDevice();
         stepImages.push_back(camera->grabImage());
+        camera->closeVideoDevice();
 
         xyaxes->move(centerX,centerY);
         sleep(1);
@@ -138,9 +147,6 @@ void CameraCalibrator::calibrate(){
         // Reset the position
         xyaxes->move(centerX, centerY);
 
-        // Close the video device in this thread
-        camera->closeVideoDevice();
-
         // Restart the camera
         if (cameraMode > 0) {
             camera->start();
@@ -150,9 +156,6 @@ void CameraCalibrator::calibrate(){
     } catch(exception& e){
         // Reset the position
         xyaxes->move(centerX, centerY);
-
-        // Close the video device in this thread
-        camera->closeVideoDevice();
 
         // Restart the camera
         if (cameraMode > 0) {
@@ -166,9 +169,6 @@ void CameraCalibrator::calibrate(){
 
     // Reset the position
     xyaxes->move(centerX, centerY);
-
-    // Close the video device in this thread
-    camera->closeVideoDevice();
 
     // Restart the camera
     if (cameraMode > 0) {
