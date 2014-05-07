@@ -104,8 +104,8 @@ void computeTranslation(cv::Mat image1, cv::Mat image2, double *xTranslation, do
     corners1center.y = corners1sum.y / corners1.size();
 
     cv::Point2f corners2center;
-    corners2center.x = corners1sum.x / corners2.size();
-    corners2center.y = corners1sum.y / corners2.size();
+    corners2center.x = corners2sum.x / corners2.size();
+    corners2center.y = corners2sum.y / corners2.size();
 
     cout << "Corner1center: " << corners1center << endl;
     cout << "Corner2center: " << corners2center << endl;
