@@ -21,3 +21,4 @@ lex.yy.cpp
 lex.yy.h
 rucola.tab.cpp
 rucola.tab.h
+*.DS_Store
