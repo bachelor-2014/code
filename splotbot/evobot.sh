@@ -8,7 +8,7 @@
 # Description:       evolutionary robot
 ### END INIT INFO
 
-FOLDER=/root/code/splotbot
+FOLDER=/root/evobot/code/splotbot
 SCRIPT=$FOLDER/start.sh
 STOP=$FOLDER/stop.sh
 RUNAS=root
