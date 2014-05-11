@@ -71,3 +71,7 @@ Now we install the dependencies using bower:
 
 Then we can host the client using grunt:
 > grunt serve --force
+
+#Setting up Evobot service
+Enter the splotbot directory, then do
+> sudo make service
