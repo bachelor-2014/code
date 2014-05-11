@@ -20,6 +20,18 @@
         }
     },
     {
+        "type": "XYAxes",
+        "name": "TopAxes",
+        "parameters": {
+            "x_port": "Z",
+            "y_port": "E",
+            "x_limit_switch_port": "J14",
+            "y_limit_switch_port": "J12",
+            "x_step_limit": 79,
+            "y_step_limit": 58
+        }
+    },
+    {
         "type": "Scanner",
         "name": "Scanner",
         "parameters": {
