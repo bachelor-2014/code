@@ -1,3 +1,22 @@
-2
+19 3
+biofilm_step1_few biofilm_1 10 10 11 11 1
+biofilm_step5_few biofilm_5 10 10 15 15 5
 biofilm_step10_few biofilm_10 10 10 20 20 10
-biofilm_step5_few biofilm_5 10 10 20 20 5
+
+droplet_step5_full droplet_5 10 10 30 30 5
+droplet_step10_full droplet_10 10 10 30 30 10
+
+biofilm_step5_2 biofilm_5 10 10 10 15 5
+biofilm_step5_4 biofilm_5 10 10 15 15 5
+biofilm_step5_9 biofilm_5 10 10 20 20 5
+biofilm_step5_16 biofilm_5 10 10 25 25 5
+biofilm_step5_20 biofilm_5 10 10 25 30 5
+biofilm_step5_25 biofilm_5 10 10 30 30 5
+biofilm_step5_30 biofilm_5 10 10 30 35 5
+biofilm_step5_36 biofilm_5 10 10 35 35 5
+biofilm_step5_42 biofilm_5 10 10 35 40 5
+biofilm_step5_49 biofilm_5 10 10 40 40 5
+biofilm_step5_56 biofilm_5 10 10 40 45 5
+biofilm_step5_64 biofilm_5 10 10 45 45 5
+biofilm_step5_72 biofilm_5 10 10 45 50 5
+biofilm_step5_81 biofilm_5 10 10 50 50 5
