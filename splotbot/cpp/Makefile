@@ -24,6 +24,9 @@ OBJFILES = $(SRCFILES:.cpp=.o)
 TESTFILES = $(shell find -name "*test.cpp")
 TESTOBJ = $(TESTFILES:.cpp=.out)
 
+EXPERIMENTFILES = $(shell find -name "../../*experiment.cpp")
+EXPERIMENTOBJ = $(TESTFILES:.cpp=.out)
+
 PROGRAM = test.out
 PROGRAMSRC = test.cpp
 
@@ -34,6 +37,8 @@ depend: .depend
 all: $(SRCFILES) $(PROGRAM)
 
 tests: $(TESTFILES) $(TESTOBJ)
+
+experiments: $(EXPERIMENTFILES) $(EXPERIMENTOBJ)
 
 .depend: $(SRCFILES)
 	rm -f ./.depend
