@@ -24,8 +24,8 @@ OBJFILES = $(SRCFILES:.cpp=.o)
 TESTFILES = $(shell find -name "*test.cpp")
 TESTOBJ = $(TESTFILES:.cpp=.out)
 
-EXPERIMENTFILES = $(shell find -name "../../*experiment.cpp")
-EXPERIMENTOBJ = $(TESTFILES:.cpp=.out)
+EXPERIMENTFILES = $(shell find "../../experiments" -name "*experiment.cpp")
+EXPERIMENTOBJ = $(EXPERIMENTFILES:.cpp=.out)
 
 PROGRAM = test.out
 PROGRAMSRC = test.cpp
