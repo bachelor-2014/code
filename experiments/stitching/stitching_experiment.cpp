@@ -49,44 +49,61 @@ Experiment readExperiment() {
     return exp;
 }
 
-void runExperiment(Experiment exp, int repetitions) {
-    cout << "Running experiment: " << exp.name << endl;
+void runPositionExperiment(Experiment exp, int repetitions) {
+    cout << "Running experiment (position): " << exp.name << endl;
 
     Camera camera("Cam", 0, "event");
     camera.xStep = {19.879867553710938, 0.072934468587239579};
     camera.yStep = {0.81430053710937500, -19.770927429199219};
 
     PositionImageStitcher pis(exp.images, &camera, exp.stepSize);
-    FeaturesImageStitcher fis(exp.images, &camera, exp.stepSize);
 
-    unsigned long startTime, endTime, positionTime, featuresTime;
-    cv::Mat positionResult, featuresResult;
+    unsigned long startTime, endTime, resultTime;
+    cv::Mat result;
 
     ofstream os;
     os.open("results/results.txt", ios::out | ios::app);
 
-    cout << "-> Stitching based on position ..." << endl;
     os << exp.name << "_position";
     for (int i = 0; i < repetitions; i++) {
         startTime = getCurrentTimeMs();
-        positionResult = pis.stitch();
+        result = pis.stitch();
         endTime = getCurrentTimeMs();
-        positionTime = endTime - startTime;
+        resultTime = endTime - startTime;
 
-        os << "," << positionTime;
+        os << "," << resultTime;
     }
     os << endl;
 
-    cout << "-> Stitching based on features ..." << endl;
+    os.close();
+
+    cv::imwrite("results/" + exp.name + "_position.jpg", result);
+}
+
+void runFeaturesExperiment(Experiment exp, int repetitions) {
+    cout << "Running experiment (features): " << exp.name << endl;
+
+    Camera camera("Cam", 0, "event");
+    camera.xStep = {19.879867553710938, 0.072934468587239579};
+    camera.yStep = {0.81430053710937500, -19.770927429199219};
+
+    FeaturesImageStitcher fis(exp.images, &camera, exp.stepSize);
+
+    unsigned long startTime, endTime, resultTime;
+    cv::Mat result;
+
+    ofstream os;
+    os.open("results/results.txt", ios::out | ios::app);
+
     os << exp.name << "_features";
     for (int i = 0; i < repetitions; i++) {
         try {
             startTime = getCurrentTimeMs();
-            featuresResult = fis.stitch();
+            result = fis.stitch();
             endTime = getCurrentTimeMs();
-            featuresTime = endTime - startTime;
+            resultTime = endTime - startTime;
 
-            os << "," << featuresTime;
+            os << "," << resultTime;
         } catch (const runtime_error& error) {
             os << ",err";
             break;
@@ -96,13 +113,11 @@ void runExperiment(Experiment exp, int repetitions) {
 
     os.close();
 
-    cv::imwrite("results/" + exp.name + "_position.jpg", positionResult);
-    cv::imwrite("results/" + exp.name + "_features.jpg", featuresResult);
+    cv::imwrite("results/" + exp.name + "_features.jpg", result);
 }
 
 int main() {
     cout << "Running image stitching experiments" << endl;
-    cout << "###################################" << endl;
 
     ofstream os;
     os.open("results/results.txt", ios::out);
@@ -113,11 +128,20 @@ int main() {
     cout << "Number of experiments: " << numberOfExperiments << endl;
     cout << "Number of repetitions per experiment: " << repetitions << endl;
 
-    Experiment exp;
+    cout << "###################################" << endl;
+
+    vector<Experiment> experiments;
 
     for (int i = 0; i < numberOfExperiments; i++) {
-        exp = readExperiment();
-        runExperiment(exp, repetitions);
+        experiments.push_back(readExperiment());
+    }
+
+    for (auto exp : experiments) {
+        runPositionExperiment(exp, repetitions);
+    }
+
+    for (auto exp : experiments) {
+        runFeaturesExperiment(exp, repetitions);
     }
 
     cout << "###################################" << endl;
