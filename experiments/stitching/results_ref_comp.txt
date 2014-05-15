@@ -1,0 +1,33 @@
+Bech's Computer:
+RAM: 16GB
+Processor: 2 Core, i5-3320M CPU @ 2.60Ghz - 3.3Ghz
+
+
+biofilm_step1_few_position,18,9,8
+biofilm_step5_few_position,10,11,10
+biofilm_step10_few_position,13,17,12
+droplet_step5_full_position,161,153,151
+droplet_step10_full_position,57,54,64
+biofilm_step5_2_position,4,4,4
+biofilm_step5_4_position,10,10,8
+biofilm_step5_9_position,28,27,27
+biofilm_step5_12_position,41,39,39
+biofilm_step5_16_position,75,74,77
+biofilm_step5_20_position,105,103,101
+biofilm_step5_25_position,152,150,150
+biofilm_step5_30_position,198,191,189
+biofilm_step5_35_position,281,278,284
+biofilm_step5_40_position,346,346,346
+biofilm_step5_45_position,419,419,414
+biofilm_step1_few_features,1146,1170,1201
+biofilm_step5_few_features,2504,2453,2516
+biofilm_step10_few_features,253,244,230
+droplet_step5_full_features,1041,1047,1039
+droplet_step10_full_features,err
+biofilm_step5_2_features,671,334,560
+biofilm_step5_4_features,2476,2464,2495
+biofilm_step5_9_features,15850,11716,15703
+biofilm_step5_12_features,33115,32985,32031
+biofilm_step5_16_features,99856,98749,98173
+biofilm_step5_20_features,155604,157668,154758
+biofilm_step5_25_features,197944,199054,196226
