@@ -34,9 +34,6 @@ cv::Mat PositionImageStitcher::stitch() {
     x_shift = -left;
     y_shift = -down;
 
-    cout << "xStep" << cv::Mat(xStep) << endl;
-    cout << "yStep" << cv::Mat(yStep) << endl;
-
     //Find the max values
     findMaxValues();
     //Finally warp the images
@@ -134,9 +131,5 @@ void PositionImageStitcher::findMaxValues(){
 
     total_width = width+(max_x-min_x)*abs(x_shift);
     total_height = height+(max_y-min_y)*abs(y_shift);
-    cout << "width,height" << to_string(width) << "," << to_string(height) << endl;
-    cout << "total width,height" << to_string(total_width) << "," << to_string(total_height) << endl;
-    cout << "min_x, max_x" << to_string(min_x) << "," << to_string(max_x) << endl;
-    cout << "min_y, max_y" << to_string(min_y) << "," << to_string(max_y) << endl;
 }
 
