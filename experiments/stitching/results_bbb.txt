@@ -1,0 +1,14 @@
+biofilm_step5_2_position,306,301,303
+biofilm_step5_4_position,791,788,791
+biofilm_step5_9_position,3117,2820,2819
+biofilm_step5_12_position,4754,4595,4597
+biofilm_step5_16_position,7269,7274,7277
+biofilm_step5_20_position,10760,10757,10772
+biofilm_step5_25_position,15585,15593,15587
+biofilm_step5_30_position,21693,21274,21682
+biofilm_step5_35_position,27818,27813,27800
+biofilm_step5_40_position,35141,35130,35145
+biofilm_step5_45_position,43457,43440,43447
+biofilm_step5_2_features,29741,38771,115291
+biofilm_step5_4_features,248449,252813,246171
+biofilm_step5_9_features,1892521,1628228,1577569
