@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sys/time.h>
 #include <opencv2/opencv.hpp>
+#include <unistd.h>
 
 using namespace std;
 
@@ -42,6 +43,10 @@ unsigned long getCurrentTimeMs() {
 }
 
 int main() {
+    t1 = getCurrentTimeMs();
+    sleep(1);
+    t2 = getCurrentTimeMs();
+    cout << "Weird: " << (t2-t1) << "ms" << endl;
     cout << "Running filters experiments" << endl;
 
     cv::Mat src = cv::imread( "noiced.png", 1 );
