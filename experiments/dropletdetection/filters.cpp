@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sys/time.h>
 #include <opencv2/opencv.hpp>
+#include <unistd.h>
 
 using namespace std;
 
@@ -12,29 +13,6 @@ typedef struct{
 const int kernel_size = 31;
 unsigned long t1,t2; // used for timing
 
-cv::Mat gaussianBlur(cv::Mat in){
-
-    cv::Mat out = in.clone();
-    cv::GaussianBlur(in, out, cv::Size(kernel_size,kernel_size), 0,0);
-
-    return out;
-}
-
-cv::Mat bilateralBlur(cv::Mat in){
-
-    cv::Mat out = in.clone();
-    cv::bilateralFilter(in, out, 31, 100, 100);
-    return out;
-}
-
-cv::Mat medianBlur(cv::Mat in){
-
-    cv::Mat out = in.clone();
-    cv::medianBlur(in, out, kernel_size);
-
-    return out;
-}
-
 unsigned long getCurrentTimeMs() {
     struct timeval tv;
     gettimeofday(&tv, NULL);
@@ -42,29 +20,47 @@ unsigned long getCurrentTimeMs() {
 }
 
 int main() {
+    t1 = getCurrentTimeMs();
+    sleep(1);
+    t2 = getCurrentTimeMs();
+    cout << "Weird: " << (t2-t1) << "ms" << endl;
     cout << "Running filters experiments" << endl;
 
     cv::Mat src = cv::imread( "noiced.png", 1 );
-    cv::Mat dst = src.clone();
 
-    cv::imwrite( "results/tracking_experiment_original.png", dst );
+    cv::Mat in, out;
+
+    cv::imwrite( "results/tracking_experiment_original.png", src );
+
+    in = src.clone();
+    out = src.clone();
 
     t1 = getCurrentTimeMs();
-    dst = gaussianBlur(src);
+    cv::GaussianBlur(in, out, cv::Size(kernel_size,kernel_size), 0,0);
     t2 = getCurrentTimeMs();
-    cv::imwrite( "results/tracking_experiment_gaussian.png", dst );
+
+    cv::imwrite( "results/tracking_experiment_gaussian.png", out );
     cout << "Gaussian: " << (t2 - t1) << "ms" << endl;
 
-    t1 = getCurrentTimeMs();
-    dst = bilateralBlur(src);
-    t2 = getCurrentTimeMs();
-    cv::imwrite( "results/tracking_experiment_bilateral.png", dst );
-    cout << "Bilateral: " << (t2 - t1) << "ms" << endl;
+    in = src.clone();
+    out = src.clone();
 
     t1 = getCurrentTimeMs();
-    dst = medianBlur(src);
+    cv::bilateralFilter(in, out, 31, 100, 100);
     t2 = getCurrentTimeMs();
-    cv::imwrite( "results/tracking_experiment_median.png", dst );
+
+    cv::imwrite( "results/tracking_experiment_bilateral.png", out );
+    cout << "Bilateral: " << (t2 - t1) << "ms" << endl;
+
+
+    in = src.clone();
+    out = src.clone();
+
+    t1 = getCurrentTimeMs();
+    cv::medianBlur(in, out, kernel_size);
+    t2 = getCurrentTimeMs();
+
+    cv::imwrite( "results/tracking_experiment_median.png", out );
     cout << "Median: " << (t2 - t1) << "ms" << endl;
 
     cv::waitKey ( 0 );
