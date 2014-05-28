@@ -1,3 +1,4 @@
+// Original source: http://www.cplusplus.com/forum/beginner/51572/#msg280295
 #ifndef _BASE64_H_
 #define _BASE64_H_
 #include <string>

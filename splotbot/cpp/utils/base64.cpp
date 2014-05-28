@@ -1,3 +1,4 @@
+//Original source: http://www.cplusplus.com/forum/beginner/51572/#msg280295
 #include "base64.h"
 
 static const std::string base64_chars = 
